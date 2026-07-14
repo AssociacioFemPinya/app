@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:formz/formz.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:fempinya3_flutter_app/l10n/app_localizations.dart';
 
 class LoginForm extends StatelessWidget {
   const LoginForm({super.key});
@@ -45,7 +45,7 @@ class LoginForm extends StatelessWidget {
                 const SizedBox(height: 16),
                 _buildMailInput(context, translate),
                 const SizedBox(height: 12),
-                _buildPasswordInput(context, translate),
+                const _PasswordInput(),
                 const SizedBox(height: 16),
                 _buildLoginButton(context, translate),
               ],
@@ -76,25 +76,42 @@ Widget _buildMailInput(BuildContext context, AppLocalizations translate) {
   );
 }
 
-Widget _buildPasswordInput(BuildContext context, AppLocalizations translate) {
-  final isError = context.select(
-        (LoginFormBloc bloc) => bloc.state.password.displayError,
-      ) !=
-      null;
-  return TextField(
-    key: const Key('loginForm_passwordInput_textField'),
-    onChanged: (password) {
-      context.read<LoginFormBloc>().add(LoginPasswordChanged(password));
-    },
-    obscureText: true,
-    decoration: InputDecoration(
-      labelText: translate.loginPagePasswordTitle,
-      errorText: isError ? translate.loginPageInvalidPassword : null,
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
+class _PasswordInput extends StatefulWidget {
+  const _PasswordInput();
+
+  @override
+  State<_PasswordInput> createState() => _PasswordInputState();
+}
+
+class _PasswordInputState extends State<_PasswordInput> {
+  bool _obscure = true;
+
+  @override
+  Widget build(BuildContext context) {
+    final translate = AppLocalizations.of(context)!;
+    final isError = context.select(
+          (LoginFormBloc bloc) => bloc.state.password.displayError,
+        ) !=
+        null;
+    return TextField(
+      key: const Key('loginForm_passwordInput_textField'),
+      onChanged: (password) {
+        context.read<LoginFormBloc>().add(LoginPasswordChanged(password));
+      },
+      obscureText: _obscure,
+      decoration: InputDecoration(
+        labelText: translate.loginPagePasswordTitle,
+        errorText: isError ? translate.loginPageInvalidPassword : null,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+        suffixIcon: IconButton(
+          icon: Icon(_obscure ? Icons.visibility_off : Icons.visibility),
+          onPressed: () => setState(() => _obscure = !_obscure),
+        ),
       ),
-    ),
-  );
+    );
+  }
 }
 
 Widget _buildLoginButton(BuildContext context, AppLocalizations translate) {
