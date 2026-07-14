@@ -53,25 +53,25 @@ class RondesListPageContents extends StatelessWidget {
                   child: Text(AppLocalizations.of(context)!.rondesListEmpty),
                 );
               } else {
-                return ListView.separated(
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      title: ElevatedButton(
-                        onPressed: () {
-                          context.pushNamed(rondaRoute, pathParameters: {
-                            'rondaID': state.rondes[index].id.toString()
-                          });
-                        },
-                        child: Text(AppLocalizations.of(context)!
-                            .rondesListRondaButton(state.rondes[index].ronda,
-                                state.rondes[index].name)),
-                      ),
-                    );
-                  },
-                  separatorBuilder: (context, index) {
-                    return SizedBox(height: 0);
-                  },
-                  itemCount: state.rondes.length,
+                return SingleChildScrollView(
+                  child: Column(
+                    children: state.rondes.map((ronda) => Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        ListTile(
+                          title: Text(AppLocalizations.of(context)!
+                              .rondesListRondaButton(ronda.ronda, ronda.name)),
+                          trailing: const Icon(Icons.chevron_right),
+                          onTap: () {
+                            context.pushNamed(rondaRoute, pathParameters: {
+                              'rondaID': ronda.id.toString()
+                            });
+                          },
+                        ),
+                        const Divider(height: 1),
+                      ],
+                    )).toList(),
+                  ),
                 );
               }
             } else {
