@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:logger/logger.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
@@ -25,8 +23,7 @@ class UserProfileServiceImpl implements UserProfileService {
     try {
       final response = await _dio.get(UserProfileApiEndpoints.getUserProfile);
       if (response.statusCode == 200 && response.data is Map<String, dynamic>) {
-        String json = response.data["castellerInfo"];
-        Map<String, dynamic> data = jsonDecode(json);
+        final data = response.data as Map<String, dynamic>;
         return Right(
             UserProfileEntity.fromModel(UserProfileModel.fromJson(data)));
       }

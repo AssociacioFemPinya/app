@@ -6,7 +6,7 @@ import 'package:fempinya3_flutter_app/features/events/presentation/bloc/events_l
 import 'package:fempinya3_flutter_app/features/events/presentation/bloc/events_list/events_filters/events_filters_bloc.dart';
 import 'package:fempinya3_flutter_app/features/events/presentation/bloc/events_list/events_view_mode/events_view_mode_bloc.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:fempinya3_flutter_app/l10n/app_localizations.dart';
 
 class EventsViewModeWidget extends StatefulWidget {
   const EventsViewModeWidget({super.key});

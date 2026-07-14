@@ -2,7 +2,7 @@ import 'package:fempinya3_flutter_app/features/events/presentation/bloc/events_l
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:fempinya3_flutter_app/l10n/app_localizations.dart';
 
 class EventsWithAlertBannerWidget extends StatelessWidget {
   const EventsWithAlertBannerWidget({super.key});

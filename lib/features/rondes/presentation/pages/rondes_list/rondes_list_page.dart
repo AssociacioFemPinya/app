@@ -2,7 +2,7 @@ import 'package:fempinya3_flutter_app/features/menu/presentation/widgets/menu_wi
 import 'package:fempinya3_flutter_app/features/rondes/rondes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:fempinya3_flutter_app/l10n/app_localizations.dart';
 import 'package:fempinya3_flutter_app/core/navigation/route_names.dart';
 import 'package:go_router/go_router.dart';
 

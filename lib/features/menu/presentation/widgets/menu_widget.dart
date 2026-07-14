@@ -5,7 +5,7 @@ import 'package:fempinya3_flutter_app/features/login/login.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:fempinya3_flutter_app/l10n/app_localizations.dart';
 
 class MenuWidget extends StatelessWidget {
   const MenuWidget({super.key});

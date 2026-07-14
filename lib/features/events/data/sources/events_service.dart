@@ -24,6 +24,8 @@ class EventsServiceImpl implements EventsService {
 
   Map<String, dynamic> _buildGetEventsListQueryParams(
       GetEventsListParams params) {
+    final anyStatusFilter =
+        params.showAnswered || params.showUndefined || params.showWarning;
     return {
       if (params.eventTypeFilters.isNotEmpty)
         'eventTypeFilters[]': params.eventTypeFilters
@@ -34,9 +36,12 @@ class EventsServiceImpl implements EventsService {
             DateFormat('yyyy-MM-dd').format(params.dayTimeRange!.start),
         'endDate': DateFormat('yyyy-MM-dd').format(params.dayTimeRange!.end),
       },
-      'showAnswered': params.showAnswered,
-      'showUndefined': params.showUndefined,
-      'showWarning': params.showWarning,
+      // Only send status filters when one is explicitly selected.
+      // With no filter sent, PHP defaults (true/true) show all events.
+      if (anyStatusFilter && !params.showWarning) ...{
+        'showAnswered': params.showAnswered,
+        'showUndefined': params.showUndefined,
+      },
     };
   }
 

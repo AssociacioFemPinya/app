@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:fempinya3_flutter_app/l10n/app_localizations.dart';
 
 enum EventTypeEnum {
   training,
@@ -9,7 +9,14 @@ enum EventTypeEnum {
 }
 
 extension EventTypeEnumExtension on EventTypeEnum {
+  static const _fp4Map = {
+    'ASSAIG':    EventTypeEnum.training,
+    'ACTUACIO':  EventTypeEnum.performance,
+    'ACTIVITAT': EventTypeEnum.activity,
+  };
+
   static EventTypeEnum fromString(String type) {
+    if (_fp4Map.containsKey(type)) return _fp4Map[type]!;
     return EventTypeEnum.values.firstWhere(
       (e) => e.toString().split('.').last == type,
       orElse: () => throw ArgumentError('Invalid EventTypeEnum value'),

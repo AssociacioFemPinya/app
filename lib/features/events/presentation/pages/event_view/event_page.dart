@@ -8,7 +8,7 @@ import 'package:fempinya3_flutter_app/features/events/presentation/pages/event_v
 import 'package:fempinya3_flutter_app/features/events/presentation/widgets/event_view/assistance_selector.dart';
 import 'package:fempinya3_flutter_app/features/events/presentation/widgets/event_view/custom_modal_bottom_sheet.dart';
 import 'package:fempinya3_flutter_app/features/events/presentation/widgets/event_view/event_info_tile.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:fempinya3_flutter_app/l10n/app_localizations.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
