@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fempinya3_flutter_app/features/menu/presentation/widgets/menu_widget.dart';
 import 'package:fempinya3_flutter_app/features/home/data/home_service.dart';
+import 'package:fempinya3_flutter_app/features/notifications/presentation/pages/noticia_detail_page.dart';
 import 'package:fempinya3_flutter_app/l10n/app_localizations.dart';
 
 class HomePage extends StatefulWidget {
@@ -169,7 +170,12 @@ class _NoticiaHeadline extends StatelessWidget {
           fontWeight: noticia.unread ? FontWeight.bold : FontWeight.normal,
         ),
       ),
+      trailing: const Icon(Icons.chevron_right),
       dense: true,
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(builder: (_) => NoticiaDetailPage(noticia: noticia)),
+      ),
     );
   }
 }
