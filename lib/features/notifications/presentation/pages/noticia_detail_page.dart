@@ -48,30 +48,20 @@ class NoticiaDetailPage extends StatelessWidget {
             ],
             const SizedBox(height: 12),
             if (body != null)
-              Html(
-                data: body,
-                style: {
-                  'body': Style(
-                    fontSize: FontSize(15),
-                    margin: Margins.zero,
-                    padding: HtmlPaddings.zero,
-                  ),
-                  'img': Style(
-                    width: Width(double.infinity),
-                  ),
-                  'table': Style(
-                    border: Border.all(color: Colors.grey.shade300),
-                  ),
-                  'td': Style(
-                    padding: HtmlPaddings.all(6),
-                    border: Border.all(color: Colors.grey.shade300),
-                  ),
-                  'th': Style(
-                    padding: HtmlPaddings.all(6),
-                    fontWeight: FontWeight.bold,
-                    border: Border.all(color: Colors.grey.shade300),
-                  ),
-                },
+              LayoutBuilder(
+                builder: (context, constraints) => Html(
+                  data: body,
+                  style: {
+                    'body': Style(
+                      fontSize: FontSize(15),
+                      margin: Margins.zero,
+                      padding: HtmlPaddings.zero,
+                    ),
+                    'img': Style(
+                      width: Width(constraints.maxWidth),
+                    ),
+                  },
+                ),
               )
             else
               const Text('Sense contingut'),
