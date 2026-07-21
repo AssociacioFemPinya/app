@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
-import 'package:flutter_html_table/flutter_html_table.dart';
 import 'package:fempinya3_flutter_app/features/home/data/home_service.dart';
 import 'package:fempinya3_flutter_app/global_endpoints.dart';
+import '../widgets/html_content_stub.dart'
+    if (dart.library.js_interop) '../widgets/html_content_web.dart';
 
 class NoticiaDetailPage extends StatelessWidget {
   final NoticiaItem noticia;
@@ -10,7 +10,7 @@ class NoticiaDetailPage extends StatelessWidget {
   const NoticiaDetailPage({super.key, required this.noticia});
 
   String _fixImageUrls(String html) {
-    // Imatges amb src relatiu → URL absoluta
+    // src="/path" → src="https://fp.artacho.org/path"
     return html.replaceAllMapped(
       RegExp(r'src="(/[^"]+)"'),
       (m) => 'src="${GlobalEndpoints.apiBaseUrl}${m[1]}"',
@@ -50,32 +50,8 @@ class NoticiaDetailPage extends StatelessWidget {
             const SizedBox(height: 12),
             if (body != null)
               LayoutBuilder(
-                builder: (context, constraints) => Html(
-                  data: body,
-                  extensions: const [TableHtmlExtension()],
-                  style: {
-                    'body': Style(
-                      fontSize: FontSize(15),
-                      margin: Margins.zero,
-                      padding: HtmlPaddings.zero,
-                    ),
-                    'img': Style(
-                      width: Width(constraints.maxWidth),
-                    ),
-                    'table': Style(
-                      border: Border.all(color: Colors.grey.shade300),
-                    ),
-                    'td': Style(
-                      padding: HtmlPaddings.all(6),
-                      border: Border.all(color: Colors.grey.shade300),
-                    ),
-                    'th': Style(
-                      padding: HtmlPaddings.all(6),
-                      fontWeight: FontWeight.bold,
-                      border: Border.all(color: Colors.grey.shade300),
-                    ),
-                  },
-                ),
+                builder: (context, constraints) =>
+                    buildHtmlContent(body, constraints.maxWidth),
               )
             else
               const Text('Sense contingut'),
