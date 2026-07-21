@@ -1,5 +1,4 @@
 import 'package:logger/logger.dart';
-import 'dart:convert';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:intl/intl.dart';
@@ -98,24 +97,19 @@ class EventsServiceImpl implements EventsService {
 
   @override
   Future<Either<String, EventEntity>> postEvent(EventEntity params) async {
+    final url = EventsApiEndpoints.updateAttendance(params.id);
     try {
-      // TODO: clean this code
-      final data = params.toModel().toJson();
-      data.remove('id');
-      final response = await _dio.put(
-          '${EventsApiEndpoints.getEvents}/${params.id}',
-          data: jsonEncode(data));
-      if (response.statusCode == 200 && response.data is Map<String, dynamic>) {
-        final json = response.data as Map<String, dynamic>;
-        return Right(EventEntity.fromModel(EventModel.fromJson(json)));
+      final response = await _dio.put(url, data: {
+        'status': params.status.name,
+        'companions': params.companions ?? 0,
+      });
+      if (response.statusCode == 200) {
+        return Right(params);
       }
       return const Left('Unexpected response format');
     } catch (e, stacktrace) {
-      _logError(
-          'Error when calling post ${EventsApiEndpoints.getEvents}/${params.id} endpoint',
-          e, stacktrace);
-      return Left(
-          'Error when calling post ${EventsApiEndpoints.getEvents}/${params.id} endpoint: $e');
+      _logError('Error when calling PUT $url', e, stacktrace);
+      return Left('Error when calling PUT $url: $e');
     }
   }
 
