@@ -8,6 +8,7 @@ import 'package:fempinya3_flutter_app/features/events/presentation/pages/event_v
 import 'package:fempinya3_flutter_app/features/events/presentation/widgets/event_view/assistance_selector.dart';
 import 'package:fempinya3_flutter_app/features/events/presentation/widgets/event_view/custom_modal_bottom_sheet.dart';
 import 'package:fempinya3_flutter_app/features/events/presentation/widgets/event_view/event_info_tile.dart';
+import 'package:fempinya3_flutter_app/features/events/presentation/widgets/event_view/event_questions_section.dart';
 import 'package:fempinya3_flutter_app/l10n/app_localizations.dart';
 
 import 'package:flutter/material.dart';
@@ -60,6 +61,20 @@ class EventPage extends StatelessWidget {
                   padding: const EdgeInsets.all(8.0),
                   sliver: optionsSelector(context, translate),
                   ),
+                  if ((state.event?.questions ?? []).isNotEmpty)
+                    SliverPadding(
+                      padding: const EdgeInsets.all(8.0),
+                      sliver: SliverToBoxAdapter(
+                        child: EventQuestionsSection(
+                          questions: state.event!.questions!,
+                          onSave: (answers) {
+                            context.read<EventViewBloc>().add(
+                              SaveAnswers(state.event!.id, answers),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
                 ],
               ))));
     });

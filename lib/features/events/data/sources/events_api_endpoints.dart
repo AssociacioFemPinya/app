@@ -3,4 +3,7 @@ class EventsApiEndpoints {
 
   static String updateAttendance(int eventId) =>
       '/api-fempinya/mobile_events/$eventId';
+
+  static String saveAnswers(int eventId) =>
+      '/api-fempinya/mobile_events/$eventId/answers';
 }

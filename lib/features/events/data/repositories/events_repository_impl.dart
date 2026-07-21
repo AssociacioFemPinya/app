@@ -20,4 +20,9 @@ class EventsRepositoryImpl extends EventsRepository {
   Future<Either> postEvent(EventEntity params) async {
     return await sl<EventsService>().postEvent(params);
   }
+
+  @override
+  Future<Either> saveAnswers(int eventId, List<Map<String, dynamic>> answers) async {
+    return await sl<EventsService>().saveAnswers(eventId, answers);
+  }
 }

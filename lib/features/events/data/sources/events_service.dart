@@ -15,6 +15,7 @@ abstract class EventsService {
       GetEventsListParams params);
   Future<Either<String, EventEntity>> getEvent(GetEventParams params);
   Future<Either<String, EventEntity>> postEvent(EventEntity params);
+  Future<Either<String, void>> saveAnswers(int eventId, List<Map<String, dynamic>> answers);
 }
 
 class EventsServiceImpl implements EventsService {
@@ -110,6 +111,19 @@ class EventsServiceImpl implements EventsService {
     } catch (e, stacktrace) {
       _logError('Error when calling PUT $url', e, stacktrace);
       return Left('Error when calling PUT $url: $e');
+    }
+  }
+
+  @override
+  Future<Either<String, void>> saveAnswers(int eventId, List<Map<String, dynamic>> answers) async {
+    final url = EventsApiEndpoints.saveAnswers(eventId);
+    try {
+      final response = await _dio.post(url, data: {'answers': answers});
+      if (response.statusCode == 200) return const Right(null);
+      return const Left('Unexpected response format');
+    } catch (e, stacktrace) {
+      _logError('Error when calling POST $url', e, stacktrace);
+      return Left('Error when calling POST $url: $e');
     }
   }
 

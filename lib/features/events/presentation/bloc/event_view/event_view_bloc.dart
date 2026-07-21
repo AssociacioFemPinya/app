@@ -3,6 +3,7 @@ import 'package:fempinya3_flutter_app/features/events/domain/entities/tag.dart';
 import 'package:fempinya3_flutter_app/features/events/domain/enums/events_status.dart';
 import 'package:fempinya3_flutter_app/features/events/domain/useCases/get_event.dart';
 import 'package:fempinya3_flutter_app/features/events/domain/useCases/post_event.dart';
+import 'package:fempinya3_flutter_app/features/events/domain/repositories/events_repository.dart';
 import 'package:fempinya3_flutter_app/features/events/service_locator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -79,8 +80,19 @@ class EventViewBloc extends Bloc<EventViewEvent, EventViewState> {
 
     on<RemoveEventComment>((comment, emit) async {
       EventEntity updatedEvent = state.event!.copyWith(comment: '');
-
       add(UpdateEvent(updatedEvent));
     });
+
+    on<SaveAnswers>((event, emit) async {
+      final result = await sl<EventsRepository>()
+          .saveAnswers(event.eventId, event.answers);
+      result.fold(
+        (failure) => add(AnswersSaveFailure(failure)),
+        (_)       => add(AnswersSaveSuccess()),
+      );
+    });
+
+    on<AnswersSaveSuccess>((_, emit) {});
+    on<AnswersSaveFailure>((_, emit) {});
   }
 }

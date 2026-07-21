@@ -55,3 +55,18 @@ class AddEventComment extends EventViewEvent {
 class RemoveEventComment extends EventViewEvent {
   RemoveEventComment();
 }
+
+class SaveAnswers extends EventViewEvent {
+  final int eventId;
+  final List<Map<String, dynamic>> answers;
+  SaveAnswers(this.eventId, this.answers);
+}
+
+class AnswersSaveSuccess extends EventViewEvent {
+  AnswersSaveSuccess();
+}
+
+class AnswersSaveFailure extends EventViewEvent {
+  final String value;
+  AnswersSaveFailure(this.value);
+}

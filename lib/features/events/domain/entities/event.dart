@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:fempinya3_flutter_app/features/events/data/models/event.dart';
+import 'package:fempinya3_flutter_app/features/events/domain/entities/question.dart';
 import 'package:fempinya3_flutter_app/features/events/domain/entities/tag.dart';
 import 'package:fempinya3_flutter_app/features/events/domain/enums/events_status.dart';
 import 'package:fempinya3_flutter_app/features/events/domain/enums/events_type.dart';
@@ -18,7 +19,7 @@ class EventEntity extends Equatable {
   final int? companions;
   final List<TagEntity>? tags;
   final String? comment;
-  
+  final List<QuestionEntity>? questions;
 
   const EventEntity({
     required this.id,
@@ -33,22 +34,19 @@ class EventEntity extends Equatable {
     required this.companions,
     required this.tags,
     required this.comment,
+    this.questions,
   });
 
   @override
-  List<Object?> get props {
-    return [id, title, startDate, endDate, address, status, type, description, companions, tags, comment];
-  }
+  List<Object?> get props => [id, title, startDate, endDate, address, status, type, description, companions, tags, comment, questions];
 
-  // Factory constructor to create an EventEntity from EventModel
   factory EventEntity.fromModel(EventModel model) {
     return EventEntity(
-      // TODO: How to handle properly when data from API in the model in incomplete?
       id: model.id ?? 0,
       title: model.title ?? '',
       startDate: model.startDate ?? DateTime.now(),
       endDate: model.endDate ?? DateTime.now(),
-      dateHour: DateFormat('h:mm a').format(model.startDate ?? DateTime.now()), // Populate as needed
+      dateHour: DateFormat('H:mm').format(model.startDate ?? DateTime.now()),
       address: model.address ?? '',
       status: EventStatusEnumExtension.fromString(model.status ?? ""),
       type: EventTypeEnumExtension.fromString(model.type ?? ""),
@@ -56,10 +54,10 @@ class EventEntity extends Equatable {
       companions: model.companions ?? 0,
       tags: model.tags?.map((tag) => TagEntity.fromModel(tag)).toList() ?? [],
       comment: model.comment ?? '',
+      questions: model.questions?.map((q) => QuestionEntity.fromModel(q)).toList(),
     );
   }
 
-  // Convert the entity to EventModel
   EventModel toModel() {
     return EventModel(
       id: id,
@@ -67,8 +65,8 @@ class EventEntity extends Equatable {
       startDate: startDate,
       endDate: endDate,
       address: address,
-      status: status.toString().split('.').last,
-      type: type.toString().split('.').last,
+      status: status.name,
+      type: type.name,
       description: description,
       companions: companions,
       tags: tags?.map((tag) => tag.toModel()).toList() ?? [],
@@ -76,7 +74,7 @@ class EventEntity extends Equatable {
     );
   }
 
-  EventEntity copyWith({EventStatusEnum? status, int? companions, List<TagEntity>? tags, String? comment}) {
+  EventEntity copyWith({EventStatusEnum? status, int? companions, List<TagEntity>? tags, String? comment, List<QuestionEntity>? questions}) {
     return EventEntity(
       id: id,
       title: title,
@@ -89,7 +87,8 @@ class EventEntity extends Equatable {
       description: description,
       companions: companions ?? this.companions,
       tags: tags ?? this.tags,
-      comment: comment,
+      comment: comment ?? this.comment,
+      questions: questions ?? this.questions,
     );
   }
 }
