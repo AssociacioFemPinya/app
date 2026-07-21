@@ -6,10 +6,12 @@ class EventModel {
   final String? title;
   final DateTime? startDate;
   final DateTime? endDate;
+  final DateTime? closeDate;
   final String? address;
   final String? status;
   final String? type;
   final String? description;
+  final bool? allowCompanions;
   final int? companions;
   final List<TagModel>? tags;
   final String? comment;
@@ -20,10 +22,12 @@ class EventModel {
     required this.title,
     required this.startDate,
     required this.endDate,
+    this.closeDate,
     required this.address,
     required this.status,
     required this.type,
     required this.description,
+    this.allowCompanions,
     required this.companions,
     required this.tags,
     required this.comment,
@@ -45,10 +49,12 @@ class EventModel {
       title: data['title'],
       startDate: data['startDate'] != null ? DateTime.tryParse(data['startDate']) : null,
       endDate: data['endDate'] != null ? DateTime.tryParse(data['endDate']) : null,
+      closeDate: data['closeDate'] != null ? DateTime.tryParse(data['closeDate']) : null,
       address: data['address'],
       status: data['status'],
       type: data['type'],
       description: data['description'],
+      allowCompanions: data['allowCompanions'] as bool?,
       companions: data['companions'],
       tags: tagList,
       comment: data['comment'],

@@ -37,46 +37,61 @@ class EventPage extends StatelessWidget {
       if (state is EventViewInitial) {
         return Container();
       }
-      return Scaffold(
-          appBar: AppBar(title: Text(state.event!.title)),
-          //drawer: const MenuWidget(),
-          body: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: SafeArea(
-                  child: CustomScrollView(
-                slivers: [
-                  eventSummary(context),
-                  eventDescription(context),
-                  schedule(context, translate),
-                  addComments(context, translate),
-                  SliverPadding(
-                  padding: const EdgeInsets.all(8.0),
-                  sliver: attendanceSwitch(context, state),
-                  ),
-                  SliverPadding(
-                  padding: const EdgeInsets.all(8.0),
-                  sliver: companionsSelector(context, translate),
-                  ),
-                  SliverPadding(
-                  padding: const EdgeInsets.all(8.0),
-                  sliver: optionsSelector(context, translate),
-                  ),
-                  if ((state.event?.questions ?? []).isNotEmpty)
+      return BlocListener<EventViewBloc, EventViewState>(
+        listener: (context, state) {
+          if (state is EventViewEventUpdated) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(translate.eventPageAttendanceSaved)),
+            );
+          }
+          if (state is EventViewAnswersSaved) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(translate.eventPageAnswersSaved)),
+            );
+          }
+        },
+        child: Scaffold(
+            appBar: AppBar(title: Text(state.event!.title)),
+            body: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SafeArea(
+                    child: CustomScrollView(
+                  slivers: [
+                    eventSummary(context),
+                    eventDescription(context),
+                    schedule(context, translate),
+                    addComments(context, translate),
                     SliverPadding(
+                    padding: const EdgeInsets.all(8.0),
+                    sliver: attendanceSwitch(context, state, state.event!.isClosed),
+                    ),
+                    if (state.event?.allowCompanions == true)
+                      SliverPadding(
                       padding: const EdgeInsets.all(8.0),
-                      sliver: SliverToBoxAdapter(
-                        child: EventQuestionsSection(
-                          questions: state.event!.questions!,
-                          onSave: (answers) {
-                            context.read<EventViewBloc>().add(
-                              SaveAnswers(state.event!.id, answers),
-                            );
-                          },
+                      sliver: companionsSelector(context, translate),
+                      ),
+                    SliverPadding(
+                    padding: const EdgeInsets.all(8.0),
+                    sliver: optionsSelector(context, translate),
+                    ),
+                    if ((state.event?.questions ?? []).isNotEmpty)
+                      SliverPadding(
+                        padding: const EdgeInsets.all(8.0),
+                        sliver: SliverToBoxAdapter(
+                          child: EventQuestionsSection(
+                            questions: state.event!.questions!,
+                            readOnly: state.event!.isClosed,
+                            onSave: (answers) {
+                              context.read<EventViewBloc>().add(
+                                SaveAnswers(state.event!.id, answers),
+                              );
+                            },
+                          ),
                         ),
                       ),
-                    ),
-                ],
-              ))));
+                  ],
+                )))),
+      );
     });
   }
 
@@ -249,7 +264,7 @@ class EventPage extends StatelessWidget {
     );
   }
 
-  SliverToBoxAdapter attendanceSwitch(BuildContext context, state) {
+  SliverToBoxAdapter attendanceSwitch(BuildContext context, state, bool disabled) {
     return SliverToBoxAdapter(
       child: Column(
         children: [
@@ -261,17 +276,29 @@ class EventPage extends StatelessWidget {
                   .eventsPageAttendaceQuestion(state.event!.title),
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     fontWeight: FontWeight.bold,
-                    fontSize: Theme.of(context).textTheme.bodyLarge?.fontSize, 
+                    fontSize: Theme.of(context).textTheme.bodyLarge?.fontSize,
                   ),
                 )
             ],
           ),
+          if (disabled)
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              child: Text(
+                AppLocalizations.of(context)!.eventPageClosedBanner,
+                style: TextStyle(color: Theme.of(context).colorScheme.error, fontSize: 13),
+              ),
+            ),
           SizedBox(height: Theme.of(context).textTheme.bodyLarge?.fontSize),
-          SizedBox(
-            width: MediaQuery.of(context)
-                .size
-                .width, // Ajusta al ancho de la pantalla
-            child: const AssistanceSelector(),
+          IgnorePointer(
+            ignoring: disabled,
+            child: Opacity(
+              opacity: disabled ? 0.5 : 1.0,
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: const AssistanceSelector(),
+              ),
+            ),
           ),
         ],
       ),

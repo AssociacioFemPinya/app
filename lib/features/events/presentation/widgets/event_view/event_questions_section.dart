@@ -4,11 +4,13 @@ import 'package:fempinya3_flutter_app/features/events/domain/entities/question.d
 class EventQuestionsSection extends StatefulWidget {
   final List<QuestionEntity> questions;
   final void Function(List<Map<String, dynamic>> answers) onSave;
+  final bool readOnly;
 
   const EventQuestionsSection({
     super.key,
     required this.questions,
     required this.onSave,
+    this.readOnly = false,
   });
 
   @override
@@ -34,7 +36,24 @@ class _EventQuestionsSectionState extends State<EventQuestionsSection> {
     return q.answer?.toString();
   }
 
+  bool _isEmpty(dynamic val) {
+    if (val == null) return true;
+    if (val is String) return val.trim().isEmpty;
+    if (val is List) return val.isEmpty;
+    return false;
+  }
+
   void _save() {
+    final unanswered = widget.questions.where((q) => q.required && _isEmpty(_answers[q.id])).toList();
+    if (unanswered.isNotEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Cal respondre les preguntes obligatòries (*): ${unanswered.map((q) => q.text).join(', ')}'),
+          backgroundColor: Theme.of(context).colorScheme.error,
+        ),
+      );
+      return;
+    }
     final answers = _answers.entries.map((e) => {
       'question_id': e.key,
       'answer': e.value,
@@ -57,13 +76,14 @@ class _EventQuestionsSectionState extends State<EventQuestionsSection> {
         const SizedBox(height: 8),
         ...widget.questions.map((q) => _buildQuestion(context, q)),
         const SizedBox(height: 16),
-        SizedBox(
-          width: double.infinity,
-          child: FilledButton(
-            onPressed: _save,
-            child: const Text('Desar respostes'),
+        if (!widget.readOnly)
+          SizedBox(
+            width: double.infinity,
+            child: FilledButton(
+              onPressed: _save,
+              child: const Text('Desar respostes'),
+            ),
           ),
-        ),
       ],
     );
   }
@@ -106,7 +126,7 @@ class _EventQuestionsSectionState extends State<EventQuestionsSection> {
         title: Text(opt),
         value: opt,
         groupValue: current,
-        onChanged: (val) => setState(() => _answers[q.id] = val),
+        onChanged: widget.readOnly ? null : (val) => setState(() => _answers[q.id] = val),
       )).toList(),
     );
   }
@@ -119,7 +139,7 @@ class _EventQuestionsSectionState extends State<EventQuestionsSection> {
         contentPadding: EdgeInsets.zero,
         title: Text(opt),
         value: current.contains(opt),
-        onChanged: (checked) => setState(() {
+        onChanged: widget.readOnly ? null : (checked) => setState(() {
           final list = List<String>.from(current);
           if (checked == true) {
             list.add(opt);
@@ -136,11 +156,12 @@ class _EventQuestionsSectionState extends State<EventQuestionsSection> {
     return TextFormField(
       initialValue: _answers[q.id]?.toString(),
       maxLines: 3,
+      readOnly: widget.readOnly,
       decoration: const InputDecoration(
         border: OutlineInputBorder(),
         isDense: true,
       ),
-      onChanged: (val) => _answers[q.id] = val.isEmpty ? null : val,
+      onChanged: widget.readOnly ? null : (val) => _answers[q.id] = val.isEmpty ? null : val,
     );
   }
 }

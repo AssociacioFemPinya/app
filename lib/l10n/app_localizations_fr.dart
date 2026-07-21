@@ -129,6 +129,16 @@ class AppLocalizationsFr extends AppLocalizations {
   String get eventPageCompanionsSelector => 'Un accompagnant?';
 
   @override
+  String get eventPageAttendanceSaved => 'Présence enregistrée';
+
+  @override
+  String get eventPageAnswersSaved => 'Réponses enregistrées';
+
+  @override
+  String get eventPageClosedBanner =>
+      'Le délai de confirmation de présence est dépassé';
+
+  @override
   String get commonReturn => 'Retourner';
 
   @override

@@ -92,7 +92,7 @@ class EventViewBloc extends Bloc<EventViewEvent, EventViewState> {
       );
     });
 
-    on<AnswersSaveSuccess>((_, emit) {});
+    on<AnswersSaveSuccess>((_, emit) => emit(EventViewAnswersSaved(event: state.event)));
     on<AnswersSaveFailure>((_, emit) {});
   }
 }

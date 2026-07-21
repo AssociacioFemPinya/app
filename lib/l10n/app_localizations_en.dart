@@ -128,6 +128,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get eventPageCompanionsSelector => 'Any companions?';
 
   @override
+  String get eventPageAttendanceSaved => 'Attendance saved';
+
+  @override
+  String get eventPageAnswersSaved => 'Answers saved';
+
+  @override
+  String get eventPageClosedBanner =>
+      'The deadline to confirm attendance has passed';
+
+  @override
   String get commonReturn => 'Return';
 
   @override

@@ -11,11 +11,13 @@ class EventEntity extends Equatable {
   final String title;
   final DateTime startDate;
   final DateTime endDate;
+  final DateTime? closeDate;
   final String dateHour;
   final String address;
   final EventStatusEnum status;
   final EventTypeEnum type;
   final String? description;
+  final bool allowCompanions;
   final int? companions;
   final List<TagEntity>? tags;
   final String? comment;
@@ -26,19 +28,23 @@ class EventEntity extends Equatable {
     required this.title,
     required this.startDate,
     required this.endDate,
+    this.closeDate,
     required this.dateHour,
     required this.address,
     required this.status,
     required this.type,
     required this.description,
+    this.allowCompanions = true,
     required this.companions,
     required this.tags,
     required this.comment,
     this.questions,
   });
 
+  bool get isClosed => closeDate != null && DateTime.now().isAfter(closeDate!);
+
   @override
-  List<Object?> get props => [id, title, startDate, endDate, address, status, type, description, companions, tags, comment, questions];
+  List<Object?> get props => [id, title, startDate, endDate, closeDate, address, status, type, description, allowCompanions, companions, tags, comment, questions];
 
   factory EventEntity.fromModel(EventModel model) {
     return EventEntity(
@@ -46,11 +52,13 @@ class EventEntity extends Equatable {
       title: model.title ?? '',
       startDate: model.startDate ?? DateTime.now(),
       endDate: model.endDate ?? DateTime.now(),
+      closeDate: model.closeDate,
       dateHour: DateFormat('H:mm').format(model.startDate ?? DateTime.now()),
       address: model.address ?? '',
       status: EventStatusEnumExtension.fromString(model.status ?? ""),
       type: EventTypeEnumExtension.fromString(model.type ?? ""),
       description: model.description ?? '',
+      allowCompanions: model.allowCompanions ?? true,
       companions: model.companions ?? 0,
       tags: model.tags?.map((tag) => TagEntity.fromModel(tag)).toList() ?? [],
       comment: model.comment ?? '',
@@ -80,11 +88,13 @@ class EventEntity extends Equatable {
       title: title,
       startDate: startDate,
       endDate: endDate,
+      closeDate: closeDate,
       dateHour: dateHour,
       address: address,
       status: status ?? this.status,
       type: type,
       description: description,
+      allowCompanions: allowCompanions,
       companions: companions ?? this.companions,
       tags: tags ?? this.tags,
       comment: comment ?? this.comment,

@@ -128,6 +128,16 @@ class AppLocalizationsEs extends AppLocalizations {
   String get eventPageCompanionsSelector => '¿Algún acompañante?';
 
   @override
+  String get eventPageAttendanceSaved => 'Asistencia guardada';
+
+  @override
+  String get eventPageAnswersSaved => 'Respuestas guardadas';
+
+  @override
+  String get eventPageClosedBanner =>
+      'El plazo para confirmar asistencia ha finalizado';
+
+  @override
   String get commonReturn => 'Volver';
 
   @override

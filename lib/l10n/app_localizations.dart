@@ -306,6 +306,24 @@ abstract class AppLocalizations {
   /// **'Algun acompanyant?'**
   String get eventPageCompanionsSelector;
 
+  /// No description provided for @eventPageAttendanceSaved.
+  ///
+  /// In ca, this message translates to:
+  /// **'Assistència desada'**
+  String get eventPageAttendanceSaved;
+
+  /// No description provided for @eventPageAnswersSaved.
+  ///
+  /// In ca, this message translates to:
+  /// **'Respostes desades'**
+  String get eventPageAnswersSaved;
+
+  /// No description provided for @eventPageClosedBanner.
+  ///
+  /// In ca, this message translates to:
+  /// **'El termini per confirmar assistència ha finalitzat'**
+  String get eventPageClosedBanner;
+
   /// No description provided for @commonReturn.
   ///
   /// In ca, this message translates to:

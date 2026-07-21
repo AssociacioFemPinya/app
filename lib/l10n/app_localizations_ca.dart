@@ -128,6 +128,16 @@ class AppLocalizationsCa extends AppLocalizations {
   String get eventPageCompanionsSelector => 'Algun acompanyant?';
 
   @override
+  String get eventPageAttendanceSaved => 'Assistència desada';
+
+  @override
+  String get eventPageAnswersSaved => 'Respostes desades';
+
+  @override
+  String get eventPageClosedBanner =>
+      'El termini per confirmar assistència ha finalitzat';
+
+  @override
   String get commonReturn => 'Tornar';
 
   @override
