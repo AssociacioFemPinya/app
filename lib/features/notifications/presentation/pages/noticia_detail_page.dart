@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_html_table/flutter_html_table.dart';
 import 'package:fempinya3_flutter_app/features/home/data/home_service.dart';
 import 'package:fempinya3_flutter_app/global_endpoints.dart';
 
@@ -51,6 +52,7 @@ class NoticiaDetailPage extends StatelessWidget {
               LayoutBuilder(
                 builder: (context, constraints) => Html(
                   data: body,
+                  extensions: const [TableHtmlExtension()],
                   style: {
                     'body': Style(
                       fontSize: FontSize(15),
@@ -59,6 +61,18 @@ class NoticiaDetailPage extends StatelessWidget {
                     ),
                     'img': Style(
                       width: Width(constraints.maxWidth),
+                    ),
+                    'table': Style(
+                      border: Border.all(color: Colors.grey.shade300),
+                    ),
+                    'td': Style(
+                      padding: HtmlPaddings.all(6),
+                      border: Border.all(color: Colors.grey.shade300),
+                    ),
+                    'th': Style(
+                      padding: HtmlPaddings.all(6),
+                      fontWeight: FontWeight.bold,
+                      border: Border.all(color: Colors.grey.shade300),
                     ),
                   },
                 ),
