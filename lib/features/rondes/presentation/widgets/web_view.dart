@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'open_url_stub.dart'
-    if (dart.library.js_interop) 'open_url_web.dart';
+import 'iframe_view_stub.dart'
+    if (dart.library.js_interop) 'iframe_view_web.dart';
 
 class MyWebView extends StatefulWidget {
   final String url;
@@ -37,13 +37,7 @@ class _MyWebViewState extends State<MyWebView> {
   @override
   Widget build(BuildContext context) {
     if (kIsWeb) {
-      return Center(
-        child: ElevatedButton.icon(
-          icon: const Icon(Icons.open_in_new),
-          label: const Text('Obrir pinya'),
-          onPressed: () => openUrlInBrowser(widget.url),
-        ),
-      );
+      return buildIframeView(widget.url);
     }
     return Stack(
       children: [
