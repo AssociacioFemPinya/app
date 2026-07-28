@@ -1,8 +1,10 @@
+import 'package:fempinya3_flutter_app/core/navigation/route_names.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fempinya3_flutter_app/features/notifications/domain/entities/notification.dart';
-import 'package:fempinya3_flutter_app/features/notifications/presentation/bloc/notifications_bloc.dart';
+import 'package:fempinya3_flutter_app/features/notifications/presentation/bloc/notifications_list/notifications_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class NotificationItem extends StatelessWidget {
   final NotificationEntity notification;
@@ -26,9 +28,14 @@ class NotificationItem extends StatelessWidget {
       ),
       child: InkWell(
         onTap: notification.isRead ? null : () {
-          context.read<NotificationsBloc>().add(
-            UpdateReadStatusEvent(notification.id),
-          );
+          // TODO: Uncomment
+          // context.read<NotificationsBloc>().add(
+          //   UpdateReadStatusEvent(notification.id),
+          // );
+          context.pushNamed(notificationRoute, pathParameters: {'notificationID': notification.id.toString()}).then((_) {
+            // TODO: refresh after come back from notification view
+            //context.read<EventsListBloc>().add(LoadEventsList(context.read<EventsFiltersBloc>().state));
+        });
         },
         child: ListTile(
           contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -51,25 +58,6 @@ class NotificationItem extends StatelessWidget {
             style: theme.textTheme.titleMedium?.copyWith(
               fontWeight: notification.isRead ? FontWeight.normal : FontWeight.bold,
             ),
-          ),
-          subtitle: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 4),
-              Text(
-                notification.message,
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: theme.colorScheme.onSurfaceVariant,
-                ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                _formatTimestamp(context, notification.createdAt),
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: theme.colorScheme.onSurfaceVariant.withAlpha((0.7 * 255).toInt()),
-                ),
-              ),
-            ],
           ),
         ),
       ),

@@ -5,6 +5,7 @@ class NotificationEntity extends Equatable {
   final String id;
   final String title;
   final String message;
+  final String? sender;
   final DateTime createdAt;
   final bool isRead;
 
@@ -12,6 +13,7 @@ class NotificationEntity extends Equatable {
     required this.id,
     required this.title,
     required this.message,
+    required this.sender,
     required this.createdAt,
     this.isRead = false,
   });
@@ -24,6 +26,7 @@ class NotificationEntity extends Equatable {
       id: model.id,
       title: model.title,
       message: model.message,
+      sender: model.sender,
       createdAt: model.createdAt,
       isRead: model.isRead,
     );
@@ -35,6 +38,7 @@ class NotificationEntity extends Equatable {
       title: title,
       message: message,
       createdAt: createdAt,
+      sender: sender,
       isRead: isRead,
     );
   }

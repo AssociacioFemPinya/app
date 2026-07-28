@@ -1,9 +1,8 @@
-import 'package:fempinya3_flutter_app/features/notifications/domain/entities/notification.dart';
-
 class NotificationModel {
   final String id;
   final String title;
   final String message;
+  final String? sender;
   final DateTime createdAt;
   final bool isRead;
 
@@ -11,6 +10,7 @@ class NotificationModel {
     required this.id,
     required this.title,
     required this.message,
+    required this.sender,
     required this.createdAt,
     this.isRead = false,
   });
@@ -20,6 +20,7 @@ class NotificationModel {
       id: json['id'] as String,
       title: json['title'] as String,
       message: json['message'] as String,
+      sender: json['sender'] as String,
       createdAt: DateTime.parse(json['createdAt'] as String),
       isRead: json['isRead'] as bool? ?? false,
     );
@@ -29,6 +30,7 @@ class NotificationModel {
         'id': id,
         'title': title,
         'message': message,
+        'sender': sender,
         'createdAt': createdAt.toIso8601String(),
         'isRead': isRead,
       };

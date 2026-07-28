@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:dio/dio.dart';
+import 'package:fempinya3_flutter_app/features/notifications/data/mocks/get_notification_handler.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import 'package:fempinya3_flutter_app/features/notifications/data/mocks/get_notifications_handler.dart';
@@ -16,8 +17,12 @@ class NotificationsDioMockInterceptor extends Interceptor {
       mockRouter = {
     _MockRouteKey(NotificationsApiEndpoints.getNotifications, 'GET'):
         GetNotificationsHandler.handle,
+    // _MockRouteKey(buildEndpoint(NotificationsApiEndpoints.updateReadNotification,
+    //         {'notificationId': ':id'}),
+    //     'GET'): GetNotificationHandler.handle,
+    _MockRouteKey("/notifications/1", 'GET'): GetNotificationHandler.handle,
     _MockRouteKey(
-        buildEndpoint(NotificationsApiEndpoints.readNotificationEndpoint,
+        buildEndpoint(NotificationsApiEndpoints.updateReadNotification,
             {'notificationId': ':id'}),
         'PATCH'): UpdateReadStatusHandler.handle,
   };

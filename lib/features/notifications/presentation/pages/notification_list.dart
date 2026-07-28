@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import '../bloc/notifications_bloc.dart';
+import '../bloc/notifications_list/notifications_bloc.dart';
 import '../widgets/notification_item.dart';
 
 class NotificationsPage extends StatelessWidget {

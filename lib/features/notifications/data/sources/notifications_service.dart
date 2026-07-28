@@ -1,3 +1,4 @@
+import 'package:fempinya3_flutter_app/features/notifications/domain/useCases/get_notification.dart';
 import 'package:logger/logger.dart';
 import 'dart:convert';
 import 'package:dartz/dartz.dart';
@@ -12,6 +13,7 @@ import 'package:fempinya3_flutter_app/global_endpoints.dart';
 
 abstract class NotificationsService {
   Future<Either<String, List<NotificationEntity>>> getNotifications(GetNotificationsParams params);
+  Future<Either<String, NotificationEntity>> getNotification(GetNotificationParams params);
   Future<Either<String, void>> updateReadStatus(String notificationId);
 }
 
@@ -42,10 +44,30 @@ class NotificationsServiceImpl implements NotificationsService {
     }
   }
 
+ @override
+  Future<Either<String, NotificationEntity>> getNotification(GetNotificationParams params) async {
+    try {
+      final response =
+          await _dio.get('${NotificationsApiEndpoints.getNotifications}/${params.id}');
+      if (response.statusCode == 200 && response.data is String) {
+        final json = jsonDecode(response.data as String) as Map<String, dynamic>;
+        return Right(NotificationEntity.fromModel((NotificationModel.fromJson(json))));
+      }
+      return const Left('Unexpected response format');
+    } catch (e, stacktrace) {
+      _logError(
+          'Error when calling ${NotificationsApiEndpoints.getNotifications}/${params.id} endpoint',
+          e,
+          stacktrace);
+      return Left(
+          'Error when calling ${NotificationsApiEndpoints.getNotifications}/${params.id} endpoint: $e');
+    }
+  }
+
   @override
   Future<Either<String, void>> updateReadStatus(String notificationId) async {
     String endpoint = buildEndpoint(
-        NotificationsApiEndpoints.readNotificationEndpoint,
+        NotificationsApiEndpoints.updateReadNotification,
         {'notificationId': notificationId});
     try {
       final response = await _dio.patch(

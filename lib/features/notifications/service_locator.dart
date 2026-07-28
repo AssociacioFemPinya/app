@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:fempinya3_flutter_app/features/notifications/data/mocks/notifications_service.dart';
+import 'package:fempinya3_flutter_app/features/notifications/domain/useCases/get_notification.dart';
 import 'package:get_it/get_it.dart';
 import 'package:fempinya3_flutter_app/features/notifications/data/repositories/notifications_repository_impl.dart';
 import 'package:fempinya3_flutter_app/features/notifications/data/sources/notifications_service.dart';
@@ -15,6 +16,7 @@ Future<void> setupNotificationsServiceLocator(bool useMockApi) async {
   sl.registerSingleton<NotificationsService>(NotificationsServiceImpl());
   sl.registerSingleton<NotificationsRepository>(NotificationsRepositoryImpl());
   sl.registerSingleton<GetNotifications>(GetNotifications());
+  sl.registerSingleton<GetNotification>(GetNotification());
   sl.registerSingleton<UpdateReadStatus>(UpdateReadStatus());
 
   setupMockInterceptor(useMockApi);

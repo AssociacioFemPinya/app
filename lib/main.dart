@@ -1,9 +1,6 @@
-import 'package:dio/dio.dart';
 import 'package:fempinya3_flutter_app/core/service_locator.dart';
-import 'package:fempinya3_flutter_app/features/events/data/mocks/events_service/events_service.dart';
 import 'package:fempinya3_flutter_app/features/events/service_locator.dart';
 import 'package:fempinya3_flutter_app/features/login/login.dart';
-import 'package:fempinya3_flutter_app/features/notifications/data/mocks/notifications_service.dart';
 import 'package:fempinya3_flutter_app/features/rondes/rondes.dart';
 import 'package:fempinya3_flutter_app/features/user_profile/user_profile.dart';
 import 'package:fempinya3_flutter_app/main_routes.dart';

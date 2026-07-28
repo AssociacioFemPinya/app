@@ -18,6 +18,7 @@ class UpdateReadStatusHandler {
         title: notificationsMock[index].title,
         message: notificationsMock[index].message,
         createdAt: notificationsMock[index].createdAt,
+        sender: notificationsMock[index].sender,
         isRead: true,
       );
     }
