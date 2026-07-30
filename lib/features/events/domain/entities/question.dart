@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:fempinya3_flutter_app/features/events/data/models/question.dart';
+import 'package:femcastells/features/events/data/models/question.dart';
 
 class QuestionEntity extends Equatable {
   final int id;

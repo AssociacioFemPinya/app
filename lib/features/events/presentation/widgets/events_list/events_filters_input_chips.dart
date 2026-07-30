@@ -1,5 +1,5 @@
-import 'package:fempinya3_flutter_app/features/events/domain/enums/events_type.dart';
-import 'package:fempinya3_flutter_app/features/events/presentation/bloc/events_list/events_filters/events_filters_bloc.dart';
+import 'package:femcastells/features/events/domain/enums/events_type.dart';
+import 'package:femcastells/features/events/presentation/bloc/events_list/events_filters/events_filters_bloc.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

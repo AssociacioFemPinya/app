@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fempinya3_flutter_app/features/events/domain/entities/question.dart';
+import 'package:femcastells/features/events/domain/entities/question.dart';
 
 class EventQuestionsSection extends StatefulWidget {
   final List<QuestionEntity> questions;

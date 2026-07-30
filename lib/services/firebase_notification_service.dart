@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:fempinya3_flutter_app/core/navigation/route_names.dart';
-import 'package:fempinya3_flutter_app/core/service_locator.dart';
-import 'package:fempinya3_flutter_app/firebase_options.dart';
+import 'package:femcastells/core/navigation/route_names.dart';
+import 'package:femcastells/core/service_locator.dart';
+import 'package:femcastells/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';

@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
-import 'package:fempinya3_flutter_app/features/notifications/data/mocks/notification_mock.dart';
-import 'package:fempinya3_flutter_app/features/notifications/data/mocks/notifications_service.dart';
-import 'package:fempinya3_flutter_app/features/notifications/data/models/notification_model.dart';
+import 'package:femcastells/features/notifications/data/mocks/notification_mock.dart';
+import 'package:femcastells/features/notifications/data/mocks/notifications_service.dart';
+import 'package:femcastells/features/notifications/data/models/notification_model.dart';
 
 class UpdateReadStatusHandler {
   static void handle(

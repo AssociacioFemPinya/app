@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:fempinya3_flutter_app/core/service_locator.dart';
+import 'package:femcastells/core/service_locator.dart';
 import 'home_api_endpoints.dart';
 
 class HomeData {

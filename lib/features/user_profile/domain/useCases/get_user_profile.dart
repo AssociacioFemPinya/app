@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 
-import 'package:fempinya3_flutter_app/core/usecase/usecase.dart';
-import 'package:fempinya3_flutter_app/features/user_profile/user_profile.dart';
+import 'package:femcastells/core/usecase/usecase.dart';
+import 'package:femcastells/features/user_profile/user_profile.dart';
 
 class GetUserProfileParams {
   GetUserProfileParams();

@@ -1,7 +1,7 @@
-name: fempinya3_flutter_app
-description: "A new Flutter project."
+name: femcastells
+description: "Gestió de colles castelleres"
 publish_to: 'none'
-version: 0.1.0
+version: 1.0.1+2
 
 environment:
   sdk: '>=3.4.3 <4.0.0'

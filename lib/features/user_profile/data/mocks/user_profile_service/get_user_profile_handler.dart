@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 
-import 'package:fempinya3_flutter_app/features/user_profile/user_profile.dart';
+import 'package:femcastells/features/user_profile/user_profile.dart';
 
 abstract class GetUserProfileHandler {
   static void handle(

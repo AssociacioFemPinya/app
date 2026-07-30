@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 
-import 'package:fempinya3_flutter_app/features/rondes/rondes.dart';
+import 'package:femcastells/features/rondes/rondes.dart';
 
 abstract class GetPublicDisplayUrlHandler {
   static void handle(

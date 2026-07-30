@@ -1,10 +1,10 @@
-import 'package:fempinya3_flutter_app/features/login/login.dart';
+import 'package:femcastells/features/login/login.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:formz/formz.dart';
-import 'package:fempinya3_flutter_app/l10n/app_localizations.dart';
+import 'package:femcastells/l10n/app_localizations.dart';
 
 class LoginForm extends StatelessWidget {
   const LoginForm({super.key});

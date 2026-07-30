@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:fempinya3_flutter_app/features/login/login.dart';
+import 'package:femcastells/features/login/login.dart';
 
 import 'package:get_it/get_it.dart';
 

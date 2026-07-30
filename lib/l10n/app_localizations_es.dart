@@ -20,7 +20,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get menuEvents => 'Eventos';
 
   @override
-  String get menuNotifications => 'Notificaciones';
+  String get menuNotifications => 'Noticias';
 
   @override
   String get menuRondes => 'Rondas';
@@ -178,10 +178,10 @@ class AppLocalizationsEs extends AppLocalizations {
       'URI pinya projectada incorrecta';
 
   @override
-  String get notificationsTitle => 'Notificaciones';
+  String get notificationsTitle => 'Noticias';
 
   @override
-  String get notificationsEmpty => 'No hay notificaciones';
+  String get notificationsEmpty => 'No hay noticias';
 
   @override
   String get timeAgoSeconds => 'hace unos segundos';

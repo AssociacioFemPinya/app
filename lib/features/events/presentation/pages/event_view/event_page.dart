@@ -1,15 +1,15 @@
 import 'package:customizable_counter/customizable_counter.dart';
-import 'package:fempinya3_flutter_app/core/configs/assets/app_icons.dart';
-import 'package:fempinya3_flutter_app/core/utils/datetime_utils.dart';
-import 'package:fempinya3_flutter_app/features/events/domain/entities/tag.dart';
-import 'package:fempinya3_flutter_app/features/events/presentation/bloc/event_view/event_view_bloc.dart';
-import 'package:fempinya3_flutter_app/features/events/presentation/pages/event_view/views/event_member_comments_screen.dart';
-import 'package:fempinya3_flutter_app/features/events/presentation/pages/event_view/views/event_schedule_screen.dart';
-import 'package:fempinya3_flutter_app/features/events/presentation/widgets/event_view/assistance_selector.dart';
-import 'package:fempinya3_flutter_app/features/events/presentation/widgets/event_view/custom_modal_bottom_sheet.dart';
-import 'package:fempinya3_flutter_app/features/events/presentation/widgets/event_view/event_info_tile.dart';
-import 'package:fempinya3_flutter_app/features/events/presentation/widgets/event_view/event_questions_section.dart';
-import 'package:fempinya3_flutter_app/l10n/app_localizations.dart';
+import 'package:femcastells/core/configs/assets/app_icons.dart';
+import 'package:femcastells/core/utils/datetime_utils.dart';
+import 'package:femcastells/features/events/domain/entities/tag.dart';
+import 'package:femcastells/features/events/presentation/bloc/event_view/event_view_bloc.dart';
+import 'package:femcastells/features/events/presentation/pages/event_view/views/event_member_comments_screen.dart';
+import 'package:femcastells/features/events/presentation/pages/event_view/views/event_schedule_screen.dart';
+import 'package:femcastells/features/events/presentation/widgets/event_view/assistance_selector.dart';
+import 'package:femcastells/features/events/presentation/widgets/event_view/custom_modal_bottom_sheet.dart';
+import 'package:femcastells/features/events/presentation/widgets/event_view/event_info_tile.dart';
+import 'package:femcastells/features/events/presentation/widgets/event_view/event_questions_section.dart';
+import 'package:femcastells/l10n/app_localizations.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

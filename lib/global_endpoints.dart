@@ -1,7 +1,7 @@
 class GlobalEndpoints {
   static const String apiBaseUrl = String.fromEnvironment(
     'API_BASE_URL',
-    defaultValue: 'https://api.dev.fempinya.cat',
+    defaultValue: 'https://femcastells.artacho.org',
   );
 }
 

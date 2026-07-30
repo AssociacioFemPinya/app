@@ -1,10 +1,11 @@
-import 'package:fempinya3_flutter_app/core/navigation/route_names.dart';
-import 'package:fempinya3_flutter_app/features/events/presentation/routes.dart';
-import 'package:fempinya3_flutter_app/features/home/presentation/pages/home_page.dart';
-import 'package:fempinya3_flutter_app/features/login/login.dart';
-import 'package:fempinya3_flutter_app/features/rondes/rondes.dart';
-import 'package:fempinya3_flutter_app/features/notifications/presentation/routes.dart';
-import 'package:fempinya3_flutter_app/features/user_profile/presentation/routes.dart';
+import 'package:femcastells/core/navigation/route_names.dart';
+import 'package:femcastells/features/events/presentation/routes.dart';
+import 'package:femcastells/features/home/presentation/pages/home_page.dart';
+import 'package:femcastells/features/login/login.dart';
+import 'package:femcastells/features/rondes/rondes.dart';
+import 'package:femcastells/features/notifications/presentation/routes.dart';
+import 'package:femcastells/features/user_profile/presentation/routes.dart';
+import 'package:femcastells/features/gdpr/gdpr_consent_page.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -25,6 +26,11 @@ GoRouter appRouter(AuthenticationBloc authenticationBloc) {
       ...rondesRoutes,
       ...notificationRoutes,
       ...userProfileRoutes,
+      GoRoute(
+        name: gdprConsentRoute,
+        path: gdprConsentRoute,
+        builder: (context, state) => const GdprConsentPage(),
+      ),
     ],
     // changes on the listenable will cause the router to refresh it's route
     refreshListenable: StreamToListenable([authenticationBloc.stream]),

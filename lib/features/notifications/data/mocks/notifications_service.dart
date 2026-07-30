@@ -2,10 +2,10 @@ import 'dart:math';
 import 'package:dio/dio.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
-import 'package:fempinya3_flutter_app/features/notifications/data/mocks/get_notifications_handler.dart';
-import 'package:fempinya3_flutter_app/features/notifications/data/mocks/update_read_status_handler.dart';
-import 'package:fempinya3_flutter_app/global_endpoints.dart';
-import 'package:fempinya3_flutter_app/features/notifications/data/sources/notifications_api_endpoints.dart';
+import 'package:femcastells/features/notifications/data/mocks/get_notifications_handler.dart';
+import 'package:femcastells/features/notifications/data/mocks/update_read_status_handler.dart';
+import 'package:femcastells/global_endpoints.dart';
+import 'package:femcastells/features/notifications/data/sources/notifications_api_endpoints.dart';
 
 class NotificationsDioMockInterceptor extends Interceptor {
   int percentageOfRandomFailures = 0;

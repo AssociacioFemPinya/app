@@ -1,5 +1,5 @@
-import 'package:fempinya3_flutter_app/features/events/data/models/question.dart';
-import 'package:fempinya3_flutter_app/features/events/data/models/tag.dart';
+import 'package:femcastells/features/events/data/models/question.dart';
+import 'package:femcastells/features/events/data/models/tag.dart';
 
 class EventModel {
   final int? id;

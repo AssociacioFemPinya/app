@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:fempinya3_flutter_app/features/home/data/home_service.dart';
-import 'package:fempinya3_flutter_app/global_endpoints.dart';
+import 'package:femcastells/features/home/data/home_service.dart';
+import 'package:femcastells/global_endpoints.dart';
 import '../widgets/html_content_stub.dart'
     if (dart.library.js_interop) '../widgets/html_content_web.dart';
 
@@ -25,38 +25,47 @@ class NoticiaDetailPage extends StatelessWidget {
       appBar: AppBar(
         title: Text(noticia.title, overflow: TextOverflow.ellipsis),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              noticia.publishedAt.substring(0, 10),
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.grey),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  noticia.publishedAt.substring(0, 10),
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.grey),
+                ),
+                if (noticia.labels.isNotEmpty) ...[
+                  const SizedBox(height: 8),
+                  Wrap(
+                    spacing: 6,
+                    children: noticia.labels
+                        .map((l) => Chip(
+                              label: Text(l, style: const TextStyle(fontSize: 12)),
+                              padding: EdgeInsets.zero,
+                              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            ))
+                        .toList(),
+                  ),
+                ],
+                const SizedBox(height: 12),
+              ],
             ),
-            if (noticia.labels.isNotEmpty) ...[
-              const SizedBox(height: 8),
-              Wrap(
-                spacing: 6,
-                children: noticia.labels
-                    .map((l) => Chip(
-                          label: Text(l, style: const TextStyle(fontSize: 12)),
-                          padding: EdgeInsets.zero,
-                          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                        ))
-                    .toList(),
-              ),
-            ],
-            const SizedBox(height: 12),
-            if (body != null)
-              LayoutBuilder(
-                builder: (context, constraints) =>
-                    buildHtmlContent(body, constraints.maxWidth),
-              )
-            else
-              const Text('Sense contingut'),
-          ],
-        ),
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+              child: body != null
+                  ? LayoutBuilder(
+                      builder: (context, constraints) =>
+                          buildHtmlContent(body, constraints.maxWidth),
+                    )
+                  : const Text('Sense contingut'),
+            ),
+          ),
+        ],
       ),
     );
   }

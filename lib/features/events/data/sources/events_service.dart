@@ -3,12 +3,12 @@ import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:intl/intl.dart';
 
-import 'package:fempinya3_flutter_app/features/events/data/models/event.dart';
-import 'package:fempinya3_flutter_app/features/events/domain/entities/event.dart';
-import 'package:fempinya3_flutter_app/features/events/domain/useCases/get_events_list.dart';
-import 'package:fempinya3_flutter_app/features/events/service_locator.dart';
-import 'package:fempinya3_flutter_app/features/events/data/sources/events_api_endpoints.dart';
-import 'package:fempinya3_flutter_app/features/events/domain/useCases/get_event.dart';
+import 'package:femcastells/features/events/data/models/event.dart';
+import 'package:femcastells/features/events/domain/entities/event.dart';
+import 'package:femcastells/features/events/domain/useCases/get_events_list.dart';
+import 'package:femcastells/features/events/service_locator.dart';
+import 'package:femcastells/features/events/data/sources/events_api_endpoints.dart';
+import 'package:femcastells/features/events/domain/useCases/get_event.dart';
 
 abstract class EventsService {
   Future<Either<String, List<EventEntity>>> getEventsList(

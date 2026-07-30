@@ -2,11 +2,12 @@ import 'package:logger/logger.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 
-import 'package:fempinya3_flutter_app/features/user_profile/user_profile.dart';
+import 'package:femcastells/features/user_profile/user_profile.dart';
 
 abstract class UserProfileService {
   Future<Either<String, UserProfileEntity>> getUserProfile(
       GetUserProfileParams params);
+  Future<Either<String, String>> updateUserProfile(Map<String, dynamic> data);
 }
 
 class UserProfileServiceImpl implements UserProfileService {
@@ -15,6 +16,18 @@ class UserProfileServiceImpl implements UserProfileService {
 
   void _logError(String message, dynamic error, StackTrace stacktrace) {
     _logger.e(message, error, stacktrace);
+  }
+
+  @override
+  Future<Either<String, String>> updateUserProfile(
+      Map<String, dynamic> data) async {
+    try {
+      await _dio.put(UserProfileApiEndpoints.updateUserProfile, data: data);
+      return const Right('Perfil actualitzat correctament');
+    } catch (e, stacktrace) {
+      _logError('Error updating profile', e, stacktrace);
+      return Left('Error actualitzant el perfil: $e');
+    }
   }
 
   @override

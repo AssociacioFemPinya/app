@@ -16,7 +16,6 @@ class _HtmlNativeView extends StatefulWidget {
 }
 
 class _HtmlNativeViewState extends State<_HtmlNativeView> {
-  double _height = 400;
   late final String _viewId;
 
   @override
@@ -28,9 +27,11 @@ class _HtmlNativeViewState extends State<_HtmlNativeView> {
       ui.platformViewRegistry.registerViewFactory(_viewId, (int id) {
         final div = html.DivElement()
           ..style.width = '100%'
+          ..style.height = '100%'
           ..style.fontFamily = 'sans-serif'
           ..style.fontSize = '15px'
           ..style.lineHeight = '1.6'
+          ..style.overflowY = 'auto'
           ..style.overflowX = 'auto'
           ..style.boxSizing = 'border-box';
 
@@ -38,15 +39,6 @@ class _HtmlNativeViewState extends State<_HtmlNativeView> {
           widget.html,
           treeSanitizer: html.NodeTreeSanitizer.trusted,
         );
-
-        // Mesura l'alçada real un cop el DOM ha renderitzat
-        html.window.requestAnimationFrame((_) {
-          html.window.requestAnimationFrame((_) {
-            if (mounted) {
-              setState(() => _height = (div.scrollHeight + 32).toDouble());
-            }
-          });
-        });
 
         return div;
       });
@@ -57,9 +49,6 @@ class _HtmlNativeViewState extends State<_HtmlNativeView> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: _height,
-      child: HtmlElementView(viewType: _viewId),
-    );
+    return HtmlElementView(viewType: _viewId);
   }
 }

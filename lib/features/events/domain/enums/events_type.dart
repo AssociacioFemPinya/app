@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:fempinya3_flutter_app/l10n/app_localizations.dart';
+import 'package:femcastells/l10n/app_localizations.dart';
 
 enum EventTypeEnum {
   training,

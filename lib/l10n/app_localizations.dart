@@ -123,7 +123,7 @@ abstract class AppLocalizations {
   /// No description provided for @menuNotifications.
   ///
   /// In ca, this message translates to:
-  /// **'Notificacions'**
+  /// **'Notícies'**
   String get menuNotifications;
 
   /// No description provided for @menuRondes.
@@ -399,13 +399,13 @@ abstract class AppLocalizations {
   /// No description provided for @notificationsTitle.
   ///
   /// In ca, this message translates to:
-  /// **'Notificacions'**
+  /// **'Notícies'**
   String get notificationsTitle;
 
   /// No description provided for @notificationsEmpty.
   ///
   /// In ca, this message translates to:
-  /// **'No hi ha notificacions'**
+  /// **'No hi ha notícies'**
   String get notificationsEmpty;
 
   /// No description provided for @timeAgoSeconds.

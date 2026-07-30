@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
-import 'package:fempinya3_flutter_app/features/notifications/domain/repositories/notifications_repository.dart';
-import 'package:fempinya3_flutter_app/features/notifications/service_locator.dart';
+import 'package:femcastells/features/notifications/domain/repositories/notifications_repository.dart';
+import 'package:femcastells/features/notifications/service_locator.dart';
 
 class UpdateReadStatus {
   final NotificationsRepository repository = sl<NotificationsRepository>();

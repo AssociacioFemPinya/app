@@ -1,7 +1,7 @@
-import 'package:fempinya3_flutter_app/features/rondes/rondes.dart';
+import 'package:femcastells/features/rondes/rondes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fempinya3_flutter_app/l10n/app_localizations.dart';
+import 'package:femcastells/l10n/app_localizations.dart';
 
 class RondaPage extends StatelessWidget {
   const RondaPage({Key? key, required this.rondaID}) : super(key: key);

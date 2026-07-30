@@ -1,10 +1,10 @@
-import 'package:fempinya3_flutter_app/features/events/domain/entities/event.dart';
-import 'package:fempinya3_flutter_app/features/events/domain/entities/tag.dart';
-import 'package:fempinya3_flutter_app/features/events/domain/enums/events_status.dart';
-import 'package:fempinya3_flutter_app/features/events/domain/useCases/get_event.dart';
-import 'package:fempinya3_flutter_app/features/events/domain/useCases/post_event.dart';
-import 'package:fempinya3_flutter_app/features/events/domain/repositories/events_repository.dart';
-import 'package:fempinya3_flutter_app/features/events/service_locator.dart';
+import 'package:femcastells/features/events/domain/entities/event.dart';
+import 'package:femcastells/features/events/domain/entities/tag.dart';
+import 'package:femcastells/features/events/domain/enums/events_status.dart';
+import 'package:femcastells/features/events/domain/useCases/get_event.dart';
+import 'package:femcastells/features/events/domain/useCases/post_event.dart';
+import 'package:femcastells/features/events/domain/repositories/events_repository.dart';
+import 'package:femcastells/features/events/service_locator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'event_view_events.dart';

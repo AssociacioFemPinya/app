@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:fempinya3_flutter_app/features/events/data/mocks/events_service/events_service.dart';
+import 'package:femcastells/features/events/data/mocks/events_service/events_service.dart';
 
 abstract class GetEventHandler {
 

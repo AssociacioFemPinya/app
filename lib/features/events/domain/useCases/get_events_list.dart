@@ -1,10 +1,10 @@
 import 'package:dartz/dartz.dart';
-import 'package:fempinya3_flutter_app/core/usecase/usecase.dart';
-import 'package:fempinya3_flutter_app/core/utils/datetime_utils.dart';
-import 'package:fempinya3_flutter_app/features/events/domain/enums/events_type.dart';
-import 'package:fempinya3_flutter_app/features/events/domain/repositories/events_repository.dart';
+import 'package:femcastells/core/usecase/usecase.dart';
+import 'package:femcastells/core/utils/datetime_utils.dart';
+import 'package:femcastells/features/events/domain/enums/events_type.dart';
+import 'package:femcastells/features/events/domain/repositories/events_repository.dart';
 
-import 'package:fempinya3_flutter_app/features/events/service_locator.dart';
+import 'package:femcastells/features/events/service_locator.dart';
 
 
 class GetEventsListParams {

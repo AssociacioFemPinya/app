@@ -1,9 +1,9 @@
 import 'package:equatable/equatable.dart';
-import 'package:fempinya3_flutter_app/features/events/data/models/event.dart';
-import 'package:fempinya3_flutter_app/features/events/domain/entities/question.dart';
-import 'package:fempinya3_flutter_app/features/events/domain/entities/tag.dart';
-import 'package:fempinya3_flutter_app/features/events/domain/enums/events_status.dart';
-import 'package:fempinya3_flutter_app/features/events/domain/enums/events_type.dart';
+import 'package:femcastells/features/events/data/models/event.dart';
+import 'package:femcastells/features/events/domain/entities/question.dart';
+import 'package:femcastells/features/events/domain/entities/tag.dart';
+import 'package:femcastells/features/events/domain/enums/events_status.dart';
+import 'package:femcastells/features/events/domain/enums/events_type.dart';
 import 'package:intl/intl.dart';
 
 class EventEntity extends Equatable {

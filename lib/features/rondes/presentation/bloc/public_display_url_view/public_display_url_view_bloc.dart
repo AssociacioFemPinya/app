@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
-import 'package:fempinya3_flutter_app/features/rondes/rondes.dart';
+import 'package:femcastells/features/rondes/rondes.dart';
 part 'public_display_url_view_event.dart';
 part 'public_display_url_view_state.dart';
 

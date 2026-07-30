@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fempinya3_flutter_app/features/events/domain/enums/events_view_mode.dart';
-import 'package:fempinya3_flutter_app/features/events/presentation/bloc/events_list/events_calendar/events_calendar_bloc.dart';
-import 'package:fempinya3_flutter_app/features/events/presentation/bloc/events_list/events_calendar/events_calendar_events.dart';
-import 'package:fempinya3_flutter_app/features/events/presentation/bloc/events_list/events_filters/events_filters_bloc.dart';
-import 'package:fempinya3_flutter_app/features/events/presentation/bloc/events_list/events_view_mode/events_view_mode_bloc.dart';
+import 'package:femcastells/features/events/domain/enums/events_view_mode.dart';
+import 'package:femcastells/features/events/presentation/bloc/events_list/events_calendar/events_calendar_bloc.dart';
+import 'package:femcastells/features/events/presentation/bloc/events_list/events_calendar/events_calendar_events.dart';
+import 'package:femcastells/features/events/presentation/bloc/events_list/events_filters/events_filters_bloc.dart';
+import 'package:femcastells/features/events/presentation/bloc/events_list/events_view_mode/events_view_mode_bloc.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:fempinya3_flutter_app/l10n/app_localizations.dart';
+import 'package:femcastells/l10n/app_localizations.dart';
 
 class EventsViewModeWidget extends StatefulWidget {
   const EventsViewModeWidget({super.key});

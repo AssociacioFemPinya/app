@@ -2,7 +2,7 @@ import 'dart:math';
 import 'package:dio/dio.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
-import 'package:fempinya3_flutter_app/features/rondes/rondes.dart';
+import 'package:femcastells/features/rondes/rondes.dart';
 
 class RondesDioMockInterceptor extends Interceptor {
   late List<Map> rondesList;
