@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:fempinya3_flutter_app/features/menu/presentation/widgets/menu_widget.dart';
-import 'package:fempinya3_flutter_app/features/home/data/home_service.dart';
-import 'package:fempinya3_flutter_app/features/notifications/presentation/pages/noticia_detail_page.dart';
-import 'package:fempinya3_flutter_app/l10n/app_localizations.dart';
+import 'package:femcastells/features/menu/presentation/widgets/menu_widget.dart';
+import 'package:femcastells/features/home/data/home_service.dart';
+import 'package:femcastells/features/notifications/presentation/pages/noticia_detail_page.dart';
+import 'package:femcastells/features/login/login.dart' hide sl;
+import 'package:femcastells/l10n/app_localizations.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:femcastells/core/navigation/route_names.dart';
+import 'package:femcastells/core/service_locator.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -19,6 +25,20 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _future = _service.fetchHome();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _checkGdpr());
+  }
+
+  Future<void> _checkGdpr() async {
+    try {
+      final response = await sl<Dio>().get('/api-fempinya/mobile_gdpr');
+      final data = response.data as Map<String, dynamic>;
+      debugPrint('[GDPR] required=${data['required']}');
+      if ((data['required'] as bool? ?? false) && mounted) {
+        context.go(gdprConsentRoute);
+      }
+    } catch (e) {
+      debugPrint('[GDPR] error: $e');
+    }
   }
 
   @override
@@ -26,7 +46,15 @@ class _HomePageState extends State<HomePage> {
     final translate = AppLocalizations.of(context)!;
 
     return Scaffold(
-      appBar: AppBar(title: Text(translate.menuHome)),
+      appBar: AppBar(
+        title: Text(translate.menuHome),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.person_outline),
+            onPressed: () => context.pushNamed(userProfileRoute),
+          ),
+        ],
+      ),
       drawer: const MenuWidget(),
       body: FutureBuilder<HomeData>(
         future: _future,
@@ -45,6 +73,8 @@ class _HomePageState extends State<HomePage> {
             child: ListView(
               padding: const EdgeInsets.all(16),
               children: [
+                _CollaHeader(),
+                const SizedBox(height: 12),
                 _LoginStatsCard(data: data),
                 const SizedBox(height: 16),
                 _SectionHeader(
@@ -150,6 +180,54 @@ class _SectionHeader extends StatelessWidget {
           ),
         ],
       ],
+    );
+  }
+}
+
+class _CollaHeader extends StatelessWidget {
+  const _CollaHeader();
+
+  @override
+  Widget build(BuildContext context) {
+    final user = context.read<AuthenticationBloc>().userEntity;
+    final logoUrl = user?.collaLogoUrl;
+    final collaName = user?.collaName ?? user?.castellerActiveAlias ?? '';
+
+    if (logoUrl != null) {
+      return Row(
+        children: [
+          Image.network(
+            logoUrl,
+            height: 48,
+            fit: BoxFit.contain,
+            errorBuilder: (_, __, ___) => _CollaNameFallback(name: collaName),
+          ),
+          const SizedBox(width: 12),
+          Text(
+            collaName,
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+        ],
+      );
+    }
+
+    if (collaName.isNotEmpty) {
+      return _CollaNameFallback(name: collaName);
+    }
+
+    return const SizedBox.shrink();
+  }
+}
+
+class _CollaNameFallback extends StatelessWidget {
+  final String name;
+  const _CollaNameFallback({required this.name});
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      name,
+      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
     );
   }
 }

@@ -3,15 +3,18 @@ class UserModel {
   final String castellerActiveAlias;
   final List<LinkedCasteller> linkedCastellers;
   final bool boardsEnabled;
+  final String? collaName;
+  final String? collaLogoUrl;
 
   UserModel({
     required this.castellerActiveId,
     required this.castellerActiveAlias,
     required this.linkedCastellers,
     required this.boardsEnabled,
+    this.collaName,
+    this.collaLogoUrl,
   });
 
-  // Convert the model to JSON
   Map<String, dynamic> toJson() {
     return {
       'castellerActiveId': castellerActiveId,
@@ -19,27 +22,28 @@ class UserModel {
       'linkedCastellers':
           linkedCastellers.map((casteller) => casteller.toJson()).toList(),
       'boardsEnabled': boardsEnabled,
+      'collaName': collaName,
+      'collaLogoUrl': collaLogoUrl,
     };
   }
 
-  // Factory constructor for JSON deserialization
   factory UserModel.fromJson(Map<String, dynamic> data) {
     return UserModel(
       castellerActiveId: data['castellerActiveId'] as int,
       castellerActiveAlias: data['castellerActiveAlias'] as String,
       linkedCastellers: (data['linkedCastellers'] as List?)
               ?.map((castellerData) {
-                // Ensure castellerData is a Map
                 if (castellerData is Map<String, dynamic>) {
                   return LinkedCasteller.fromJson(castellerData);
                 }
-                // Handle the case where castellerData is not a Map
                 return null;
               })
-              .whereType<LinkedCasteller>() // Filter out any null values
+              .whereType<LinkedCasteller>()
               .toList() ??
           [],
       boardsEnabled: data['boardsEnabled'] as bool,
+      collaName: data['collaName'] as String?,
+      collaLogoUrl: data['collaLogoUrl'] as String?,
     );
   }
 }

@@ -1,11 +1,11 @@
-import 'package:fempinya3_flutter_app/features/menu/domain/entities/locale.dart';
-import 'package:fempinya3_flutter_app/core/navigation/route_names.dart';
-import 'package:fempinya3_flutter_app/features/login/login.dart';
+import 'package:femcastells/features/menu/domain/entities/locale.dart';
+import 'package:femcastells/core/navigation/route_names.dart';
+import 'package:femcastells/features/login/login.dart';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:fempinya3_flutter_app/l10n/app_localizations.dart';
+import 'package:femcastells/l10n/app_localizations.dart';
 
 class MenuWidget extends StatelessWidget {
   const MenuWidget({super.key});
@@ -27,7 +27,6 @@ class MenuWidget extends StatelessWidget {
           _buildListTile(context, translate.menuRondes, rondesRoute),
           _buildListTile(
               context, translate.menuPublicDisplayUrl, publicDisplayUrlRoute),
-          _buildListTile(context, translate.userProfileMenu, userProfileRoute),
           const Divider(),
           _buildLocaleDropdown(context, translate, selectedLocale),
           const Divider(),
@@ -38,19 +37,37 @@ class MenuWidget extends StatelessWidget {
   }
 
   Widget _buildDrawerHeader(BuildContext context, AppLocalizations translate) {
+    final user = context.read<AuthenticationBloc>().userEntity!;
+    final logoUrl = user.collaLogoUrl;
+    final collaName = user.collaName ?? user.castellerActiveAlias;
+
     return DrawerHeader(
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.primary,
       ),
-      child: Text(
-        translate.menuAppName(context
-            .read<AuthenticationBloc>()
-            .userEntity!
-            .castellerActiveAlias),
-        style: TextStyle(
-          color: Theme.of(context).colorScheme.onPrimary,
-          fontSize: 24,
-        ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          if (logoUrl != null) ...[
+            Image.network(
+              logoUrl,
+              height: 56,
+              fit: BoxFit.contain,
+              alignment: Alignment.centerLeft,
+              errorBuilder: (_, __, ___) => const SizedBox.shrink(),
+            ),
+            const SizedBox(height: 8),
+          ],
+          Text(
+            collaName,
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onPrimary,
+              fontSize: logoUrl != null ? 13 : 24,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
       ),
     );
   }
