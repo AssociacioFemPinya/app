@@ -1,9 +1,9 @@
-import 'package:fempinya3_flutter_app/features/menu/presentation/widgets/menu_widget.dart';
-import 'package:fempinya3_flutter_app/features/rondes/rondes.dart';
+import 'package:femcastells/features/menu/presentation/widgets/menu_widget.dart';
+import 'package:femcastells/features/rondes/rondes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fempinya3_flutter_app/l10n/app_localizations.dart';
-import 'package:fempinya3_flutter_app/core/navigation/route_names.dart';
+import 'package:femcastells/l10n/app_localizations.dart';
+import 'package:femcastells/core/navigation/route_names.dart';
 import 'package:go_router/go_router.dart';
 
 class RondesListPage extends StatelessWidget {
@@ -59,8 +59,17 @@ class RondesListPageContents extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         ListTile(
-                          title: Text(AppLocalizations.of(context)!
-                              .rondesListRondaButton(ronda.ronda, ronda.name)),
+                          title: Text.rich(
+                            TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: 'Ronda ${ronda.ronda}',
+                                  style: const TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                TextSpan(text: '  ${ronda.name}'),
+                              ],
+                            ),
+                          ),
                           trailing: const Icon(Icons.chevron_right),
                           onTap: () {
                             context.pushNamed(rondaRoute, pathParameters: {
