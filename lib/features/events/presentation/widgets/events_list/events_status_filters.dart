@@ -12,110 +12,68 @@ class EventsStatusFiltersWidget extends StatelessWidget {
 
     return BlocBuilder<EventsFiltersBloc, EventsFiltersState>(
       builder: (context, state) {
-        return Container(
-          width: double.infinity, // Hace que el contenedor ocupe todo el ancho
-          child: Row(
-            children: [
-              Expanded(
-                child: buildEventStatusFilterButton(
-                  state.showUndefined,
-                  translate.eventsPageStatusFilterPending,
-                  context,
-                  (value) {
-                    context
-                        .read<EventsFiltersBloc>()
-                        .add(EventsStatusFilterUndefined(value));
-                  },
-                  isFirst: true,
-                ),
-              ),
-              Expanded(
-                child: buildEventStatusFilterButton(
-                  state.showAnswered,
-                  translate.eventsPageStatusFilterAnswered,
-                  context,
-                  (value) {
-                    context
-                        .read<EventsFiltersBloc>()
-                        .add(EventsStatusFilterAnswered(value));
-                  },
-                ),
-              ),
-              Expanded(
-                child: buildEventStatusFilterButton(
-                  state.showWarning,
-                  translate.eventsPageStatusFilterWarning,
-                  context,
-                  (value) {
-                    context
-                        .read<EventsFiltersBloc>()
-                        .add(EventsStatusFilterWarning(value));
-                  },
-                  isLast: true,
-                ),
-              ),
-            ],
-          ),
+        return Wrap(
+          spacing: 6,
+          runSpacing: 8,
+          children: [
+            _StatusFilter(
+              label: translate.eventsPageStatusFilterPending,
+              selected: state.showUndefined,
+              onSelected: (value) => context
+                  .read<EventsFiltersBloc>()
+                  .add(EventsStatusFilterUndefined(value)),
+            ),
+            _StatusFilter(
+              label: translate.eventsPageStatusFilterAnswered,
+              selected: state.showAnswered,
+              onSelected: (value) => context
+                  .read<EventsFiltersBloc>()
+                  .add(EventsStatusFilterAnswered(value)),
+            ),
+            _StatusFilter(
+              label: translate.eventsPageStatusFilterWarning,
+              selected: state.showWarning,
+              onSelected: (value) => context
+                  .read<EventsFiltersBloc>()
+                  .add(EventsStatusFilterWarning(value)),
+            ),
+          ],
         );
       },
     );
   }
+}
 
-  Widget buildEventStatusFilterButton(
-      bool selected, String label, BuildContext context, ValueChanged<bool> onSelected,
-      {bool isFirst = false, bool isLast = false}) {
-    return Container(
-      margin: EdgeInsets.zero, // Elimina márgenes
-      child: Material(
-        shadowColor: Theme.of(context).colorScheme.primaryFixedDim.withOpacity(0.5),
-        elevation: selected ? 1 : 0, // Aplica elevación si está seleccionado
-        borderRadius: BorderRadius.only(
-          topLeft: isFirst ? Radius.circular(5.0) : Radius.circular(0),
-          bottomLeft: isFirst ? Radius.circular(5.0) : Radius.circular(0),
-          topRight: isLast ? Radius.circular(5.0) : Radius.circular(0),
-          bottomRight: isLast ? Radius.circular(5.0) : Radius.circular(0),
-        ),
-        child: TextButton(
-          style: TextButton.styleFrom(
-            backgroundColor: selected
-                ? Theme.of(context).colorScheme.primaryFixedDim
-                : Theme.of(context).colorScheme.primaryFixed,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.only(
-                topLeft: isFirst ? Radius.circular(5.0) : Radius.circular(0),
-                bottomLeft: isFirst ? Radius.circular(5.0) : Radius.circular(0),
-                topRight: isLast ? Radius.circular(5.0) : Radius.circular(0),
-                bottomRight: isLast ? Radius.circular(5.0) : Radius.circular(0),
-              ),
-              side: BorderSide.none, // Elimina el borde
-            ),
-            padding: EdgeInsets.zero, // Elimina el padding interno
-            minimumSize: Size(double.infinity, 48), // Ajusta el tamaño mínimo
-          ),
-          onPressed: () => onSelected(!selected),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center, // Centra el contenido
-            children: [
-              if (selected) ...[
-                Icon(
-                  Icons.check,
-                  color: Theme.of(context).colorScheme.onPrimaryFixed,
-                  size: 20,
-                ),
-                SizedBox(width: 8), // Espacio entre el icono y el texto
-              ],
-              Text(
-                label,
-                style: TextStyle(fontWeight: selected ? FontWeight.bold : FontWeight.normal,
-                  color: selected
-                      ? Theme.of(context).colorScheme.onPrimaryFixed
-                      : Theme.of(context).colorScheme. onPrimaryFixedVariant, 
-                ),
-              ),
-            ],
-          ),
-        ),
+class _StatusFilter extends StatelessWidget {
+  const _StatusFilter({
+    required this.label,
+    required this.selected,
+    required this.onSelected,
+  });
+
+  final String label;
+  final bool selected;
+  final ValueChanged<bool> onSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    return FilterChip(
+      label: Text(label),
+      selected: selected,
+      showCheckmark: false,
+      onSelected: onSelected,
+      side: BorderSide(color: colorScheme.outlineVariant),
+      selectedColor: colorScheme.primaryContainer,
+      labelStyle: TextStyle(
+        color: selected
+            ? colorScheme.onPrimaryContainer
+            : colorScheme.onSurfaceVariant,
+        fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
       ),
+      visualDensity: VisualDensity.compact,
+      padding: const EdgeInsets.symmetric(horizontal: 4),
+      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
     );
   }
 }

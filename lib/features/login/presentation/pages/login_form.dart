@@ -7,7 +7,14 @@ import 'package:formz/formz.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LoginForm extends StatelessWidget {
-  const LoginForm({super.key});
+  const LoginForm({
+    this.initialMail = '',
+    this.initialPassword = '',
+    super.key,
+  });
+
+  final String initialMail;
+  final String initialPassword;
 
   @override
   Widget build(BuildContext context) {
@@ -43,9 +50,9 @@ class LoginForm extends StatelessWidget {
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 16),
-                _buildMailInput(context, translate),
+                _buildMailInput(context, translate, initialMail),
                 const SizedBox(height: 12),
-                _buildPasswordInput(context, translate),
+                _buildPasswordInput(context, translate, initialPassword),
                 const SizedBox(height: 16),
                 _buildLoginButton(context, translate),
               ],
@@ -57,11 +64,16 @@ class LoginForm extends StatelessWidget {
   }
 }
 
-Widget _buildMailInput(BuildContext context, AppLocalizations translate) {
+Widget _buildMailInput(
+  BuildContext context,
+  AppLocalizations translate,
+  String initialMail,
+) {
   final isError =
       context.select((LoginFormBloc b) => b.state.mail.displayError) != null;
-  return TextField(
+  return TextFormField(
     key: const Key('loginForm_mailInput_textField'),
+    initialValue: initialMail,
     onChanged: (mail) {
       context.read<LoginFormBloc>().add(LoginMailChanged(mail));
     },
@@ -76,13 +88,18 @@ Widget _buildMailInput(BuildContext context, AppLocalizations translate) {
   );
 }
 
-Widget _buildPasswordInput(BuildContext context, AppLocalizations translate) {
+Widget _buildPasswordInput(
+  BuildContext context,
+  AppLocalizations translate,
+  String initialPassword,
+) {
   final isError = context.select(
         (LoginFormBloc bloc) => bloc.state.password.displayError,
       ) !=
       null;
-  return TextField(
+  return TextFormField(
     key: const Key('loginForm_passwordInput_textField'),
+    initialValue: initialPassword,
     onChanged: (password) {
       context.read<LoginFormBloc>().add(LoginPasswordChanged(password));
     },

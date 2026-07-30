@@ -36,7 +36,12 @@ class AuthInitializationResult {
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  if (!kIsWeb) {
+  const enablePushNotifications = bool.fromEnvironment(
+    'ENABLE_PUSH_NOTIFICATIONS',
+    defaultValue: true,
+  );
+
+  if (!kIsWeb && enablePushNotifications) {
     if (Firebase.apps.isEmpty) {
       await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform,
@@ -44,6 +49,8 @@ Future<void> main() async {
     }
 
     await FirebaseNotificationService.instance.initialize();
+  } else if (!kIsWeb) {
+    debugPrint('Push notifications are disabled for this build.');
   }
 
   const bool useMockApi =
@@ -61,7 +68,6 @@ Future<void> main() async {
 }
 
 Future<void> requestNotificationPermissions(FirebaseMessaging messaging) async {
-  
   NotificationSettings settings = await messaging.requestPermission(
     alert: true,
     announcement: false,
@@ -99,7 +105,6 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-
   Future<AuthInitializationResult> initAuthenticationRepository() async {
     // FP and Firebase token are saved in shared preferences
     final sharedPreferences = await SharedPreferences.getInstance();
@@ -132,7 +137,6 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
-
     final Future<AuthInitializationResult> initializationFuture =
         initAuthenticationRepository();
 

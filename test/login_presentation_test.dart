@@ -368,8 +368,7 @@ void main() {
       mockAuthenticatedBloc = MockAuthenticationBloc(
         authenticationRepository: authenticationRepository,
       );
-      goRouter = appRouter(
-          mockUnauthenticatedBloc);
+      goRouter = appRouter(mockUnauthenticatedBloc);
       mockLoginFormBloc = MockLoginFormBloc();
     });
 
@@ -377,7 +376,7 @@ void main() {
       mockUnauthenticatedBloc.close();
       mockLoginFormBloc.close();
     });
-    
+
     // testWidgets('route returns a MaterialPageRoute with SplashPage',
     //     (WidgetTester tester) async {
     //   // Pump a simple widget to get a BuildContext
@@ -462,6 +461,42 @@ void main() {
           findsOneWidget);
       expect(find.byKey(const Key('loginForm_continue_raisedButton')),
           findsOneWidget);
+    });
+
+    testWidgets('prefills local test credentials when provided',
+        (tester) async {
+      when(() => mockLoginFormBloc.state).thenReturn(FakeLoginFormState());
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: BlocProvider<LoginFormBloc>(
+            create: (_) => mockLoginFormBloc,
+            child: const LoginForm(
+              initialMail: 'local-user@example.test',
+              initialPassword: 'local-password',
+            ),
+          ),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+        ),
+      );
+
+      expect(
+        tester
+            .widget<TextFormField>(
+              find.byKey(const Key('loginForm_mailInput_textField')),
+            )
+            .initialValue,
+        'local-user@example.test',
+      );
+      expect(
+        tester
+            .widget<TextFormField>(
+              find.byKey(const Key('loginForm_passwordInput_textField')),
+            )
+            .initialValue,
+        'local-password',
+      );
     });
 
     testWidgets('displays error message for invalid email', (tester) async {

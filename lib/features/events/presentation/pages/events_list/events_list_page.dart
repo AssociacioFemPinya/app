@@ -2,12 +2,8 @@ import 'package:fempinya3_flutter_app/features/events/presentation/bloc/events_l
 import 'package:fempinya3_flutter_app/features/events/presentation/bloc/events_list/events_list/events_list_bloc.dart';
 import 'package:fempinya3_flutter_app/features/events/presentation/bloc/events_list/events_view_mode/events_view_mode_bloc.dart';
 import 'package:fempinya3_flutter_app/features/events/presentation/widgets/events_list/events_calendar.dart';
-import 'package:fempinya3_flutter_app/features/events/presentation/widgets/events_list/events_filters_button.dart';
-import 'package:fempinya3_flutter_app/features/events/presentation/widgets/events_list/events_filters_input_chips.dart';
 import 'package:fempinya3_flutter_app/features/events/presentation/widgets/events_list/events_list.dart';
-import 'package:fempinya3_flutter_app/features/events/presentation/widgets/events_list/events_status_filters.dart';
-import 'package:fempinya3_flutter_app/features/events/presentation/widgets/events_list/events_view_mode.dart';
-import 'package:fempinya3_flutter_app/features/events/presentation/widgets/events_list/events_with_alert_banner.dart';
+import 'package:fempinya3_flutter_app/features/events/presentation/widgets/events_list/events_toolbar.dart';
 import 'package:fempinya3_flutter_app/features/menu/presentation/widgets/menu_widget.dart';
 import 'package:fempinya3_flutter_app/features/events/presentation/bloc/events_list/events_filters/events_filters_bloc.dart';
 
@@ -55,23 +51,13 @@ class EventsListPage extends StatelessWidget {
               ),
             ],
             child: const Padding(
-              padding: EdgeInsets.all(8.0),
+              padding: EdgeInsets.fromLTRB(16, 12, 16, 0),
               child: Column(
                 children: [
-                  EventsWithAlertBannerWidget(),
-                  EventsViewModeWidget(),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  EventsStatusFiltersWidget(),
-                  Row(children: [
-                    EventsFiltersButton(),
-                    EventsFiltersInputChipsWidget()
-                  ]),
-                  Divider(),
+                  EventsToolbar(),
+                  SizedBox(height: 16),
                   EventsCalendar(),
-                  Visibility(
-                    child: Expanded(child: EventsListWidget())),
+                  EventsListWidget(),
                 ],
               ),
             ),

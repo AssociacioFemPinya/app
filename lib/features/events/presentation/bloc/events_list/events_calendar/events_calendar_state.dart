@@ -1,9 +1,10 @@
 import 'package:table_calendar/table_calendar.dart';
+import 'package:fempinya3_flutter_app/features/events/domain/entities/event.dart';
 
-typedef DateEventsName = Map<DateTime, List<String>>;
+typedef DateEvents = Map<DateTime, List<EventEntity>>;
 
 class EventsCalendarState {
-  final DateEventsName calendarEvents;
+  final DateEvents calendarEvents;
   final CalendarFormat calendarFormat;
   final DateTime focusedDay;
   final DateTime? selectedDay;
@@ -15,7 +16,7 @@ class EventsCalendarState {
       required this.selectedDay});
 
   EventsCalendarState copyWith({
-    DateEventsName? calendarEvents,
+    DateEvents? calendarEvents,
     CalendarFormat? calendarFormat,
     DateTime? focusedDay,
     DateTime? selectedDay,

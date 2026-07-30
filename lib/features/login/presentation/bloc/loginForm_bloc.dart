@@ -13,12 +13,29 @@ class LoginFormBloc extends Bloc<LoginFormEvent, LoginFormState> {
 
   LoginFormBloc({
     required AuthenticationRepository authenticationRepository,
+    String initialMail = '',
+    String initialPassword = '',
   })  : _authenticationRepository = authenticationRepository,
-        super(const LoginFormState()) {
+        super(_initialState(initialMail, initialPassword)) {
     on<LoginMailChanged>(_onMailChanged);
     on<LoginPasswordChanged>(_onPasswordChanged);
     on<LoginSubmitted>(_onSubmitted);
     on<LoginResetStatus>(_onResetStatus);
+  }
+
+  static LoginFormState _initialState(
+      String initialMail, String initialPassword) {
+    final mail =
+        initialMail.isEmpty ? const Mail.pure() : Mail.dirty(initialMail);
+    final password = initialPassword.isEmpty
+        ? const Password.pure()
+        : Password.dirty(initialPassword);
+
+    return LoginFormState(
+      mail: mail,
+      password: password,
+      isValid: Formz.validate([mail, password]),
+    );
   }
 
   _onMailChanged(LoginMailChanged event, Emitter<LoginFormState> emit) {

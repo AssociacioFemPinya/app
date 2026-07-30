@@ -1,50 +1,43 @@
-import 'package:fempinya3_flutter_app/core/configs/assets/app_icons.dart';
 import 'package:fempinya3_flutter_app/core/utils/datetime_utils.dart';
 import 'package:fempinya3_flutter_app/features/events/domain/entities/event.dart';
 import 'package:fempinya3_flutter_app/core/navigation/route_names.dart';
 import 'package:fempinya3_flutter_app/features/events/domain/enums/events_status.dart';
 import 'package:fempinya3_flutter_app/features/events/domain/enums/events_type.dart';
 import 'package:fempinya3_flutter_app/features/events/domain/enums/events_view_mode.dart';
-import 'package:fempinya3_flutter_app/features/events/presentation/bloc/events_list/events_calendar/events_calendar_bloc.dart';
 import 'package:fempinya3_flutter_app/features/events/presentation/bloc/events_list/events_filters/events_filters_bloc.dart';
 import 'package:fempinya3_flutter_app/features/events/presentation/bloc/events_list/events_list/events_list_bloc.dart';
 import 'package:fempinya3_flutter_app/features/events/presentation/bloc/events_list/events_view_mode/events_view_mode_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:table_calendar/table_calendar.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:intl/intl.dart';
 
 class EventsListWidget extends StatelessWidget {
-  const EventsListWidget({Key? key}) : super(key: key);
+  const EventsListWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final calendarFormat =
-        context.watch<EventsCalendarBloc>().state.calendarFormat;
     final eventsViewMode =
         context.watch<EventsViewModeBloc>().state.eventsViewMode;
 
-    return Visibility(
-      visible: !(calendarFormat == CalendarFormat.month &&
-          eventsViewMode == EventsViewModeEnum.calendar),
-      child: _listView(),
-    );
+    if (eventsViewMode == EventsViewModeEnum.calendar) {
+      return const SizedBox.shrink();
+    }
+    return Expanded(child: _listView());
   }
 
   Widget _listView() {
     return BlocBuilder<EventsListBloc, EventsListState>(
       builder: (context, state) {
         final sortedDates = state.events.keys.toList()..sort();
+        if (sortedDates.isEmpty) {
+          return const Center(child: CircularProgressIndicator());
+        }
         return ListView.separated(
+          padding: const EdgeInsets.only(bottom: 24),
           itemCount: sortedDates.length,
-          separatorBuilder: (context, index) => const Padding(
-            padding: EdgeInsets.symmetric(vertical: 15.0),
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 230.0),
-              child: DottedLineSeparator(),
-            ),
-          ),
+          separatorBuilder: (context, index) => const SizedBox(height: 20),
           itemBuilder: (context, index) {
             final date = sortedDates[index];
             final events = state.events[date] ?? [];
@@ -61,30 +54,39 @@ class EventsListWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _buildDateHeader(date, context),
-        Column(
-            children: events
-                .map((event) => _buildEventCard(event, context))
-                .toList()),
+        const SizedBox(height: 8),
+        ...events.map(
+          (event) => Padding(
+            padding: const EdgeInsets.only(bottom: 10),
+            child: _buildEventCard(event, context),
+          ),
+        ),
       ],
     );
   }
-  
+
   Widget _buildDateHeader(DateTime date, BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.symmetric(vertical: 4),
       child: Row(
         children: [
-          Icon(Icons.calendar_month, color: Colors.black.withOpacity(0.2)),
-          const SizedBox(width: 4), 
+          Container(
+            width: 4,
+            height: 20,
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.primary,
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
+          const SizedBox(width: 10),
           Expanded(
             child: Text(
               DateTimeUtils.formatDateToHumanLanguage(
                   date, Localizations.localeOf(context).toString()),
-              style: const TextStyle(
-                fontSize: 14, 
-                fontWeight: FontWeight.bold,
-                color: Color.fromARGB(255, 90, 89, 89), 
-              ),
+              style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 0.2,
+                  ),
             ),
           ),
         ],
@@ -93,137 +95,254 @@ class EventsListWidget extends StatelessWidget {
   }
 
   Widget _buildEventCard(EventEntity event, BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final translate = AppLocalizations.of(context)!;
+
     return InkWell(
       onTap: () {
-        context.pushNamed(eventRoute, pathParameters: {'eventID': event.id.toString()}).then((_) {
-          context.read<EventsListBloc>().add(LoadEventsList(context.read<EventsFiltersBloc>().state));
+        final eventsListBloc = context.read<EventsListBloc>();
+        final eventsFiltersBloc = context.read<EventsFiltersBloc>();
+        context.pushNamed(
+          eventRoute,
+          pathParameters: {'eventID': event.id.toString()},
+        ).then((_) {
+          eventsListBloc.add(LoadEventsList(eventsFiltersBloc.state));
         });
       },
-      hoverColor: Theme.of(context).colorScheme.primaryFixedDim.withOpacity(0.2), // Change hover color here
-      splashColor: Theme.of(context).colorScheme.primaryFixedDim.withOpacity(0.6), 
-      focusColor: Theme.of(context).colorScheme.primaryFixedDim.withOpacity(0.6),
-      highlightColor: Theme.of(context).colorScheme.primaryFixedDim.withOpacity(0.8),// Change click color here
-      borderRadius: BorderRadius.circular(5),
-      child: Card(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5), 
-        side: BorderSide(width: _getStatusBorderSizeCard(event.status), color: _getStatusBorderColorCard(event.status))),
-        clipBehavior: Clip.antiAliasWithSaveLayer,
-        color: _getStatusBackgroundColor(event.status),
-        elevation: 0,
-        margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 5.0),
-        child: ListTile(
-          contentPadding: const EdgeInsets.symmetric(horizontal: 8.0),
-          leading: CircleAvatar(
-            backgroundColor: _getStatusBackgroundIconColor(event.status),
-            child: Icon(_getStatusIcon(event.status),
-                color: _getStatusColor(event.status), 
-                size: 35), 
+      borderRadius: BorderRadius.circular(16),
+      child: Ink(
+        decoration: BoxDecoration(
+          color: colorScheme.surface,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: colorScheme.outlineVariant),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(14),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _DateBadge(date: event.startDate, color: _typeColor(event.type)),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      event.title,
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.w700,
+                          ),
+                    ),
+                    const SizedBox(height: 6),
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 6,
+                      children: [
+                        _InfoPill(
+                          icon: _typeIcon(event.type),
+                          label: event.type.toLocalizedString(context),
+                          color: _typeColor(event.type),
+                        ),
+                        _AttendancePill(
+                          status: event.status,
+                          label: _statusLabel(event.status, translate),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    _EventMeta(
+                      icon: Icons.schedule_outlined,
+                      text: event.dateHour,
+                    ),
+                    if (event.address.isNotEmpty) ...[
+                      const SizedBox(height: 5),
+                      _EventMeta(
+                        icon: Icons.location_on_outlined,
+                        text: event.address,
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+              const SizedBox(width: 4),
+              Icon(Icons.chevron_right, color: colorScheme.onSurfaceVariant),
+            ],
           ),
-          title: Text(event.title),
-          subtitle: Text('${event.address} - ${event.dateHour}'),
-          trailing:
-              SvgPicture.asset(_getTypeIcon(event.type), width: 50, height: 50),
         ),
       ),
     );
   }
 
-  IconData _getStatusIcon(EventStatusEnum status) =>
+  IconData _typeIcon(EventTypeEnum type) =>
       const {
-        EventStatusEnum.accepted: Icons.check,
-        EventStatusEnum.declined: Icons.close,
-        EventStatusEnum.unknown: Icons.help_outline,
-        EventStatusEnum.undefined: Icons.remove,
-        EventStatusEnum.warning: Icons.warning,
-      }[status] ??
-      Icons.help_outline;
-
-  String _getTypeIcon(EventTypeEnum type) =>
-      const {
-        EventTypeEnum.activity: AppIcons.activityIcon,
-        EventTypeEnum.training: AppIcons.trainingIcon,
-        EventTypeEnum.performance: AppIcons.performanceIcon,
+        EventTypeEnum.training: Icons.groups_outlined,
+        EventTypeEnum.performance: Icons.campaign_outlined,
+        EventTypeEnum.activity: Icons.auto_awesome_outlined,
       }[type] ??
-      AppIcons.miniArrowRight;
+      Icons.event_outlined;
 
-  Color _getStatusBackgroundColor(EventStatusEnum status) =>
+  Color _typeColor(EventTypeEnum type) =>
       const {
-        EventStatusEnum.accepted: Color.fromRGBO(202, 245, 195, 0.4),
-        EventStatusEnum.declined: Color.fromRGBO(245, 127, 141, 0.2),
-        EventStatusEnum.unknown: Color.fromRGBO(249, 208, 130, 0.5),
-        EventStatusEnum.undefined: Color.fromRGBO(255, 255, 255, 1), 
-        EventStatusEnum.warning: Color.fromRGBO(202, 245, 195, 0.4),
-      }[status] ??
-      const Color.fromRGBO(202, 196, 208, 1);
+        EventTypeEnum.training: Color(0xFF3F6FB5),
+        EventTypeEnum.performance: Color(0xFF8B5E3C),
+        EventTypeEnum.activity: Color(0xFF4C7A5A),
+      }[type] ??
+      const Color(0xFF4A5568);
 
-      Color _getStatusBorderColorCard(EventStatusEnum status) =>
-      const {
-        EventStatusEnum.accepted: Color.fromRGBO(202, 245, 195, 0.5),
-        EventStatusEnum.declined: Color.fromRGBO(245, 127, 141, 0.5),
-        EventStatusEnum.unknown: Color.fromRGBO(249, 208, 130, 0.5),
-        EventStatusEnum.undefined: Color.fromRGBO(202, 196, 208, 1), 
-        EventStatusEnum.warning: Color.fromRGBO(202, 245, 195, 1),
-      }[status] ??
-      const Color.fromRGBO(202, 196, 208, 1);
-
-
-   _getStatusBorderSizeCard(EventStatusEnum status) =>
-      const {
-        EventStatusEnum.accepted: 0.0,
-        EventStatusEnum.declined: 0.0,
-        EventStatusEnum.unknown: 0.0,
-        EventStatusEnum.undefined: 1.0,
-        EventStatusEnum.warning: 0.0,
-      }[status] ??
-      4;
-
-  Color _getStatusBackgroundIconColor(EventStatusEnum status) =>
-      const {
-        EventStatusEnum.accepted: Color.fromRGBO(202, 245, 195, 0.9),
-        EventStatusEnum.declined: Color.fromRGBO(245, 127, 141, 0.5),
-        EventStatusEnum.unknown: Color.fromRGBO(249, 208, 130, 0.5),
-        EventStatusEnum.undefined: Color.fromRGBO(202, 196, 208, 0.2),
-        EventStatusEnum.warning: Color.fromRGBO(202, 245, 195, 0.4),
-      }[status] ??
-      const Color.fromRGBO(202, 196, 208, 1);
-
-  Color _getStatusColor(EventStatusEnum status) =>
-      const {
-        EventStatusEnum.accepted: Colors.green,
-        EventStatusEnum.declined: Colors.red,
-        EventStatusEnum.unknown: Colors.orange,
-        EventStatusEnum.undefined: Colors.grey,
-        EventStatusEnum.warning: Colors.orange,
-      }[status] ??
-      Colors.grey;
+  String _statusLabel(EventStatusEnum status, AppLocalizations translate) =>
+      switch (status) {
+        EventStatusEnum.accepted => translate.eventsPageAttendaceYesResponse,
+        EventStatusEnum.declined => translate.eventsPageAttendaceNoResponse,
+        EventStatusEnum.unknown => translate.eventsPageAttendaceUnknowResponse,
+        EventStatusEnum.undefined => translate.eventsPageStatusFilterPending,
+        EventStatusEnum.warning => translate.eventsPageStatusFilterWarning,
+      };
 }
 
+class _DateBadge extends StatelessWidget {
+  const _DateBadge({required this.date, required this.color});
 
-  class DottedLineSeparator extends StatelessWidget {
-    const DottedLineSeparator({super.key});
+  final DateTime date;
+  final Color color;
 
-    @override
-    Widget build(BuildContext context) {
-      return LayoutBuilder(
-        builder: (BuildContext context, BoxConstraints constraints) {
-          final boxWidth = constraints.constrainWidth();
-          const dashWidth = 2.0;
-          const dashHeight = 2.0;
-          final dashCount = (boxWidth / (4 * dashWidth)).floor();
-          return Flex(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            direction: Axis.horizontal,
-            children: List.generate(dashCount, (_) {
-              return const SizedBox(
-                width: dashWidth,
-                height: dashHeight,
-                child: DecoratedBox(
-                  decoration: BoxDecoration(color: Colors.grey),
-                ),
-              );
-            }),
-          );
-        },
-      );
-    }
+  @override
+  Widget build(BuildContext context) {
+    final locale = Localizations.localeOf(context).toString();
+    return Container(
+      width: 56,
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.10),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        children: [
+          Text(
+            DateFormat('EEE', locale).format(date).toUpperCase(),
+            style: TextStyle(
+              color: color,
+              fontSize: 10,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          const SizedBox(height: 2),
+          Text(
+            '${date.day}',
+            style: TextStyle(
+              color: color,
+              fontSize: 22,
+              fontWeight: FontWeight.w800,
+            ),
+          ),
+          Text(
+            DateFormat('MMM', locale).format(date).toUpperCase(),
+            style: TextStyle(
+              color: color,
+              fontSize: 10,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+        ],
+      ),
+    );
   }
+}
+
+class _InfoPill extends StatelessWidget {
+  const _InfoPill({
+    required this.icon,
+    required this.label,
+    required this.color,
+  });
+
+  final IconData icon;
+  final String label;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.10),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 14, color: color),
+          const SizedBox(width: 4),
+          Text(
+            label,
+            style: TextStyle(
+              color: color,
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _AttendancePill extends StatelessWidget {
+  const _AttendancePill({required this.status, required this.label});
+
+  final EventStatusEnum status;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    final (color, icon) = switch (status) {
+      EventStatusEnum.accepted => (
+          const Color(0xFF247A4D),
+          Icons.check_circle_outline
+        ),
+      EventStatusEnum.declined => (
+          const Color(0xFFB42318),
+          Icons.cancel_outlined
+        ),
+      EventStatusEnum.unknown => (const Color(0xFF9A6700), Icons.help_outline),
+      EventStatusEnum.undefined => (
+          const Color(0xFF5D6775),
+          Icons.pending_outlined
+        ),
+      EventStatusEnum.warning => (
+          const Color(0xFFB54708),
+          Icons.warning_amber_outlined
+        ),
+    };
+
+    return _InfoPill(icon: icon, label: label, color: color);
+  }
+}
+
+class _EventMeta extends StatelessWidget {
+  const _EventMeta({required this.icon, required this.text});
+
+  final IconData icon;
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Icon(
+          icon,
+          size: 16,
+          color: Theme.of(context).colorScheme.onSurfaceVariant,
+        ),
+        const SizedBox(width: 6),
+        Expanded(
+          child: Text(
+            text,
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
+          ),
+        ),
+      ],
+    );
+  }
+}

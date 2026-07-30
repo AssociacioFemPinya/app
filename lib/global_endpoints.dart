@@ -1,5 +1,8 @@
 class GlobalEndpoints {
-  static const String apiBaseUrl = 'https://api.dev.fempinya.cat';
+  static const String apiBaseUrl = String.fromEnvironment(
+    'API_BASE_URL',
+    defaultValue: 'https://api.dev.fempinya.cat',
+  );
 }
 
 // Helper method that takes the endpoint and the dynamic parameter,

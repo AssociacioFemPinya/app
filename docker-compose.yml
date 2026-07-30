@@ -1,0 +1,29 @@
+services:
+  flutter-web:
+    image: instrumentisto/flutter:3.29.2-androidsdk35-r0
+    working_dir: /workspace
+    command:
+      - /bin/sh
+      - -c
+      - >-
+        flutter pub get &&
+        flutter run -d web-server
+        --web-hostname 0.0.0.0
+        --web-port 8080
+        --dart-define=API_BASE_URL=http://localhost:8005
+        --dart-define=ENABLE_PUSH_NOTIFICATIONS=false
+    ports:
+      - "${FLUTTER_WEB_PORT:-8080}:8080"
+    volumes:
+      - ./:/workspace
+      - flutter-pub-cache:/root/.pub-cache
+    networks:
+      - fempinya-local
+
+networks:
+  fempinya-local:
+    external: true
+    name: fempinya-local
+
+volumes:
+  flutter-pub-cache:

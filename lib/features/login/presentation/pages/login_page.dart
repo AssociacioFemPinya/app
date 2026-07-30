@@ -6,6 +6,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
 
+  static const _localTestEmail = String.fromEnvironment('LOCAL_TEST_EMAIL');
+  static const _localTestPassword =
+      String.fromEnvironment('LOCAL_TEST_PASSWORD');
+
   static Route<void> route() {
     return MaterialPageRoute<void>(builder: (_) => const LoginPage());
   }
@@ -18,8 +22,13 @@ class LoginPage extends StatelessWidget {
         child: BlocProvider(
           create: (context) => LoginFormBloc(
             authenticationRepository: context.read<AuthenticationRepository>(),
+            initialMail: _localTestEmail,
+            initialPassword: _localTestPassword,
           ),
-          child: const LoginForm(),
+          child: const LoginForm(
+            initialMail: _localTestEmail,
+            initialPassword: _localTestPassword,
+          ),
         ),
       ),
     );

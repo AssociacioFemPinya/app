@@ -40,14 +40,14 @@ class EventsCalendarBloc
       });
     });
     on<CalendarEventsLoadSuccess>((events, emit) {
-      final DateEventsName dateEvents = {};
+      final DateEvents dateEvents = {};
       for (var event in events.value) {
         final eventDay = DateTime.utc(
             event.startDate.year, event.startDate.month, event.startDate.day);
         if (!dateEvents.containsKey(eventDay)) {
           dateEvents[eventDay] = [];
         }
-        dateEvents[eventDay]!.add(event.title);
+        dateEvents[eventDay]!.add(event);
       }
       emit(state.copyWith(calendarEvents: dateEvents));
     });

@@ -1,442 +1,341 @@
 import 'package:customizable_counter/customizable_counter.dart';
-import 'package:fempinya3_flutter_app/core/configs/assets/app_icons.dart';
 import 'package:fempinya3_flutter_app/core/utils/datetime_utils.dart';
-import 'package:fempinya3_flutter_app/features/events/domain/entities/tag.dart';
+import 'package:fempinya3_flutter_app/features/events/domain/entities/event.dart';
+import 'package:fempinya3_flutter_app/features/events/domain/enums/events_status.dart';
+import 'package:fempinya3_flutter_app/features/events/domain/enums/events_type.dart';
 import 'package:fempinya3_flutter_app/features/events/presentation/bloc/event_view/event_view_bloc.dart';
 import 'package:fempinya3_flutter_app/features/events/presentation/pages/event_view/views/event_member_comments_screen.dart';
 import 'package:fempinya3_flutter_app/features/events/presentation/pages/event_view/views/event_schedule_screen.dart';
-import 'package:fempinya3_flutter_app/features/events/presentation/widgets/event_view/assistance_selector.dart';
-import 'package:fempinya3_flutter_app/features/events/presentation/widgets/event_view/custom_modal_bottom_sheet.dart';
-import 'package:fempinya3_flutter_app/features/events/presentation/widgets/event_view/event_info_tile.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EventPage extends StatelessWidget {
+  const EventPage({super.key, required this.eventID});
   final int eventID;
 
-  const EventPage({super.key, required this.eventID});
+  @override
+  Widget build(BuildContext context) => BlocProvider(
+        create: (_) => EventViewBloc()..add(LoadEvent(eventID)),
+        child: BlocBuilder<EventViewBloc, EventViewState>(
+          builder: (context, state) {
+            if (state is EventViewInitial || state.event == null) {
+              return const Scaffold(
+                  body: Center(child: CircularProgressIndicator()));
+            }
+            return _EventDetail(event: state.event!);
+          },
+        ),
+      );
+}
+
+class _EventDetail extends StatelessWidget {
+  const _EventDetail({required this.event});
+  final EventEntity event;
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(providers: [
-      BlocProvider<EventViewBloc>(
-        create: (context) => EventViewBloc()..add(LoadEvent(eventID)),
-      ),
-    ], child: eventView(context));
-  }
-
-  BlocBuilder eventView(BuildContext context) {
-    final translate = AppLocalizations.of(context)!;
-
-    return BlocBuilder<EventViewBloc, EventViewState>(
-        builder: (context, state) {
-      if (state is EventViewInitial) {
-        return Container();
-      }
-      return Scaffold(
-          appBar: AppBar(title: Text(state.event!.title)),
-          //drawer: const MenuWidget(),
-          body: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: SafeArea(
-                  child: CustomScrollView(
-                slivers: [
-                  eventSummary(context),
-                  eventDescription(context),
-                  schedule(context, translate),
-                  addComments(context, translate),
-                  SliverPadding(
-                  padding: const EdgeInsets.all(8.0),
-                  sliver: attendanceSwitch(context, state),
-                  ),
-                  SliverPadding(
-                  padding: const EdgeInsets.all(8.0),
-                  sliver: companionsSelector(context, translate),
-                  ),
-                  SliverPadding(
-                  padding: const EdgeInsets.all(8.0),
-                  sliver: optionsSelector(context, translate),
-                  ),
-                ],
-              ))));
-    });
-  }
-
-  BlocBuilder eventSummary(BuildContext context) {
-    return BlocBuilder<EventViewBloc, EventViewState>(
-        builder: (context, state) {
-      return SliverToBoxAdapter(
-        child: Card(
-          // Define the shape of the card
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(4),
-          ),
-          // Define how the card's content should be clipped
-          clipBehavior: Clip.antiAliasWithSaveLayer,
-          // Define the child widget of the card
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              // Add padding around the row widget
-              Padding(
-                padding: const EdgeInsets.all(15),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    //TODO
-                    /* // Add an image widget to display an image
-                        Image.asset(
-                          "foto",
-                          height: 50,
-                          width: 50,
-                          fit: BoxFit.cover,
-                        ),*/
-                    SvgPicture.asset(
-                      AppIcons.activityIcon,
-                      width: 100, // Ajusta el ancho del ícono
-                      height: 100, // Ajusta la altura del ícono
-                    ),
-                    // Add some spacing between the image and the text
-                    Container(width: 20),
-                    // Add an expanded widget to take up the remaining horizontal space
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Container(height: 5),
-                          Row(
-                            children: [
-                              const Icon(Icons.calendar_month_outlined,
-                                  size: 20),
-                              const SizedBox(width: 8),
-                              Text(
-                                DateTimeUtils.formatDateToHumanLanguage(
-                                    state.event?.startDate ??
-                                        DateTime.now(), // TO FIX,
-                                    Localizations.localeOf(context).toString()),
-                                style: Theme.of(context).textTheme.titleMedium,
-                              ),
-                            ],
-                          ),
-                          Container(height: 5),
-                          Row(
-                            children: [
-                              const Icon(Icons.watch_later, size: 20),
-                              const SizedBox(width: 8),
-                              Text(
-                                state.event?.dateHour ?? "", // TO FIX
-                                style: Theme.of(context).textTheme.bodyLarge,
-                              ),
-                            ],
-                          ),
-                          Container(height: 10),
-                          Row(
-                            children: [
-                              const Icon(Icons.place, size: 20),
-                              const SizedBox(width: 8),
-                              Text(
-                                state.event?.address ?? "", // TO FIX
-                                maxLines: 2,
-                                style: Theme.of(context).textTheme.bodyMedium,
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+    final colors = Theme.of(context).colorScheme;
+    final t = AppLocalizations.of(context)!;
+    return Scaffold(
+      appBar: AppBar(),
+      body: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.fromLTRB(16, 12, 16, 28),
+          children: [
+            _HeroCard(event: event),
+            if (event.description?.trim().isNotEmpty ?? false) ...[
+              const SizedBox(height: 20),
+              Text(event.description!,
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyLarge
+                      ?.copyWith(height: 1.45)),
             ],
-          ),
-        ),
-      );
-    });
-  }
-
-  BlocBuilder optionsSelector(BuildContext context, translate) {
-    return BlocBuilder<EventViewBloc, EventViewState>(
-        builder: (context, state) {
-      return SliverToBoxAdapter(
-          child: Column(
-        children: [
-          Row(children: [
-            SizedBox(height: Theme.of(context).textTheme.bodyLarge?.fontSize),
-            Text(
-              translate.eventPageAdditionalOptionSelector,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    fontSize: Theme.of(context).textTheme.bodyLarge?.fontSize
-                  ),
+            const SizedBox(height: 20),
+            _SectionTitle(title: t.eventsPageAttendaceQuestion(event.title)),
+            const SizedBox(height: 10),
+            const _AttendanceChoices(),
+            const SizedBox(height: 20),
+            _SectionTitle(title: t.eventPageCompanionsSelector),
+            const SizedBox(height: 8),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              decoration: BoxDecoration(
+                  color: colors.surfaceContainerLow,
+                  borderRadius: BorderRadius.circular(14)),
+              child: Row(children: [
+                Icon(Icons.group_add_outlined, color: colors.onSurfaceVariant),
+                const SizedBox(width: 12),
+                Expanded(
+                    child: Text(t.eventPageCompanionsSelector,
+                        style: TextStyle(color: colors.onSurfaceVariant))),
+                BlocBuilder<EventViewBloc, EventViewState>(
+                    builder: (context, state) => CustomizableCounter(
+                          borderWidth: 0,
+                          borderRadius: 24,
+                          backgroundColor: colors.surface,
+                          buttonText: '',
+                          textColor: colors.onSurface,
+                          textSize: 16,
+                          count: (state.event?.companions ?? 0).toDouble(),
+                          step: 1,
+                          minCount: 0,
+                          incrementIcon: Icon(Icons.add, color: colors.primary),
+                          decrementIcon:
+                              Icon(Icons.remove, color: colors.primary),
+                          onCountChange: (value) => context
+                              .read<EventViewBloc>()
+                              .add(EventCompanionsModified(value.toInt())),
+                        )),
+              ]),
             ),
-          ]),
-          SizedBox(height: Theme.of(context).textTheme.bodyLarge?.fontSize),
-          SizedBox(
-            width: MediaQuery.of(context)
-                .size
-                .width, // Ajusta al ancho de la pantalla
-            child: AdditionalInfoChips(tags: state.event?.tags ?? []),
-          )
-        ],
-      ));
-    });
-  }
-
-  BlocBuilder companionsSelector(BuildContext context, translate) {
-    return BlocBuilder<EventViewBloc, EventViewState>(
-      builder: (context, state) {
-        return SliverToBoxAdapter(
-          child: Column(
-            children: [
-              SizedBox(height: Theme.of(context).textTheme.bodyLarge?.fontSize),
-              Row(children: [
-                Text(
-                  translate.eventPageCompanionsSelector,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    fontSize: Theme.of(context).textTheme.bodyLarge?.fontSize, 
-                    ),
-                )
-                ]),
-              SizedBox(height: Theme.of(context).textTheme.bodyLarge?.fontSize),
-              CustomizableCounter(
-                  borderColor: Theme.of(context).colorScheme.primaryFixedDim,
-                  borderWidth: 0,
-                  borderRadius: 100,
-                  backgroundColor:
-                      Theme.of(context).colorScheme.primaryFixedDim,
-                  buttonText: "Afegir acompanyats",
-                  textColor: Theme.of(context).colorScheme.onPrimaryFixed,
-                  textSize: 15,
-                  count: (state.event?.companions ?? 0).toDouble(),
-                  step: 1,
-                  minCount: 0,
-                  incrementIcon: Icon(
-                    Icons.add,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                  decrementIcon: Icon(
-                    Icons.remove,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                  onCountChange: (count) {
-                    context
-                        .read<EventViewBloc>()
-                        .add(EventCompanionsModified(count.toInt()));
-                  }),
+            if (event.tags?.isNotEmpty ?? false) ...[
+              const SizedBox(height: 20),
+              _SectionTitle(title: t.eventPageAdditionalOptionSelector),
+              const SizedBox(height: 8),
+              Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: event.tags!
+                      .map((tag) => Chip(label: Text(tag.name)))
+                      .toList()),
             ],
-          ),
-        );
-      },
-    );
-  }
-
-  SliverToBoxAdapter attendanceSwitch(BuildContext context, state) {
-    return SliverToBoxAdapter(
-      child: Column(
-        children: [
-          SizedBox(height: Theme.of(context).textTheme.bodyLarge?.fontSize),
-          Row(
-            children: [
-                Text(
-                AppLocalizations.of(context)!
-                  .eventsPageAttendaceQuestion(state.event!.title),
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    fontSize: Theme.of(context).textTheme.bodyLarge?.fontSize, 
-                  ),
-                )
-            ],
-          ),
-          SizedBox(height: Theme.of(context).textTheme.bodyLarge?.fontSize),
-          SizedBox(
-            width: MediaQuery.of(context)
-                .size
-                .width, // Ajusta al ancho de la pantalla
-            child: const AssistanceSelector(),
-          ),
-        ],
-      ),
-    );
-  }
-
-  BlocBuilder addComments(BuildContext context, translate) {
-    return BlocBuilder<EventViewBloc, EventViewState>(
-        builder: (context, state) {
-      return EventInfoTile(
-          svgSrc: AppIcons.scheduleHours,
-          title:  translate.eventPageAddCommentsTitle, 
-          isShowBottomTop: false,
-          press: () {
-            customModalBottomSheet(
-              context,
-              height: MediaQuery.of(context).size.height - 100,
-              child: BlocProvider<EventViewBloc>.value(
-                value: context.read<EventViewBloc>(),
-                child: EventMemberCommentsScreen(event: state.event!),
-              ),
-            );
-          });
-    });
-  }
-
-  BlocBuilder schedule(BuildContext context, translate) {
-
-    return BlocBuilder<EventViewBloc, EventViewState>(
-        builder: (context, state) {
-      return EventInfoTile(
-          svgSrc: AppIcons.scheduleHours,
-          title: translate.eventPageScheduleTitle, 
-          press: () {
-            customModalBottomSheet(context,
-                height: MediaQuery.of(context).size.height - 100,
-                child: EventScheduleScreen(event: state.event!));
-          });
-    });
-  }
-
-  BlocBuilder eventInfo(BuildContext context) {
-    return BlocBuilder<EventViewBloc, EventViewState>(
-        builder: (context, state) {
-      return Card(
-        // Define the shape of the card
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(4),
-        ),
-        // Define how the card's content should be clipped
-        clipBehavior: Clip.antiAliasWithSaveLayer,
-        // Define the child widget of the card
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            // Add padding around the row widget
-            Padding(
-              padding: const EdgeInsets.all(15),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  //TODO
-                  /* // Add an image widget to display an image
-                        Image.asset(
-                          "foto",
-                          height: 50,
-                          width: 50,
-                          fit: BoxFit.cover,
-                        ),*/
-                  SvgPicture.asset(
-                    AppIcons.activityIcon,
-                    width: 100, // Ajusta el ancho del ícono
-                    height: 100, // Ajusta la altura del ícono
-                  ),
-                  // Add some spacing between the image and the text
-                  Container(width: 20),
-                  // Add an expanded widget to take up the remaining horizontal space
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Container(height: 5),
-                        Row(
-                          children: [
-                            const Icon(Icons.calendar_month_outlined, size: 20),
-                            const SizedBox(width: 8),
-                            Text(
-                              DateTimeUtils.formatDateToHumanLanguage(
-                                  state.event!.startDate,
-                                  Localizations.localeOf(context).toString()),
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
-                          ],
-                        ),
-                        Container(height: 5),
-                        Row(
-                          children: [
-                            const Icon(Icons.watch_later, size: 20),
-                            const SizedBox(width: 8),
-                            Text(
-                              state.event!.dateHour,
-                              style: Theme.of(context).textTheme.bodyLarge,
-                            ),
-                          ],
-                        ),
-                        Container(height: 10),
-                        Row(
-                          children: [
-                            const Icon(Icons.place, size: 20),
-                            const SizedBox(width: 8),
-                            Text(
-                              state.event!.address,
-                              maxLines: 2,
-                              style: Theme.of(context).textTheme.bodyMedium,
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            const SizedBox(height: 20),
+            _ActionTile(
+                icon: Icons.schedule_outlined,
+                title: t.eventPageScheduleTitle,
+                onTap: () =>
+                    _openSheet(context, EventScheduleScreen(event: event))),
+            const SizedBox(height: 8),
+            _ActionTile(
+                icon: Icons.chat_bubble_outline,
+                title: t.eventPageAddCommentsTitle,
+                onTap: () => _openSheet(
+                    context,
+                    BlocProvider.value(
+                        value: context.read<EventViewBloc>(),
+                        child: EventMemberCommentsScreen(event: event)))),
           ],
         ),
-      );
-    });
-  }
-
-  BlocBuilder eventDescription(BuildContext context) {
-    return BlocBuilder<EventViewBloc, EventViewState>(
-        builder: (context, state) {
-      return SliverToBoxAdapter(
-        child: Padding(
-          padding: const EdgeInsets.all(15),
-          child: Text(
-            state.event?.description ?? '',
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
-        ),
-      );
-    });
-  }
-}
-
-class AdditionalInfoChips extends StatelessWidget {
-  final List<TagEntity>? tags;
-  final Map<String, bool> eventTags;
-
-  AdditionalInfoChips({required this.tags, super.key})
-      : eventTags = {for (var tag in tags ?? []) tag.name: tag.isEnabled};
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Wrap(
-        spacing: 8.0,
-        runSpacing: 8.0,
-        children: <Widget>[
-          for (var item in eventTags.entries)
-            FilterChip(
-              onSelected: (selection) {
-                context.read<EventViewBloc>().add(EvenTagModified(item.key));
-              },
-              selected: item.value,
-              label: Text(item.key),
-              selectedColor: Theme.of(context).colorScheme.primaryFixedDim,
-              checkmarkColor: Theme.of(context).colorScheme.onPrimaryFixed,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(50),
-                  side: const BorderSide(style: BorderStyle.none)),
-              backgroundColor: Theme.of(context)
-                  .colorScheme
-                  .primaryFixedDim
-                  .withOpacity(0.3),
-              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            )
-        ],
       ),
     );
   }
+
+  void _openSheet(
+          BuildContext context, Widget child) =>
+      showModalBottomSheet<void>(
+          context: context,
+          isScrollControlled: true,
+          useSafeArea: true,
+          builder: (_) => SizedBox(
+              height: MediaQuery.of(context).size.height * .82, child: child));
 }
+
+class _HeroCard extends StatelessWidget {
+  const _HeroCard({required this.event});
+  final EventEntity event;
+  @override
+  Widget build(BuildContext context) {
+    final color = _typeColor(event.type);
+    return Container(
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+          color: color.withValues(alpha: .10),
+          borderRadius: BorderRadius.circular(20)),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Row(children: [
+          Icon(_typeIcon(event.type), color: color, size: 18),
+          const SizedBox(width: 6),
+          Text(event.type.toLocalizedString(context),
+              style: TextStyle(color: color, fontWeight: FontWeight.w700)),
+          const Spacer(),
+          _StatusPill(status: event.status)
+        ]),
+        const SizedBox(height: 12),
+        Text(event.title,
+            style: Theme.of(context)
+                .textTheme
+                .headlineSmall
+                ?.copyWith(fontWeight: FontWeight.w800)),
+        const SizedBox(height: 18),
+        _Meta(
+            icon: Icons.calendar_today_outlined,
+            text: DateTimeUtils.formatDateToHumanLanguage(
+                event.startDate, Localizations.localeOf(context).toString())),
+        const SizedBox(height: 10),
+        _Meta(icon: Icons.schedule_outlined, text: event.dateHour),
+        if (event.address.isNotEmpty) ...[
+          const SizedBox(height: 10),
+          _Meta(icon: Icons.location_on_outlined, text: event.address)
+        ],
+      ]),
+    );
+  }
+}
+
+class _AttendanceChoices extends StatelessWidget {
+  const _AttendanceChoices();
+  @override
+  Widget build(BuildContext context) {
+    final t = AppLocalizations.of(context)!;
+    return BlocBuilder<EventViewBloc, EventViewState>(
+        builder: (context, state) {
+      final current = state.event?.status;
+      return Row(children: [
+        _AttendanceButton(
+            label: t.eventsPageAttendaceYesResponse,
+            icon: Icons.check,
+            color: const Color(0xFF247A4D),
+            selected: current == EventStatusEnum.accepted,
+            onTap: () => _set(context, EventStatusEnum.accepted)),
+        const SizedBox(width: 8),
+        _AttendanceButton(
+            label: t.eventsPageAttendaceNoResponse,
+            icon: Icons.close,
+            color: const Color(0xFFB42318),
+            selected: current == EventStatusEnum.declined,
+            onTap: () => _set(context, EventStatusEnum.declined)),
+        const SizedBox(width: 8),
+        _AttendanceButton(
+            label: t.eventsPageAttendaceUnknowResponse,
+            icon: Icons.help_outline,
+            color: const Color(0xFF9A6700),
+            selected: current == EventStatusEnum.unknown,
+            onTap: () => _set(context, EventStatusEnum.unknown)),
+      ]);
+    });
+  }
+
+  void _set(BuildContext context, EventStatusEnum status) =>
+      context.read<EventViewBloc>().add(EventStatusModified(status));
+}
+
+class _AttendanceButton extends StatelessWidget {
+  const _AttendanceButton(
+      {required this.label,
+      required this.icon,
+      required this.color,
+      required this.selected,
+      required this.onTap});
+  final String label;
+  final IconData icon;
+  final Color color;
+  final bool selected;
+  final VoidCallback onTap;
+  @override
+  Widget build(BuildContext context) => Expanded(
+          child: Material(
+        color: selected
+            ? color.withValues(alpha: .12)
+            : Theme.of(context).colorScheme.surface,
+        borderRadius: BorderRadius.circular(12),
+        child: InkWell(
+            onTap: onTap,
+            borderRadius: BorderRadius.circular(12),
+            child: Container(
+              height: 72,
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                  border: Border.all(
+                      color: selected
+                          ? color
+                          : Theme.of(context).colorScheme.outlineVariant),
+                  borderRadius: BorderRadius.circular(12)),
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(icon, color: color, size: 20),
+                    const SizedBox(height: 4),
+                    Text(label,
+                        textAlign: TextAlign.center,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                            color: color, fontWeight: FontWeight.w700)),
+                  ]),
+            )),
+      ));
+}
+
+class _SectionTitle extends StatelessWidget {
+  const _SectionTitle({required this.title});
+  final String title;
+  @override
+  Widget build(BuildContext context) => Text(title,
+      style: Theme.of(context)
+          .textTheme
+          .titleMedium
+          ?.copyWith(fontWeight: FontWeight.w700));
+}
+
+class _Meta extends StatelessWidget {
+  const _Meta({required this.icon, required this.text});
+  final IconData icon;
+  final String text;
+  @override
+  Widget build(BuildContext context) => Row(children: [
+        Icon(icon,
+            size: 19, color: Theme.of(context).colorScheme.onSurfaceVariant),
+        const SizedBox(width: 10),
+        Expanded(
+            child: Text(text, style: Theme.of(context).textTheme.bodyLarge))
+      ]);
+}
+
+class _ActionTile extends StatelessWidget {
+  const _ActionTile(
+      {required this.icon, required this.title, required this.onTap});
+  final IconData icon;
+  final String title;
+  final VoidCallback onTap;
+  @override
+  Widget build(BuildContext context) => Material(
+      color: Theme.of(context).colorScheme.surfaceContainerLow,
+      borderRadius: BorderRadius.circular(14),
+      child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(14),
+          child: Padding(
+              padding: const EdgeInsets.all(15),
+              child: Row(children: [
+                Icon(icon, color: Theme.of(context).colorScheme.primary),
+                const SizedBox(width: 12),
+                Expanded(
+                    child: Text(title,
+                        style: const TextStyle(fontWeight: FontWeight.w600))),
+                const Icon(Icons.chevron_right)
+              ]))));
+}
+
+class _StatusPill extends StatelessWidget {
+  const _StatusPill({required this.status});
+  final EventStatusEnum status;
+  @override
+  Widget build(BuildContext context) {
+    final t = AppLocalizations.of(context)!;
+    final label = switch (status) {
+      EventStatusEnum.accepted => t.eventsPageAttendaceYesResponse,
+      EventStatusEnum.declined => t.eventsPageAttendaceNoResponse,
+      EventStatusEnum.unknown => t.eventsPageAttendaceUnknowResponse,
+      EventStatusEnum.undefined => t.eventsPageStatusFilterPending,
+      EventStatusEnum.warning => t.eventsPageStatusFilterWarning
+    };
+    return Chip(label: Text(label), visualDensity: VisualDensity.compact);
+  }
+}
+
+Color _typeColor(EventTypeEnum type) =>
+    const {
+      EventTypeEnum.training: Color(0xFF3F6FB5),
+      EventTypeEnum.performance: Color(0xFF8B5E3C),
+      EventTypeEnum.activity: Color(0xFF4C7A5A)
+    }[type] ??
+    const Color(0xFF4A5568);
+IconData _typeIcon(EventTypeEnum type) =>
+    const {
+      EventTypeEnum.training: Icons.groups_outlined,
+      EventTypeEnum.performance: Icons.campaign_outlined,
+      EventTypeEnum.activity: Icons.auto_awesome_outlined
+    }[type] ??
+    Icons.event_outlined;
