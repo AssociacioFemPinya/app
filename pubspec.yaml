@@ -32,6 +32,7 @@ dependencies:
   webview_flutter: ^4.10.0
   webview_flutter_android: ^4.2.0
   webview_flutter_wkwebview: ^3.16.3
+  url_launcher: ^6.3.1
   firebase_core: ^3.12.1
   firebase_messaging: ^15.2.4
   firebase_analytics: ^11.4.4
@@ -60,4 +61,3 @@ flutter:
     - assets/icons/question.svg
     - assets/icons/scheduleHours.svg
     - assets/icons/weightlifting.svg
-

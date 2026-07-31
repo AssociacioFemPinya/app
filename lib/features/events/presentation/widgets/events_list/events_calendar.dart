@@ -181,7 +181,17 @@ class EventsCalendar extends StatelessWidget {
                         style: TextStyle(
                             color:
                                 Theme.of(context).colorScheme.onSurfaceVariant,
-                            fontSize: 12))
+                            fontSize: 12)),
+                    if (event.registrationStatus != 'open')
+                      Text(
+                          event.registrationStatus == 'not_open_yet'
+                              ? '🔒 Inscripció pròximament'
+                              : '🔒 Inscripció tancada',
+                          style: TextStyle(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onSurfaceVariant,
+                              fontSize: 12))
                   ])),
               const Icon(Icons.chevron_right),
             ])),

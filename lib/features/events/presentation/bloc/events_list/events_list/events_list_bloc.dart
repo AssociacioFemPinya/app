@@ -28,7 +28,6 @@ class EventsListBloc extends Bloc<EventsListEvent, EventsListState> {
       GetEventsListParams getEventsListParams = GetEventsListParams(
           showAnswered: eventsFiltersState.value.showAnswered,
           showUndefined: eventsFiltersState.value.showUndefined,
-          showWarning: eventsFiltersState.value.showWarning,
           eventTypeFilters: eventsFiltersState.value.eventTypeFilters,
           dayTimeRange: eventsFiltersState.value.dayFilterEnabled
               ? DateTimeRange.generateDateTimeRangeForDay(

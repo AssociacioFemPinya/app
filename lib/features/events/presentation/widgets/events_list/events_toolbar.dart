@@ -101,9 +101,6 @@ class EventsToolbar extends StatelessWidget {
     if (state.showAnswered) {
       labels.add(translate.eventsPageStatusFilterAnswered);
     }
-    if (state.showWarning) {
-      labels.add(translate.eventsPageStatusFilterWarning);
-    }
     labels.addAll(
         state.eventTypeFilters.map((type) => type.toLocalizedString(context)));
     return labels.isEmpty ? translate.eventsPageFilterAll : labels.join(' · ');
@@ -211,9 +208,7 @@ class _EventsFiltersSheet extends StatelessWidget {
               children: [
                 ChoiceChip(
                   label: Text(translate.eventsPageFilterAll),
-                  selected: !state.showUndefined &&
-                      !state.showAnswered &&
-                      !state.showWarning,
+                  selected: !state.showUndefined && !state.showAnswered,
                   onSelected: (_) => _clearStatus(context),
                 ),
                 _statusChip(
@@ -226,11 +221,6 @@ class _EventsFiltersSheet extends StatelessWidget {
                     state.showAnswered,
                     translate.eventsPageStatusFilterAnswered,
                     EventsStatusFilterAnswered.new),
-                _statusChip(
-                    context,
-                    state.showWarning,
-                    translate.eventsPageStatusFilterWarning,
-                    EventsStatusFilterWarning.new),
               ],
             ),
             const SizedBox(height: 22),
@@ -274,8 +264,7 @@ class _EventsFiltersSheet extends StatelessWidget {
     final bloc = context.read<EventsFiltersBloc>();
     bloc
       ..add(EventsStatusFilterUndefined(false))
-      ..add(EventsStatusFilterAnswered(false))
-      ..add(EventsStatusFilterWarning(false));
+      ..add(EventsStatusFilterAnswered(false));
   }
 
   void _clearFilters(BuildContext context, EventsFiltersState state) {

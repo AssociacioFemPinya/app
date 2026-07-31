@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:fempinya3_flutter_app/features/events/domain/entities/event.dart';
+import 'package:fempinya3_flutter_app/features/events/domain/useCases/get_event.dart';
 import 'package:fempinya3_flutter_app/features/events/domain/useCases/get_events_list.dart';
 import 'package:fempinya3_flutter_app/features/events/service_locator.dart'
     as events_locator;
@@ -68,6 +69,18 @@ void main() {
       expect(events, hasLength(greaterThanOrEqualTo(5)));
       expect(events.first.id, greaterThan(0));
       expect(events.first.title, isNotEmpty);
+      expect(events.first.allowsCompanions, isTrue);
+
+      final eventResult = await serviceLocator<GetEvent>()(
+        params: GetEventParams(id: events.first.id),
+      );
+      final event = _expectRight<EventEntity>(eventResult, 'event detail');
+      expect(event.allowsCompanions, isTrue);
+      expect(event.endDate.difference(event.startDate),
+          const Duration(minutes: 120));
+      expect(event.locationLink, isNotEmpty);
+      expect(event.registrationStatus, 'open');
+      expect(event.tags, hasLength(2));
     },
     skip: _isConfigured
         ? false

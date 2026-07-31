@@ -14,12 +14,13 @@ class NotificationItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return Container(
       decoration: BoxDecoration(
-        color: notification.isRead 
+        color: notification.isRead
             ? theme.colorScheme.surface
-            : theme.colorScheme.primaryContainer.withAlpha((0.08 * 255).toInt()),
+            : theme.colorScheme.primaryContainer
+                .withAlpha((0.08 * 255).toInt()),
         border: Border(
           bottom: BorderSide(
             color: theme.colorScheme.outline.withAlpha((0.1 * 255).toInt()),
@@ -27,27 +28,33 @@ class NotificationItem extends StatelessWidget {
         ),
       ),
       child: InkWell(
-        onTap: notification.isRead ? null : () {
-          // TODO: Uncomment
-          // context.read<NotificationsBloc>().add(
-          //   UpdateReadStatusEvent(notification.id),
-          // );
-          context.pushNamed(notificationRoute, pathParameters: {'notificationID': notification.id.toString()}).then((_) {
-            // TODO: refresh after come back from notification view
-            //context.read<EventsListBloc>().add(LoadEventsList(context.read<EventsFiltersBloc>().state));
-        });
+        onTap: () {
+          if (!notification.isRead) {
+            context
+                .read<NotificationsBloc>()
+                .add(UpdateReadStatusEvent(notification.id));
+          }
+          context.pushNamed(
+            notificationRoute,
+            pathParameters: {'notificationID': notification.id.toString()},
+          ).then((_) {
+            if (context.mounted) {
+              context.read<NotificationsBloc>().add(LoadNotifications());
+            }
+          });
         },
         child: ListTile(
-          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           leading: CircleAvatar(
-            backgroundColor: notification.isRead 
+            backgroundColor: notification.isRead
                 ? theme.colorScheme.surfaceContainerHighest
                 : theme.colorScheme.primaryContainer,
             child: Icon(
-              notification.isRead 
+              notification.isRead
                   ? Icons.notifications_outlined
                   : Icons.notifications_active,
-              color: notification.isRead 
+              color: notification.isRead
                   ? theme.colorScheme.onSurfaceVariant
                   : theme.colorScheme.primary,
               size: 20,
@@ -56,7 +63,8 @@ class NotificationItem extends StatelessWidget {
           title: Text(
             notification.title,
             style: theme.textTheme.titleMedium?.copyWith(
-              fontWeight: notification.isRead ? FontWeight.normal : FontWeight.bold,
+              fontWeight:
+                  notification.isRead ? FontWeight.normal : FontWeight.bold,
             ),
           ),
         ),
@@ -79,4 +87,4 @@ class NotificationItem extends StatelessWidget {
       return translate.timeAgoDays(difference.inDays);
     }
   }
-} 
+}

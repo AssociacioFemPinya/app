@@ -59,7 +59,7 @@ class MenuWidget extends StatelessWidget {
     return ListTile(
       title: Text(title),
       onTap: () {
-        context.pushNamed(routeName);
+        context.goNamed(routeName);
       },
     );
   }

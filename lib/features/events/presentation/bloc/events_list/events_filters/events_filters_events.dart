@@ -3,7 +3,6 @@ part of 'events_filters_bloc.dart';
 enum EventsStatusFilters {
   missingReply,
   replied,
-  requiresAttention,
 }
 
 abstract class EventsFiltersEvent {}
@@ -16,11 +15,6 @@ class EventsStatusFilterUndefined extends EventsFiltersEvent {
 class EventsStatusFilterAnswered extends EventsFiltersEvent {
   final bool value;
   EventsStatusFilterAnswered(this.value);
-}
-
-class EventsStatusFilterWarning extends EventsFiltersEvent {
-  final bool value;
-  EventsStatusFilterWarning(this.value);
 }
 
 class EventsTypeFiltersAdd extends EventsFiltersEvent {

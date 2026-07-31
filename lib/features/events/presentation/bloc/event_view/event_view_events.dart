@@ -46,12 +46,3 @@ class EventUpdateFailure extends EventViewEvent {
   final String value;
   EventUpdateFailure(this.value);
 }
-
-class AddEventComment extends EventViewEvent {
-  final String value;
-  AddEventComment(this.value);
-}
-
-class RemoveEventComment extends EventViewEvent {
-  RemoveEventComment();
-}

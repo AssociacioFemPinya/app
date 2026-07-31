@@ -16,6 +16,7 @@ GoRouter appRouter(AuthenticationBloc authenticationBloc) {
     initialLocation: splashRoute,
     routes: [
       GoRoute(
+        name: homeRoute,
         path: homeRoute,
         builder: (context, state) => HomePage(),
       ),

@@ -147,6 +147,8 @@ class EventsListWidget extends StatelessWidget {
                           status: event.status,
                           label: _statusLabel(event.status, translate),
                         ),
+                        if (event.registrationStatus != 'open')
+                          _RegistrationPill(status: event.registrationStatus),
                       ],
                     ),
                     const SizedBox(height: 12),
@@ -315,6 +317,21 @@ class _AttendancePill extends StatelessWidget {
     };
 
     return _InfoPill(icon: icon, label: label, color: color);
+  }
+}
+
+class _RegistrationPill extends StatelessWidget {
+  const _RegistrationPill({required this.status});
+  final String status;
+
+  @override
+  Widget build(BuildContext context) {
+    final pending = status == 'not_open_yet';
+    return _InfoPill(
+      icon: pending ? Icons.lock_clock_outlined : Icons.lock_outline,
+      label: pending ? 'Inscripció pròximament' : 'Inscripció tancada',
+      color: pending ? const Color(0xFF9A6700) : const Color(0xFFB42318),
+    );
   }
 }
 

@@ -17,11 +17,11 @@ class NotificationModel {
 
   factory NotificationModel.fromJson(Map<String, dynamic> json) {
     return NotificationModel(
-      id: json['id'] as String,
+      id: json['id'].toString(),
       title: json['title'] as String,
-      message: json['message'] as String,
-      sender: json['sender'] as String,
-      createdAt: DateTime.parse(json['createdAt'] as String),
+      message: (json['message'] ?? json['body'] ?? '') as String,
+      sender: json['sender'] as String?,
+      createdAt: DateTime.parse((json['createdAt'] ?? json['date']) as String),
       isRead: json['isRead'] as bool? ?? false,
     );
   }
@@ -34,4 +34,4 @@ class NotificationModel {
         'createdAt': createdAt.toIso8601String(),
         'isRead': isRead,
       };
-} 
+}

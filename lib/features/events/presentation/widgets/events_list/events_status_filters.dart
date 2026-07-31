@@ -30,13 +30,6 @@ class EventsStatusFiltersWidget extends StatelessWidget {
                   .read<EventsFiltersBloc>()
                   .add(EventsStatusFilterAnswered(value)),
             ),
-            _StatusFilter(
-              label: translate.eventsPageStatusFilterWarning,
-              selected: state.showWarning,
-              onSelected: (value) => context
-                  .read<EventsFiltersBloc>()
-                  .add(EventsStatusFilterWarning(value)),
-            ),
           ],
         );
       },

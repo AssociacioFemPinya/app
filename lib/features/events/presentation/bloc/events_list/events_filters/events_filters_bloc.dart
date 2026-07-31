@@ -11,22 +11,15 @@ class EventsFiltersBloc extends Bloc<EventsFiltersEvent, EventsFiltersState> {
           // TODO: See if we can merge all those three state in a single one for the filter buttons
           showUndefined: false,
           showAnswered: false,
-          showWarning: false,
           eventTypeFilters: [],
           dayFilter: null,
           dayFilterEnabled: false,
         )) {
     on<EventsStatusFilterUndefined>((event, emit) {
-      emit(state.copyWith(
-          showUndefined: event.value, showAnswered: false, showWarning: false));
+      emit(state.copyWith(showUndefined: event.value, showAnswered: false));
     });
     on<EventsStatusFilterAnswered>((event, emit) {
-      emit(state.copyWith(
-          showUndefined: false, showAnswered: event.value, showWarning: false));
-    });
-    on<EventsStatusFilterWarning>((event, emit) {
-      emit(state.copyWith(
-          showUndefined: false, showAnswered: false, showWarning: event.value));
+      emit(state.copyWith(showUndefined: false, showAnswered: event.value));
     });
     on<EventsTypeFiltersAdd>((event, emit) {
       if (!state.eventTypeFilters.contains(event.value)) {

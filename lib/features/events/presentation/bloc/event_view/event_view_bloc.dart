@@ -59,7 +59,8 @@ class EventViewBloc extends Bloc<EventViewEvent, EventViewState> {
     });
 
     on<EvenTagModified>((tagName, emit) async {
-      List<TagEntity>? tagsCopy = state.event!.tags != null ? List.from(state.event!.tags!) : null;
+      List<TagEntity>? tagsCopy =
+          state.event!.tags != null ? List.from(state.event!.tags!) : null;
 
       for (var i = 0; i < tagsCopy!.length; i++) {
         if (tagsCopy[i].name == tagName.value) {
@@ -69,18 +70,6 @@ class EventViewBloc extends Bloc<EventViewEvent, EventViewState> {
 
       var newEvent = state.event!.copyWith(tags: tagsCopy);
       add(UpdateEvent(newEvent));
-    });
-
-    on<AddEventComment>((comment, emit) async {
-      EventEntity updatedEvent = state.event!.copyWith(comment: comment.value);
-
-      add(UpdateEvent(updatedEvent));
-    });
-
-    on<RemoveEventComment>((comment, emit) async {
-      EventEntity updatedEvent = state.event!.copyWith(comment: '');
-
-      add(UpdateEvent(updatedEvent));
     });
   }
 }

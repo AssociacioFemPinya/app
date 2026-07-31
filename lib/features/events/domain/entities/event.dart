@@ -15,10 +15,13 @@ class EventEntity extends Equatable {
   final EventStatusEnum status;
   final EventTypeEnum type;
   final String? description;
+  final String? locationLink;
+  final DateTime? registrationOpenDate;
+  final DateTime? registrationCloseDate;
+  final String registrationStatus;
   final int? companions;
+  final bool allowsCompanions;
   final List<TagEntity>? tags;
-  final String? comment;
-  
 
   const EventEntity({
     required this.id,
@@ -30,14 +33,34 @@ class EventEntity extends Equatable {
     required this.status,
     required this.type,
     required this.description,
+    this.locationLink,
+    this.registrationOpenDate,
+    this.registrationCloseDate,
+    this.registrationStatus = 'open',
     required this.companions,
+    this.allowsCompanions = false,
     required this.tags,
-    required this.comment,
   });
 
   @override
   List<Object?> get props {
-    return [id, title, startDate, endDate, address, status, type, description, companions, tags, comment];
+    return [
+      id,
+      title,
+      startDate,
+      endDate,
+      address,
+      status,
+      type,
+      description,
+      locationLink,
+      registrationOpenDate,
+      registrationCloseDate,
+      registrationStatus,
+      companions,
+      allowsCompanions,
+      tags
+    ];
   }
 
   // Factory constructor to create an EventEntity from EventModel
@@ -48,14 +71,19 @@ class EventEntity extends Equatable {
       title: model.title ?? '',
       startDate: model.startDate ?? DateTime.now(),
       endDate: model.endDate ?? DateTime.now(),
-      dateHour: DateFormat('h:mm a').format(model.startDate ?? DateTime.now()), // Populate as needed
+      dateHour: DateFormat('h:mm a')
+          .format(model.startDate ?? DateTime.now()), // Populate as needed
       address: model.address ?? '',
       status: EventStatusEnumExtension.fromString(model.status ?? ""),
       type: EventTypeEnumExtension.fromString(model.type ?? ""),
       description: model.description ?? '',
+      locationLink: model.locationLink,
+      registrationOpenDate: model.registrationOpenDate,
+      registrationCloseDate: model.registrationCloseDate,
+      registrationStatus: model.registrationStatus,
       companions: model.companions ?? 0,
+      allowsCompanions: model.allowsCompanions,
       tags: model.tags?.map((tag) => TagEntity.fromModel(tag)).toList() ?? [],
-      comment: model.comment ?? '',
     );
   }
 
@@ -70,13 +98,18 @@ class EventEntity extends Equatable {
       status: status.toString().split('.').last,
       type: type.toString().split('.').last,
       description: description,
+      locationLink: locationLink,
+      registrationOpenDate: registrationOpenDate,
+      registrationCloseDate: registrationCloseDate,
+      registrationStatus: registrationStatus,
       companions: companions,
+      allowsCompanions: allowsCompanions,
       tags: tags?.map((tag) => tag.toModel()).toList() ?? [],
-      comment: comment,
     );
   }
 
-  EventEntity copyWith({EventStatusEnum? status, int? companions, List<TagEntity>? tags, String? comment}) {
+  EventEntity copyWith(
+      {EventStatusEnum? status, int? companions, List<TagEntity>? tags}) {
     return EventEntity(
       id: id,
       title: title,
@@ -87,9 +120,13 @@ class EventEntity extends Equatable {
       status: status ?? this.status,
       type: type,
       description: description,
+      locationLink: locationLink,
+      registrationOpenDate: registrationOpenDate,
+      registrationCloseDate: registrationCloseDate,
+      registrationStatus: registrationStatus,
       companions: companions ?? this.companions,
+      allowsCompanions: allowsCompanions,
       tags: tags ?? this.tags,
-      comment: comment,
     );
   }
 }

@@ -36,7 +36,6 @@ class EventsServiceImpl implements EventsService {
       },
       'showAnswered': params.showAnswered,
       'showUndefined': params.showUndefined,
-      'showWarning': params.showWarning,
     };
   }
 
@@ -51,15 +50,15 @@ class EventsServiceImpl implements EventsService {
       if (response.statusCode == 200 && response.data is List<dynamic>) {
         final jsonList = response.data as List<dynamic>;
         final events = jsonList
-            .map((json) => EventEntity.fromModel(EventModel.fromJson(json as Map<String, dynamic>)))
+            .map((json) => EventEntity.fromModel(
+                EventModel.fromJson(json as Map<String, dynamic>)))
             .toList();
         return Right(events);
       }
       return const Left('Unexpected response format');
     } catch (e, stacktrace) {
       _logError('Error when calling ${EventsApiEndpoints.getEvents} endpoint',
-          e,
-          stacktrace);
+          e, stacktrace);
       return Left(
           'Error when calling ${EventsApiEndpoints.getEvents} endpoint: $e');
     }
@@ -97,6 +96,11 @@ class EventsServiceImpl implements EventsService {
       // TODO: clean this code
       final data = params.toModel().toJson();
       data.remove('id');
+      data.remove('allowsCompanions');
+      data.remove('locationLink');
+      data.remove('registrationOpenDate');
+      data.remove('registrationCloseDate');
+      data.remove('registrationStatus');
       final response = await _dio.put(
           '${EventsApiEndpoints.getEvents}/${params.id}',
           data: jsonEncode(data));
@@ -108,7 +112,8 @@ class EventsServiceImpl implements EventsService {
     } catch (e, stacktrace) {
       _logError(
           'Error when calling post ${EventsApiEndpoints.getEvents}/${params.id} endpoint',
-          e, stacktrace);
+          e,
+          stacktrace);
       return Left(
           'Error when calling post ${EventsApiEndpoints.getEvents}/${params.id} endpoint: $e');
     }

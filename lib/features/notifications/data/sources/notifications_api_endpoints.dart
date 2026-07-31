@@ -1,6 +1,7 @@
 class NotificationsApiEndpoints {
-  static const String getNotifications = '/notifications';
-  static const String getNotification = '/notifications/{notificationId}';
+  static const String getNotifications = '/api-fempinya/mobile_notifications';
+  static const String getNotification =
+      '/api-fempinya/mobile_notifications/{notificationId}';
   static const String updateReadNotification =
-      '/notifications/{notificationId}/read';
+      '/api-fempinya/mobile_notifications/{notificationId}';
 }

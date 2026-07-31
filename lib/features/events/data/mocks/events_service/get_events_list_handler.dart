@@ -32,8 +32,7 @@ abstract class GetEventsListHandler {
             .toList(),
         dayTimeRange,
         queryParams["showAnswered"],
-        queryParams["showUndefined"],
-        queryParams["showWarning"]);
+        queryParams["showUndefined"]);
 
     Response<dynamic> response;
 
@@ -55,7 +54,6 @@ abstract class GetEventsListHandler {
     final DateTimeRange? dayTimeRange,
     bool showAnswered,
     bool showUndefined,
-    bool showWarning,
   ) {
     List<EventEntity> events = dayTimeRange != null
         ? _getEventsByDateRange(dayTimeRange, mock.eventList)
@@ -63,8 +61,7 @@ abstract class GetEventsListHandler {
 
     List<EventEntity> filteredEventsByType =
         _filterByType(events, eventTypeFilters);
-    return _filterByStatus(
-        filteredEventsByType, showAnswered, showUndefined, showWarning);
+    return _filterByStatus(filteredEventsByType, showAnswered, showUndefined);
   }
 
   static List<EventEntity> _filterByType(
@@ -84,7 +81,6 @@ abstract class GetEventsListHandler {
     List<EventEntity> eventsList,
     bool showAnswered,
     bool showUndefined,
-    bool showWarning,
   ) {
     return eventsList.where((event) {
       if (showUndefined && event.status == EventStatusEnum.undefined) {
@@ -99,10 +95,7 @@ abstract class GetEventsListHandler {
           ].contains(event.status))) {
         return true;
       }
-      if (showWarning && event.status == EventStatusEnum.warning) {
-        return true;
-      }
-      return !showUndefined && !showAnswered && !showWarning;
+      return !showUndefined && !showAnswered;
     }).toList();
   }
 

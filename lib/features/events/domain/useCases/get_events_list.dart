@@ -6,20 +6,17 @@ import 'package:fempinya3_flutter_app/features/events/domain/repositories/events
 
 import 'package:fempinya3_flutter_app/features/events/service_locator.dart';
 
-
 class GetEventsListParams {
   final List<EventTypeEnum> eventTypeFilters;
   final DateTimeRange? dayTimeRange;
   final bool showAnswered;
   final bool showUndefined;
-  final bool showWarning;
 
   GetEventsListParams({
     this.eventTypeFilters = const [],
     this.dayTimeRange,
     this.showAnswered = false,
     this.showUndefined = false,
-    this.showWarning = false,
   });
 }
 
