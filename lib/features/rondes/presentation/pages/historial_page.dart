@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:femcastells/features/menu/presentation/widgets/arc_menu.dart';
 import 'package:femcastells/core/service_locator.dart';
 import 'package:femcastells/features/rondes/data/models/historial.dart';
 import 'package:femcastells/features/rondes/data/models/ronda.dart';
@@ -25,7 +26,7 @@ class _HistorialPageState extends State<HistorialPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return ArcMenu(child: Scaffold(
       appBar: AppBar(title: const Text('Historial d\'actuacions')),
       body: FutureBuilder<List<HistorialEventModel>>(
         future: _future,
@@ -43,7 +44,7 @@ class _HistorialPageState extends State<HistorialPage> {
           );
         },
       ),
-    );
+    ));
   }
 }
 

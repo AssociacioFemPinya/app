@@ -8,7 +8,7 @@ import 'package:femcastells/features/events/presentation/widgets/events_list/eve
 import 'package:femcastells/features/events/presentation/widgets/events_list/events_status_filters.dart';
 import 'package:femcastells/features/events/presentation/widgets/events_list/events_view_mode.dart';
 import 'package:femcastells/features/events/presentation/widgets/events_list/events_with_alert_banner.dart';
-import 'package:femcastells/features/menu/presentation/widgets/menu_widget.dart';
+import 'package:femcastells/features/menu/presentation/widgets/arc_menu.dart';
 import 'package:femcastells/features/events/presentation/bloc/events_list/events_filters/events_filters_bloc.dart';
 
 import 'package:flutter/material.dart';
@@ -40,11 +40,10 @@ class EventsListPage extends StatelessWidget {
           create: (context) => EventsCalendarBloc(),
         ),
       ],
-      child: Scaffold(
+      child: ArcMenu(child: Scaffold(
           appBar: AppBar(
             title: Text(translate.eventsPageTitle),
           ),
-          drawer: const MenuWidget(),
           body: MultiBlocListener(
             listeners: [
               BlocListener<EventsFiltersBloc, EventsFiltersState>(
@@ -75,7 +74,7 @@ class EventsListPage extends StatelessWidget {
                 ],
               ),
             ),
-          )),
+          ))),
     );
   }
 }

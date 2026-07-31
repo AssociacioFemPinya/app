@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:femcastells/features/menu/presentation/widgets/menu_widget.dart';
+import 'package:femcastells/features/menu/presentation/widgets/arc_menu.dart';
 import 'package:femcastells/features/user_profile/user_profile.dart';
 import 'package:femcastells/l10n/app_localizations.dart';
 class UserProfilePage extends StatefulWidget {
@@ -34,7 +34,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
   Widget build(BuildContext context) {
     final translate = AppLocalizations.of(context)!;
 
-    return Scaffold(
+    return ArcMenu(child: Scaffold(
       appBar: AppBar(
         title: Text(translate.userProfileMenu),
         actions: [
@@ -51,9 +51,8 @@ class _UserProfilePageState extends State<UserProfilePage> {
             ),
         ],
       ),
-      drawer: const MenuWidget(),
       body: _buildBody(),
-    );
+    ));
   }
 
   Widget _buildBody() {

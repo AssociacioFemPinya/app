@@ -1,3 +1,4 @@
+import 'package:femcastells/features/menu/presentation/widgets/arc_menu.dart';
 import 'package:femcastells/features/rondes/rondes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -33,7 +34,7 @@ class RondaViewContentsPage extends StatelessWidget {
           s is RondaViewLoadFailureStateEmptyUri ||
           s is RondaViewLoadFailureStateWrongUri) {
         RondaViewLoadStateWithRonda state = s as RondaViewLoadStateWithRonda;
-        return Scaffold(
+        return ArcMenu(child: Scaffold(
           appBar: AppBar(
             title: Text(translate.rondesListRondaButton(
                 state.ronda.id, state.ronda.name)),
@@ -41,7 +42,7 @@ class RondaViewContentsPage extends StatelessWidget {
           body: Center(
             child: _rondaViewContentsBody(state, translate),
           ),
-        );
+        ));
       } else {
         return Text('Unknown state');
       }

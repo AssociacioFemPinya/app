@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:femcastells/features/home/data/home_service.dart';
+import 'package:femcastells/features/menu/presentation/widgets/arc_menu.dart';
 import 'package:femcastells/features/notifications/presentation/pages/noticia_detail_page.dart';
 import 'package:femcastells/l10n/app_localizations.dart';
 
@@ -24,7 +25,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
   Widget build(BuildContext context) {
     final translate = AppLocalizations.of(context)!;
 
-    return Scaffold(
+    return ArcMenu(child: Scaffold(
       appBar: AppBar(title: Text(translate.notificationsTitle)),
       body: FutureBuilder<List<NoticiaItem>>(
         future: _future,
@@ -51,7 +52,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
           );
         },
       ),
-    );
+    ));
   }
 }
 

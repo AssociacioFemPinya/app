@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:femcastells/features/menu/presentation/widgets/menu_widget.dart';
+import 'package:femcastells/features/menu/presentation/widgets/arc_menu.dart';
 import 'package:femcastells/features/home/data/home_service.dart';
 import 'package:femcastells/features/notifications/presentation/pages/noticia_detail_page.dart';
 import 'package:femcastells/features/login/login.dart' hide sl;
@@ -45,7 +45,8 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final translate = AppLocalizations.of(context)!;
 
-    return Scaffold(
+    return ArcMenu(
+      child: Scaffold(
       appBar: AppBar(
         title: Text(translate.menuHome),
         actions: [
@@ -55,7 +56,6 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      drawer: const MenuWidget(),
       body: FutureBuilder<HomeData>(
         future: _future,
         builder: (context, snapshot) {
@@ -96,7 +96,7 @@ class _HomePageState extends State<HomePage> {
           );
         },
       ),
-    );
+    ));
   }
 }
 

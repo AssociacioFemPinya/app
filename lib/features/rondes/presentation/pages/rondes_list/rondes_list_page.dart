@@ -1,4 +1,4 @@
-import 'package:femcastells/features/menu/presentation/widgets/menu_widget.dart';
+import 'package:femcastells/features/menu/presentation/widgets/arc_menu.dart';
 import 'package:femcastells/features/rondes/rondes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -31,11 +31,10 @@ class RondesListPageContents extends StatelessWidget {
   Widget build(BuildContext context) {
     final translate = AppLocalizations.of(context)!;
 
-    return Scaffold(
+    return ArcMenu(child: Scaffold(
       appBar: AppBar(
         title: Text(translate.menuRondes),
       ),
-      drawer: const MenuWidget(),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: BlocConsumer<RondesListBloc, RondesListState>(
@@ -91,6 +90,6 @@ class RondesListPageContents extends StatelessWidget {
           },
         ),
       ),
-    );
+    ));
   }
 }

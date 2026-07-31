@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:femcastells/features/menu/presentation/widgets/arc_menu.dart';
 import 'package:femcastells/l10n/app_localizations.dart';
 
 class HelpPage extends StatelessWidget {
@@ -7,7 +8,7 @@ class HelpPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context)!;
-    return Scaffold(
+    return ArcMenu(child: Scaffold(
       appBar: AppBar(title: Text(t.menuHelp)),
       body: const SingleChildScrollView(
         padding: EdgeInsets.all(24),
@@ -29,6 +30,6 @@ class HelpPage extends StatelessWidget {
           ],
         ),
       ),
-    );
+    ));
   }
 }
