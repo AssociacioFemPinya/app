@@ -3,6 +3,7 @@ import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 
 import 'package:femcastells/features/rondes/rondes.dart';
+import 'package:femcastells/features/rondes/data/models/historial.dart';
 
 abstract class RondesService {
   Future<Either<String, List<RondaEntity>>> getRondesList(
@@ -10,6 +11,7 @@ abstract class RondesService {
   Future<Either<String, RondaEntity>> getRonda(GetRondaParams params);
   Future<Either<String, PublicDisplayUrlEntity>> getPublicDisplayUrl(
       GetPublicDisplayUrlParams params);
+  Future<Either<String, List<HistorialEventModel>>> getHistorial();
 }
 
 class RondesServiceImpl implements RondesService {
@@ -35,6 +37,23 @@ class RondesServiceImpl implements RondesService {
           e, stacktrace);
       return Left(
           'Error when calling ${RondesApiEndpoints.getRondes} endpoint: $e');
+    }
+  }
+
+  @override
+  Future<Either<String, List<HistorialEventModel>>> getHistorial() async {
+    try {
+      final response = await _dio.get(RondesApiEndpoints.getHistorial);
+      if (response.statusCode == 200 && response.data is List) {
+        final list = (response.data as List)
+            .map((e) => HistorialEventModel.fromJson(e as Map<String, dynamic>))
+            .toList();
+        return Right(list);
+      }
+      return const Left('Unexpected response format');
+    } catch (e, stacktrace) {
+      _logError('Error when calling ${RondesApiEndpoints.getHistorial}', e, stacktrace);
+      return Left('Error when calling ${RondesApiEndpoints.getHistorial}: $e');
     }
   }
 

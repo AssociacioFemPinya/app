@@ -4,6 +4,7 @@ const String eventRoute = '/event';
 const String notificationsRoute = '/notifications';
 const String rondesRoute = '/rondes';
 const String rondaRoute = '/ronda';
+const String historialRoute = '/historial';
 const String publicDisplayUrlRoute = '/publicDisplayUrl';
 const String loginRoute = '/login';
 const String splashRoute = '/splash';

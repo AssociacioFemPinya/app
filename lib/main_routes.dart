@@ -3,6 +3,7 @@ import 'package:femcastells/features/events/presentation/routes.dart';
 import 'package:femcastells/features/home/presentation/pages/home_page.dart';
 import 'package:femcastells/features/login/login.dart';
 import 'package:femcastells/features/rondes/rondes.dart';
+import 'package:femcastells/features/rondes/presentation/pages/historial_page.dart';
 import 'package:femcastells/features/notifications/presentation/routes.dart';
 import 'package:femcastells/features/user_profile/presentation/routes.dart';
 import 'package:femcastells/features/gdpr/gdpr_consent_page.dart';
@@ -26,6 +27,11 @@ GoRouter appRouter(AuthenticationBloc authenticationBloc) {
       ...rondesRoutes,
       ...notificationRoutes,
       ...userProfileRoutes,
+      GoRoute(
+        name: historialRoute,
+        path: historialRoute,
+        builder: (context, state) => const HistorialPage(),
+      ),
       GoRoute(
         name: gdprConsentRoute,
         path: gdprConsentRoute,
