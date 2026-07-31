@@ -117,7 +117,7 @@ abstract class AppLocalizations {
   /// No description provided for @menuEvents.
   ///
   /// In ca, this message translates to:
-  /// **'Esdeveniments'**
+  /// **'Agenda'**
   String get menuEvents;
 
   /// No description provided for @menuNotifications.
@@ -137,6 +137,30 @@ abstract class AppLocalizations {
   /// In ca, this message translates to:
   /// **'Pinya'**
   String get menuPublicDisplayUrl;
+
+  /// No description provided for @menuHistorial.
+  ///
+  /// In ca, this message translates to:
+  /// **'Historial'**
+  String get menuHistorial;
+
+  /// No description provided for @menuAbout.
+  ///
+  /// In ca, this message translates to:
+  /// **'Sobre FemCastells'**
+  String get menuAbout;
+
+  /// No description provided for @menuPrivacy.
+  ///
+  /// In ca, this message translates to:
+  /// **'Política de privacitat'**
+  String get menuPrivacy;
+
+  /// No description provided for @menuHelp.
+  ///
+  /// In ca, this message translates to:
+  /// **'Ajuda i comentaris'**
+  String get menuHelp;
 
   /// No description provided for @menuDisconnect.
   ///

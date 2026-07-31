@@ -7,6 +7,8 @@ import 'package:femcastells/features/rondes/presentation/pages/historial_page.da
 import 'package:femcastells/features/notifications/presentation/routes.dart';
 import 'package:femcastells/features/user_profile/presentation/routes.dart';
 import 'package:femcastells/features/gdpr/gdpr_consent_page.dart';
+import 'package:femcastells/features/info/about_page.dart';
+import 'package:femcastells/features/info/help_page.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -36,6 +38,16 @@ GoRouter appRouter(AuthenticationBloc authenticationBloc) {
         name: gdprConsentRoute,
         path: gdprConsentRoute,
         builder: (context, state) => const GdprConsentPage(),
+      ),
+      GoRoute(
+        name: aboutRoute,
+        path: aboutRoute,
+        builder: (context, state) => const AboutPage(),
+      ),
+      GoRoute(
+        name: helpRoute,
+        path: helpRoute,
+        builder: (context, state) => const HelpPage(),
       ),
     ],
     // changes on the listenable will cause the router to refresh it's route
