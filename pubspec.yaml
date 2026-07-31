@@ -1,7 +1,7 @@
 name: femcastells
 description: "Gestió de colles castelleres"
 publish_to: 'none'
-version: 1.0.1+2
+version: 1.0.1+3
 
 environment:
   sdk: '>=3.4.3 <4.0.0'
@@ -51,6 +51,15 @@ dev_dependencies:
   mockito: ^5.4.5
   build_runner: ^2.4.14
   rxdart: ^0.28.0
+  flutter_launcher_icons: ^0.14.3
+
+flutter_launcher_icons:
+  android: true
+  ios: false
+  image_path: "assets/icon.png"
+  min_sdk_android: 21
+  adaptive_icon_background: "#1A5C38"
+  adaptive_icon_foreground: "assets/icon.png"
 
 flutter:
   uses-material-design: true
