@@ -9,10 +9,14 @@
         }
     },
     "menuHome": "Inici",
-    "menuEvents": "Esdeveniments",
+    "menuEvents": "Agenda",
     "menuNotifications": "Notícies",
     "menuRondes": "Rondes",
     "menuPublicDisplayUrl": "Pinya",
+    "menuHistorial": "Historial",
+    "menuAbout": "Sobre FemCastells",
+    "menuPrivacy": "Política de privacitat",
+    "menuHelp": "Ajuda i comentaris",
     "menuDisconnect": "Desconnectar",
     "menuLanguageSettings": "{locale, select, ca {Català} en {English} es {Español} fr {Français} other {}}",
     "@menuLanguageSettings": {

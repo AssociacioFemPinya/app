@@ -17,7 +17,7 @@ class AppLocalizationsCa extends AppLocalizations {
   String get menuHome => 'Inici';
 
   @override
-  String get menuEvents => 'Esdeveniments';
+  String get menuEvents => 'Agenda';
 
   @override
   String get menuNotifications => 'Notícies';
@@ -27,6 +27,18 @@ class AppLocalizationsCa extends AppLocalizations {
 
   @override
   String get menuPublicDisplayUrl => 'Pinya';
+
+  @override
+  String get menuHistorial => 'Historial';
+
+  @override
+  String get menuAbout => 'Sobre FemCastells';
+
+  @override
+  String get menuPrivacy => 'Política de privacitat';
+
+  @override
+  String get menuHelp => 'Ajuda i comentaris';
 
   @override
   String get menuDisconnect => 'Desconnectar';

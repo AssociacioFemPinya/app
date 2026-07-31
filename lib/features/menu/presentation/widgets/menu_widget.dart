@@ -23,11 +23,15 @@ class MenuWidget extends StatelessWidget {
           _buildListTile(context, translate.menuHome, homeRoute),
           _buildListTile(context, translate.menuEvents, eventsRoute),
           _buildListTile(
-              context, translate.menuNotifications, notificationsRoute),
-          _buildListTile(context, translate.menuRondes, rondesRoute),
-          _buildListTile(context, 'Historial', historialRoute),
-          _buildListTile(
               context, translate.menuPublicDisplayUrl, publicDisplayUrlRoute),
+          _buildListTile(context, translate.menuRondes, rondesRoute),
+          _buildListTile(context, translate.menuHistorial, historialRoute),
+          _buildListTile(
+              context, translate.menuNotifications, notificationsRoute),
+          const Divider(),
+          _buildListTile(context, translate.menuAbout, aboutRoute),
+          _buildListTile(context, translate.menuPrivacy, gdprConsentRoute),
+          _buildListTile(context, translate.menuHelp, helpRoute),
           const Divider(),
           _buildLocaleDropdown(context, translate, selectedLocale),
           const Divider(),
