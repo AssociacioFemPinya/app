@@ -31,4 +31,7 @@ class EventViewEventUpdated extends EventViewState {
 class EventViewEventUpdateFailure extends EventViewState {
   EventViewEventUpdateFailure({required super.event});
 }
+class EventViewAnswersSaved extends EventViewState {
+  EventViewAnswersSaved({required super.event});
+}
 

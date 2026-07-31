@@ -3,12 +3,12 @@ import 'dart:convert';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 
-import 'package:fempinya3_flutter_app/features/notifications/data/models/notification_model.dart';
-import 'package:fempinya3_flutter_app/features/notifications/domain/entities/notification.dart';
-import 'package:fempinya3_flutter_app/features/notifications/service_locator.dart';
-import 'package:fempinya3_flutter_app/features/notifications/domain/useCases/get_notifications.dart';
-import 'package:fempinya3_flutter_app/features/notifications/data/sources/notifications_api_endpoints.dart';
-import 'package:fempinya3_flutter_app/global_endpoints.dart';
+import 'package:femcastells/features/notifications/data/models/notification_model.dart';
+import 'package:femcastells/features/notifications/domain/entities/notification.dart';
+import 'package:femcastells/features/notifications/service_locator.dart';
+import 'package:femcastells/features/notifications/domain/useCases/get_notifications.dart';
+import 'package:femcastells/features/notifications/data/sources/notifications_api_endpoints.dart';
+import 'package:femcastells/global_endpoints.dart';
 
 abstract class NotificationsService {
   Future<Either<String, List<NotificationEntity>>> getNotifications(GetNotificationsParams params);

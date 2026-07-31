@@ -1,4 +1,4 @@
-import 'package:fempinya3_flutter_app/features/events/domain/enums/events_view_mode.dart';
+import 'package:femcastells/features/events/domain/enums/events_view_mode.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 

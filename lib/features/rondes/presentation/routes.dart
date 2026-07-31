@@ -1,4 +1,4 @@
-import 'package:fempinya3_flutter_app/core/navigation/route_names.dart';
+import 'package:femcastells/core/navigation/route_names.dart';
 import 'package:go_router/go_router.dart';
 
 import 'presentation.dart';

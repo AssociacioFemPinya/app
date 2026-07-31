@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
-import 'package:fempinya3_flutter_app/core/usecase/usecase.dart';
-import 'package:fempinya3_flutter_app/features/rondes/rondes.dart';
+import 'package:femcastells/core/usecase/usecase.dart';
+import 'package:femcastells/features/rondes/rondes.dart';
 
 class GetRondesListParams {
 

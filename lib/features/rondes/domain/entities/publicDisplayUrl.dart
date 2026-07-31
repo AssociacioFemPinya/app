@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:fempinya3_flutter_app/features/rondes/rondes.dart';
+import 'package:femcastells/features/rondes/rondes.dart';
 
 class PublicDisplayUrlEntity extends Equatable {
   final String publicUrl;

@@ -1,9 +1,9 @@
-import 'package:fempinya3_flutter_app/features/menu/presentation/widgets/menu_widget.dart';
-import 'package:fempinya3_flutter_app/features/rondes/rondes.dart';
+import 'package:femcastells/features/menu/presentation/widgets/menu_widget.dart';
+import 'package:femcastells/features/rondes/rondes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:fempinya3_flutter_app/core/navigation/route_names.dart';
+import 'package:femcastells/l10n/app_localizations.dart';
+import 'package:femcastells/core/navigation/route_names.dart';
 import 'package:go_router/go_router.dart';
 
 class RondesListPage extends StatelessWidget {
@@ -53,25 +53,34 @@ class RondesListPageContents extends StatelessWidget {
                   child: Text(AppLocalizations.of(context)!.rondesListEmpty),
                 );
               } else {
-                return ListView.separated(
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      title: ElevatedButton(
-                        onPressed: () {
-                          context.pushNamed(rondaRoute, pathParameters: {
-                            'rondaID': state.rondes[index].id.toString()
-                          });
-                        },
-                        child: Text(AppLocalizations.of(context)!
-                            .rondesListRondaButton(state.rondes[index].ronda,
-                                state.rondes[index].name)),
-                      ),
-                    );
-                  },
-                  separatorBuilder: (context, index) {
-                    return SizedBox(height: 0);
-                  },
-                  itemCount: state.rondes.length,
+                return SingleChildScrollView(
+                  child: Column(
+                    children: state.rondes.map((ronda) => Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        ListTile(
+                          title: Text.rich(
+                            TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: 'Ronda ${ronda.ronda}',
+                                  style: const TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                TextSpan(text: '  ${ronda.name}'),
+                              ],
+                            ),
+                          ),
+                          trailing: const Icon(Icons.chevron_right),
+                          onTap: () {
+                            context.pushNamed(rondaRoute, pathParameters: {
+                              'rondaID': ronda.id.toString()
+                            });
+                          },
+                        ),
+                        const Divider(height: 1),
+                      ],
+                    )).toList(),
+                  ),
                 );
               }
             } else {

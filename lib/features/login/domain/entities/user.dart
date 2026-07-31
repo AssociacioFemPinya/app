@@ -1,4 +1,4 @@
-import 'package:fempinya3_flutter_app/features/login/login.dart';
+import 'package:femcastells/features/login/login.dart';
 
 import 'package:equatable/equatable.dart';
 
@@ -7,25 +7,28 @@ class UserEntity extends Equatable {
   final String castellerActiveAlias;
   final List<LinkedCastellerEntity> linkedCastellers;
   final bool boardsEnabled;
+  final String? collaName;
+  final String? collaLogoUrl;
 
   const UserEntity({
     required this.castellerActiveId,
     required this.castellerActiveAlias,
     required this.linkedCastellers,
     required this.boardsEnabled,
+    this.collaName,
+    this.collaLogoUrl,
   });
 
   @override
-  List<Object?> get props {
-    return [
-      castellerActiveId,
-      castellerActiveAlias,
-      linkedCastellers,
-      boardsEnabled
-    ];
-  }
+  List<Object?> get props => [
+        castellerActiveId,
+        castellerActiveAlias,
+        linkedCastellers,
+        boardsEnabled,
+        collaName,
+        collaLogoUrl,
+      ];
 
-  // Factory constructor to create a UserEntity from UserModel
   factory UserEntity.fromModel(UserModel model) {
     return UserEntity(
       castellerActiveId: model.castellerActiveId,
@@ -34,10 +37,11 @@ class UserEntity extends Equatable {
           .map((casteller) => LinkedCastellerEntity.fromModel(casteller))
           .toList(),
       boardsEnabled: model.boardsEnabled,
+      collaName: model.collaName,
+      collaLogoUrl: model.collaLogoUrl,
     );
   }
 
-  // Convert the entity to UserModel
   UserModel toModel() {
     return UserModel(
       castellerActiveId: castellerActiveId,
@@ -45,6 +49,8 @@ class UserEntity extends Equatable {
       linkedCastellers:
           linkedCastellers.map((casteller) => casteller.toModel()).toList(),
       boardsEnabled: boardsEnabled,
+      collaName: collaName,
+      collaLogoUrl: collaLogoUrl,
     );
   }
 
@@ -53,12 +59,16 @@ class UserEntity extends Equatable {
     String? castellerActiveAlias,
     List<LinkedCastellerEntity>? linkedCastellers,
     bool? boardsEnabled,
+    String? collaName,
+    String? collaLogoUrl,
   }) {
     return UserEntity(
       castellerActiveId: castellerActiveId ?? this.castellerActiveId,
       castellerActiveAlias: castellerActiveAlias ?? this.castellerActiveAlias,
       linkedCastellers: linkedCastellers ?? this.linkedCastellers,
       boardsEnabled: boardsEnabled ?? this.boardsEnabled,
+      collaName: collaName ?? this.collaName,
+      collaLogoUrl: collaLogoUrl ?? this.collaLogoUrl,
     );
   }
 
@@ -74,7 +84,8 @@ class UserEntity extends Equatable {
     return 'UserEntity(castellerActiveId: $castellerActiveId, '
         'castellerActiveAlias: $castellerActiveAlias, '
         'linkedCastellers: $linkedCastellers, '
-        'boardsEnabled: $boardsEnabled)';
+        'boardsEnabled: $boardsEnabled, '
+        'collaName: $collaName)';
   }
 }
 

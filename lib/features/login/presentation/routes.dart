@@ -1,5 +1,5 @@
-import 'package:fempinya3_flutter_app/core/navigation/route_names.dart';
-import 'package:fempinya3_flutter_app/features/login/login.dart';
+import 'package:femcastells/core/navigation/route_names.dart';
+import 'package:femcastells/features/login/login.dart';
 
 import 'package:go_router/go_router.dart';
 

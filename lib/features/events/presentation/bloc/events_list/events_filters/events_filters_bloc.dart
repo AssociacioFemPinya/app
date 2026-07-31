@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:fempinya3_flutter_app/features/events/domain/enums/events_type.dart';
+import 'package:femcastells/features/events/domain/enums/events_type.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'events_filters_state.dart';

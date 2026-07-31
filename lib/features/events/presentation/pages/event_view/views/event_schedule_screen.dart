@@ -1,7 +1,7 @@
-import 'package:fempinya3_flutter_app/features/events/domain/entities/event.dart';
+import 'package:femcastells/features/events/domain/entities/event.dart';
 import 'package:flutter/material.dart';
-import 'package:fempinya3_flutter_app/core/theme_constants.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:femcastells/core/theme_constants.dart';
+import 'package:femcastells/l10n/app_localizations.dart';
 
 
 class EventScheduleScreen extends StatelessWidget {

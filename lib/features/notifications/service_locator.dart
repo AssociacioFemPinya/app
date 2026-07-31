@@ -1,11 +1,11 @@
 import 'package:dio/dio.dart';
-import 'package:fempinya3_flutter_app/features/notifications/data/mocks/notifications_service.dart';
+import 'package:femcastells/features/notifications/data/mocks/notifications_service.dart';
 import 'package:get_it/get_it.dart';
-import 'package:fempinya3_flutter_app/features/notifications/data/repositories/notifications_repository_impl.dart';
-import 'package:fempinya3_flutter_app/features/notifications/data/sources/notifications_service.dart';
-import 'package:fempinya3_flutter_app/features/notifications/domain/repositories/notifications_repository.dart';
-import 'package:fempinya3_flutter_app/features/notifications/domain/useCases/get_notifications.dart';
-import 'package:fempinya3_flutter_app/features/notifications/domain/useCases/update_read_status.dart';
+import 'package:femcastells/features/notifications/data/repositories/notifications_repository_impl.dart';
+import 'package:femcastells/features/notifications/data/sources/notifications_service.dart';
+import 'package:femcastells/features/notifications/domain/repositories/notifications_repository.dart';
+import 'package:femcastells/features/notifications/domain/useCases/get_notifications.dart';
+import 'package:femcastells/features/notifications/domain/useCases/update_read_status.dart';
 
 final sl = GetIt.instance;
 

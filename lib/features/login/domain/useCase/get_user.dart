@@ -1,5 +1,5 @@
-import 'package:fempinya3_flutter_app/features/login/login.dart';
-import 'package:fempinya3_flutter_app/core/usecase/usecase.dart';
+import 'package:femcastells/features/login/login.dart';
+import 'package:femcastells/core/usecase/usecase.dart';
 
 import 'package:dartz/dartz.dart';
 

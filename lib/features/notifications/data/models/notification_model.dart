@@ -1,4 +1,4 @@
-import 'package:fempinya3_flutter_app/features/notifications/domain/entities/notification.dart';
+import 'package:femcastells/features/notifications/domain/entities/notification.dart';
 
 class NotificationModel {
   final String id;

@@ -1,4 +1,4 @@
-import 'package:fempinya3_flutter_app/features/login/login.dart';
+import 'package:femcastells/features/login/login.dart';
 
 import 'package:logger/logger.dart';
 import 'package:dartz/dartz.dart';
@@ -32,15 +32,13 @@ class UsersServiceImpl implements UsersService {
     }
   }
 
-  Map<String, dynamic> _buildGetTokenQueryParams(GetTokenParams params) {
-    return {'email': params.mail, 'password': params.password};
-  }
-
   @override
   Future<Either<String, TokenEntity>> getToken(GetTokenParams params) async {
     try {
-      final response = await _dio.post(LoginApiEndpoints.getToken,
-          queryParameters: _buildGetTokenQueryParams(params));
+      final response = await _dio.post(
+        LoginApiEndpoints.getToken,
+        data: {'email': params.mail, 'password': params.password},
+      );
       if (response.statusCode == 200 && response.data is Map) {
         final json = response.data as Map<String, dynamic>;
         return Right(TokenEntity.fromModel(TokenModel.fromJson(json)));

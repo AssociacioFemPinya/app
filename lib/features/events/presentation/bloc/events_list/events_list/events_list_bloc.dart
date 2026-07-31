@@ -1,8 +1,8 @@
-import 'package:fempinya3_flutter_app/core/utils/datetime_utils.dart';
-import 'package:fempinya3_flutter_app/features/events/domain/entities/event.dart';
-import 'package:fempinya3_flutter_app/features/events/domain/useCases/get_events_list.dart';
-import 'package:fempinya3_flutter_app/features/events/presentation/bloc/events_list/events_filters/events_filters_bloc.dart';
-import 'package:fempinya3_flutter_app/features/events/service_locator.dart';
+import 'package:femcastells/core/utils/datetime_utils.dart';
+import 'package:femcastells/features/events/domain/entities/event.dart';
+import 'package:femcastells/features/events/domain/useCases/get_events_list.dart';
+import 'package:femcastells/features/events/presentation/bloc/events_list/events_filters/events_filters_bloc.dart';
+import 'package:femcastells/features/events/service_locator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'events_list_events.dart';

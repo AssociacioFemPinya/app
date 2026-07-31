@@ -1,0 +1,15 @@
+# Normalitza tots els fitxers de text a LF al repositori
+* text=auto eol=lf
+
+# Fitxers binaris — sense conversió
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.jar binary
+*.zip binary
+*.ttf binary
+*.otf binary
+*.woff binary
+*.woff2 binary

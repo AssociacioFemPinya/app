@@ -1,14 +1,13 @@
-import 'dart:convert';
-
 import 'package:logger/logger.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 
-import 'package:fempinya3_flutter_app/features/user_profile/user_profile.dart';
+import 'package:femcastells/features/user_profile/user_profile.dart';
 
 abstract class UserProfileService {
   Future<Either<String, UserProfileEntity>> getUserProfile(
       GetUserProfileParams params);
+  Future<Either<String, String>> updateUserProfile(Map<String, dynamic> data);
 }
 
 class UserProfileServiceImpl implements UserProfileService {
@@ -20,13 +19,24 @@ class UserProfileServiceImpl implements UserProfileService {
   }
 
   @override
+  Future<Either<String, String>> updateUserProfile(
+      Map<String, dynamic> data) async {
+    try {
+      await _dio.put(UserProfileApiEndpoints.updateUserProfile, data: data);
+      return const Right('Perfil actualitzat correctament');
+    } catch (e, stacktrace) {
+      _logError('Error updating profile', e, stacktrace);
+      return Left('Error actualitzant el perfil: $e');
+    }
+  }
+
+  @override
   Future<Either<String, UserProfileEntity>> getUserProfile(
       GetUserProfileParams params) async {
     try {
       final response = await _dio.get(UserProfileApiEndpoints.getUserProfile);
       if (response.statusCode == 200 && response.data is Map<String, dynamic>) {
-        String json = response.data["castellerInfo"];
-        Map<String, dynamic> data = jsonDecode(json);
+        final data = response.data as Map<String, dynamic>;
         return Right(
             UserProfileEntity.fromModel(UserProfileModel.fromJson(data)));
       }

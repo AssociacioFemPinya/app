@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
-import 'package:fempinya3_flutter_app/features/home/data/home_service.dart';
-import 'package:fempinya3_flutter_app/l10n/app_localizations.dart';
+import 'package:femcastells/features/home/data/home_service.dart';
+import 'package:femcastells/features/notifications/presentation/pages/noticia_detail_page.dart';
+import 'package:femcastells/l10n/app_localizations.dart';
 
 class NotificationsPage extends StatefulWidget {
   const NotificationsPage({super.key});
@@ -55,51 +55,31 @@ class _NotificationsPageState extends State<NotificationsPage> {
   }
 }
 
-class _NoticiaCard extends StatefulWidget {
+class _NoticiaCard extends StatelessWidget {
   final NoticiaItem noticia;
   const _NoticiaCard({required this.noticia});
 
   @override
-  State<_NoticiaCard> createState() => _NoticiaCardState();
-}
-
-class _NoticiaCardState extends State<_NoticiaCard> {
-  bool _expanded = false;
-
-  @override
   Widget build(BuildContext context) {
-    final n = widget.noticia;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        ListTile(
-          leading: n.unread
-              ? const Icon(Icons.fiber_new, color: Colors.orange)
-              : const Icon(Icons.article_outlined, color: Colors.blueGrey),
-          title: Text(
-            n.title,
-            style: TextStyle(
-              fontWeight: n.unread ? FontWeight.bold : FontWeight.normal,
-            ),
-          ),
-          trailing: Icon(_expanded ? Icons.expand_less : Icons.expand_more),
-          onTap: () => setState(() => _expanded = !_expanded),
+    return ListTile(
+      leading: noticia.unread
+          ? const Icon(Icons.fiber_new, color: Colors.orange)
+          : const Icon(Icons.article_outlined, color: Colors.blueGrey),
+      title: Text(
+        noticia.title,
+        style: TextStyle(
+          fontWeight: noticia.unread ? FontWeight.bold : FontWeight.normal,
         ),
-        if (_expanded && n.body != null)
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
-            child: Html(
-              data: n.body!,
-              style: {
-                'body': Style(
-                  fontSize: FontSize(14),
-                  margin: Margins.zero,
-                  padding: HtmlPaddings.zero,
-                ),
-              },
-            ),
-          ),
-      ],
+      ),
+      subtitle: Text(
+        noticia.publishedAt.substring(0, 10),
+        style: const TextStyle(fontSize: 12),
+      ),
+      trailing: const Icon(Icons.chevron_right),
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(builder: (_) => NoticiaDetailPage(noticia: noticia)),
+      ),
     );
   }
 }

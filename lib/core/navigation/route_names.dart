@@ -8,3 +8,4 @@ const String publicDisplayUrlRoute = '/publicDisplayUrl';
 const String loginRoute = '/login';
 const String splashRoute = '/splash';
 const String userProfileRoute = '/userProfile';
+const String gdprConsentRoute = '/gdprConsent';

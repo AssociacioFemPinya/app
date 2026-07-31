@@ -2,7 +2,7 @@ import 'dart:math';
 import 'package:dio/dio.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
-import 'package:fempinya3_flutter_app/features/login/login.dart';
+import 'package:femcastells/features/login/login.dart';
 
 class UsersDioMockInterceptor extends Interceptor {
   late UserEntity user;

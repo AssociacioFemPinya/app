@@ -1,14 +1,15 @@
 import 'package:customizable_counter/customizable_counter.dart';
-import 'package:fempinya3_flutter_app/core/configs/assets/app_icons.dart';
-import 'package:fempinya3_flutter_app/core/utils/datetime_utils.dart';
-import 'package:fempinya3_flutter_app/features/events/domain/entities/tag.dart';
-import 'package:fempinya3_flutter_app/features/events/presentation/bloc/event_view/event_view_bloc.dart';
-import 'package:fempinya3_flutter_app/features/events/presentation/pages/event_view/views/event_member_comments_screen.dart';
-import 'package:fempinya3_flutter_app/features/events/presentation/pages/event_view/views/event_schedule_screen.dart';
-import 'package:fempinya3_flutter_app/features/events/presentation/widgets/event_view/assistance_selector.dart';
-import 'package:fempinya3_flutter_app/features/events/presentation/widgets/event_view/custom_modal_bottom_sheet.dart';
-import 'package:fempinya3_flutter_app/features/events/presentation/widgets/event_view/event_info_tile.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:femcastells/core/configs/assets/app_icons.dart';
+import 'package:femcastells/core/utils/datetime_utils.dart';
+import 'package:femcastells/features/events/domain/entities/tag.dart';
+import 'package:femcastells/features/events/presentation/bloc/event_view/event_view_bloc.dart';
+import 'package:femcastells/features/events/presentation/pages/event_view/views/event_member_comments_screen.dart';
+import 'package:femcastells/features/events/presentation/pages/event_view/views/event_schedule_screen.dart';
+import 'package:femcastells/features/events/presentation/widgets/event_view/assistance_selector.dart';
+import 'package:femcastells/features/events/presentation/widgets/event_view/custom_modal_bottom_sheet.dart';
+import 'package:femcastells/features/events/presentation/widgets/event_view/event_info_tile.dart';
+import 'package:femcastells/features/events/presentation/widgets/event_view/event_questions_section.dart';
+import 'package:femcastells/l10n/app_localizations.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -36,32 +37,61 @@ class EventPage extends StatelessWidget {
       if (state is EventViewInitial) {
         return Container();
       }
-      return Scaffold(
-          appBar: AppBar(title: Text(state.event!.title)),
-          //drawer: const MenuWidget(),
-          body: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: SafeArea(
-                  child: CustomScrollView(
-                slivers: [
-                  eventSummary(context),
-                  eventDescription(context),
-                  schedule(context, translate),
-                  addComments(context, translate),
-                  SliverPadding(
-                  padding: const EdgeInsets.all(8.0),
-                  sliver: attendanceSwitch(context, state),
-                  ),
-                  SliverPadding(
-                  padding: const EdgeInsets.all(8.0),
-                  sliver: companionsSelector(context, translate),
-                  ),
-                  SliverPadding(
-                  padding: const EdgeInsets.all(8.0),
-                  sliver: optionsSelector(context, translate),
-                  ),
-                ],
-              ))));
+      return BlocListener<EventViewBloc, EventViewState>(
+        listener: (context, state) {
+          if (state is EventViewEventUpdated) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(translate.eventPageAttendanceSaved)),
+            );
+          }
+          if (state is EventViewAnswersSaved) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(translate.eventPageAnswersSaved)),
+            );
+          }
+        },
+        child: Scaffold(
+            appBar: AppBar(title: Text(state.event!.title)),
+            body: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SafeArea(
+                    child: CustomScrollView(
+                  slivers: [
+                    eventSummary(context),
+                    eventDescription(context),
+                    schedule(context, translate),
+                    addComments(context, translate),
+                    SliverPadding(
+                    padding: const EdgeInsets.all(8.0),
+                    sliver: attendanceSwitch(context, state, state.event!.isClosed),
+                    ),
+                    if (state.event?.allowCompanions == true)
+                      SliverPadding(
+                      padding: const EdgeInsets.all(8.0),
+                      sliver: companionsSelector(context, translate),
+                      ),
+                    SliverPadding(
+                    padding: const EdgeInsets.all(8.0),
+                    sliver: optionsSelector(context, translate),
+                    ),
+                    if ((state.event?.questions ?? []).isNotEmpty)
+                      SliverPadding(
+                        padding: const EdgeInsets.all(8.0),
+                        sliver: SliverToBoxAdapter(
+                          child: EventQuestionsSection(
+                            questions: state.event!.questions!,
+                            readOnly: state.event!.isClosed,
+                            onSave: (answers) {
+                              context.read<EventViewBloc>().add(
+                                SaveAnswers(state.event!.id, answers),
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                  ],
+                )))),
+      );
     });
   }
 
@@ -234,7 +264,7 @@ class EventPage extends StatelessWidget {
     );
   }
 
-  SliverToBoxAdapter attendanceSwitch(BuildContext context, state) {
+  SliverToBoxAdapter attendanceSwitch(BuildContext context, state, bool disabled) {
     return SliverToBoxAdapter(
       child: Column(
         children: [
@@ -246,17 +276,29 @@ class EventPage extends StatelessWidget {
                   .eventsPageAttendaceQuestion(state.event!.title),
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     fontWeight: FontWeight.bold,
-                    fontSize: Theme.of(context).textTheme.bodyLarge?.fontSize, 
+                    fontSize: Theme.of(context).textTheme.bodyLarge?.fontSize,
                   ),
                 )
             ],
           ),
+          if (disabled)
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              child: Text(
+                AppLocalizations.of(context)!.eventPageClosedBanner,
+                style: TextStyle(color: Theme.of(context).colorScheme.error, fontSize: 13),
+              ),
+            ),
           SizedBox(height: Theme.of(context).textTheme.bodyLarge?.fontSize),
-          SizedBox(
-            width: MediaQuery.of(context)
-                .size
-                .width, // Ajusta al ancho de la pantalla
-            child: const AssistanceSelector(),
+          IgnorePointer(
+            ignoring: disabled,
+            child: Opacity(
+              opacity: disabled ? 0.5 : 1.0,
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: const AssistanceSelector(),
+              ),
+            ),
           ),
         ],
       ),

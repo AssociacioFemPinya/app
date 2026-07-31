@@ -1,4 +1,4 @@
-package com.example.fempinya3_flutter_app
+package com.artacho.femcastells
 
 import io.flutter.embedding.android.FlutterActivity
 

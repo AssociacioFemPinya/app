@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:fempinya3_flutter_app/features/notifications/data/models/notification_model.dart';
+import 'package:femcastells/features/notifications/data/models/notification_model.dart';
 
 class NotificationEntity extends Equatable {
   final String id;

@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:fempinya3_flutter_app/features/rondes/rondes.dart';
+import 'package:femcastells/features/rondes/rondes.dart';
 
 class RondesRepositoryImpl extends RondesRepository {
   @override

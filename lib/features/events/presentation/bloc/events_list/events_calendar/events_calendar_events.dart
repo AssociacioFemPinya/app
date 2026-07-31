@@ -1,4 +1,4 @@
-import 'package:fempinya3_flutter_app/features/events/domain/entities/event.dart';
+import 'package:femcastells/features/events/domain/entities/event.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 abstract class EventsCalendarEvent {}

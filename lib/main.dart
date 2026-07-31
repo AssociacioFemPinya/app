@@ -1,14 +1,14 @@
 import 'package:dio/dio.dart';
-import 'package:fempinya3_flutter_app/core/service_locator.dart';
-import 'package:fempinya3_flutter_app/features/events/data/mocks/events_service/events_service.dart';
-import 'package:fempinya3_flutter_app/features/events/service_locator.dart';
-import 'package:fempinya3_flutter_app/features/login/login.dart';
-import 'package:fempinya3_flutter_app/features/notifications/data/mocks/notifications_service.dart';
-import 'package:fempinya3_flutter_app/features/rondes/rondes.dart';
-import 'package:fempinya3_flutter_app/features/user_profile/user_profile.dart';
-import 'package:fempinya3_flutter_app/main_routes.dart';
-import 'package:fempinya3_flutter_app/features/menu/domain/entities/locale.dart';
-import 'package:fempinya3_flutter_app/services/firebase_notification_service.dart';
+import 'package:femcastells/core/service_locator.dart';
+import 'package:femcastells/features/events/data/mocks/events_service/events_service.dart';
+import 'package:femcastells/features/events/service_locator.dart';
+import 'package:femcastells/features/login/login.dart';
+import 'package:femcastells/features/notifications/data/mocks/notifications_service.dart';
+import 'package:femcastells/features/rondes/rondes.dart';
+import 'package:femcastells/features/user_profile/user_profile.dart';
+import 'package:femcastells/main_routes.dart';
+import 'package:femcastells/features/menu/domain/entities/locale.dart';
+import 'package:femcastells/services/firebase_notification_service.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -19,9 +19,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:femcastells/l10n/app_localizations.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:fempinya3_flutter_app/features/notifications/service_locator.dart';
+import 'package:femcastells/features/notifications/service_locator.dart';
 import 'package:get_it/get_it.dart';
 
 final sl = GetIt.instance;

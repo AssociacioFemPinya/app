@@ -1,30 +1,37 @@
-import 'package:fempinya3_flutter_app/features/events/data/models/tag.dart';
+import 'package:femcastells/features/events/data/models/question.dart';
+import 'package:femcastells/features/events/data/models/tag.dart';
 
 class EventModel {
   final int? id;
   final String? title;
   final DateTime? startDate;
   final DateTime? endDate;
+  final DateTime? closeDate;
   final String? address;
   final String? status;
   final String? type;
   final String? description;
+  final bool? allowCompanions;
   final int? companions;
   final List<TagModel>? tags;
   final String? comment;
+  final List<QuestionModel>? questions;
 
   EventModel({
     required this.id,
     required this.title,
     required this.startDate,
     required this.endDate,
+    this.closeDate,
     required this.address,
     required this.status,
     required this.type,
     required this.description,
+    this.allowCompanions,
     required this.companions,
     required this.tags,
     required this.comment,
+    this.questions,
   });
 
   // Factory constructor for JSON deserialization
@@ -32,18 +39,26 @@ class EventModel {
     var tagsFromJson = data['tags'] as List?;
     List<TagModel>? tagList = tagsFromJson?.map((tag) => TagModel.fromJson(tag)).toList();
 
+    var questionsFromJson = data['questions'] as List?;
+    List<QuestionModel>? questionList = questionsFromJson
+        ?.map((q) => QuestionModel.fromJson(q as Map<String, dynamic>))
+        .toList();
+
     return EventModel(
       id: data['id'],
       title: data['title'],
       startDate: data['startDate'] != null ? DateTime.tryParse(data['startDate']) : null,
       endDate: data['endDate'] != null ? DateTime.tryParse(data['endDate']) : null,
+      closeDate: data['closeDate'] != null ? DateTime.tryParse(data['closeDate']) : null,
       address: data['address'],
       status: data['status'],
       type: data['type'],
       description: data['description'],
+      allowCompanions: data['allowCompanions'] as bool?,
       companions: data['companions'],
       tags: tagList,
       comment: data['comment'],
+      questions: questionList,
     );
   }
 

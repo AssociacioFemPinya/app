@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
-import 'package:fempinya3_flutter_app/features/user_profile/user_profile.dart';
+import 'package:femcastells/features/user_profile/user_profile.dart';
 
 part 'user_profile_view_event.dart';
 part 'user_profile_view_state.dart';

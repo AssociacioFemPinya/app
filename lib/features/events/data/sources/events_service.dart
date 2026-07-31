@@ -1,21 +1,21 @@
 import 'package:logger/logger.dart';
-import 'dart:convert';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:intl/intl.dart';
 
-import 'package:fempinya3_flutter_app/features/events/data/models/event.dart';
-import 'package:fempinya3_flutter_app/features/events/domain/entities/event.dart';
-import 'package:fempinya3_flutter_app/features/events/domain/useCases/get_events_list.dart';
-import 'package:fempinya3_flutter_app/features/events/service_locator.dart';
-import 'package:fempinya3_flutter_app/features/events/data/sources/events_api_endpoints.dart';
-import 'package:fempinya3_flutter_app/features/events/domain/useCases/get_event.dart';
+import 'package:femcastells/features/events/data/models/event.dart';
+import 'package:femcastells/features/events/domain/entities/event.dart';
+import 'package:femcastells/features/events/domain/useCases/get_events_list.dart';
+import 'package:femcastells/features/events/service_locator.dart';
+import 'package:femcastells/features/events/data/sources/events_api_endpoints.dart';
+import 'package:femcastells/features/events/domain/useCases/get_event.dart';
 
 abstract class EventsService {
   Future<Either<String, List<EventEntity>>> getEventsList(
       GetEventsListParams params);
   Future<Either<String, EventEntity>> getEvent(GetEventParams params);
   Future<Either<String, EventEntity>> postEvent(EventEntity params);
+  Future<Either<String, void>> saveAnswers(int eventId, List<Map<String, dynamic>> answers);
 }
 
 class EventsServiceImpl implements EventsService {
@@ -24,6 +24,8 @@ class EventsServiceImpl implements EventsService {
 
   Map<String, dynamic> _buildGetEventsListQueryParams(
       GetEventsListParams params) {
+    final anyStatusFilter =
+        params.showAnswered || params.showUndefined || params.showWarning;
     return {
       if (params.eventTypeFilters.isNotEmpty)
         'eventTypeFilters[]': params.eventTypeFilters
@@ -34,9 +36,12 @@ class EventsServiceImpl implements EventsService {
             DateFormat('yyyy-MM-dd').format(params.dayTimeRange!.start),
         'endDate': DateFormat('yyyy-MM-dd').format(params.dayTimeRange!.end),
       },
-      'showAnswered': params.showAnswered,
-      'showUndefined': params.showUndefined,
-      'showWarning': params.showWarning,
+      // Only send status filters when one is explicitly selected.
+      // With no filter sent, PHP defaults (true/true) show all events.
+      if (anyStatusFilter && !params.showWarning) ...{
+        'showAnswered': params.showAnswered,
+        'showUndefined': params.showUndefined,
+      },
     };
   }
 
@@ -93,24 +98,32 @@ class EventsServiceImpl implements EventsService {
 
   @override
   Future<Either<String, EventEntity>> postEvent(EventEntity params) async {
+    final url = EventsApiEndpoints.updateAttendance(params.id);
     try {
-      // TODO: clean this code
-      final data = params.toModel().toJson();
-      data.remove('id');
-      final response = await _dio.put(
-          '${EventsApiEndpoints.getEvents}/${params.id}',
-          data: jsonEncode(data));
-      if (response.statusCode == 200 && response.data is Map<String, dynamic>) {
-        final json = response.data as Map<String, dynamic>;
-        return Right(EventEntity.fromModel(EventModel.fromJson(json)));
+      final response = await _dio.put(url, data: {
+        'status': params.status.name,
+        'companions': params.companions ?? 0,
+      });
+      if (response.statusCode == 200) {
+        return Right(params);
       }
       return const Left('Unexpected response format');
     } catch (e, stacktrace) {
-      _logError(
-          'Error when calling post ${EventsApiEndpoints.getEvents}/${params.id} endpoint',
-          e, stacktrace);
-      return Left(
-          'Error when calling post ${EventsApiEndpoints.getEvents}/${params.id} endpoint: $e');
+      _logError('Error when calling PUT $url', e, stacktrace);
+      return Left('Error when calling PUT $url: $e');
+    }
+  }
+
+  @override
+  Future<Either<String, void>> saveAnswers(int eventId, List<Map<String, dynamic>> answers) async {
+    final url = EventsApiEndpoints.saveAnswers(eventId);
+    try {
+      final response = await _dio.post(url, data: {'answers': answers});
+      if (response.statusCode == 200) return const Right(null);
+      return const Left('Unexpected response format');
+    } catch (e, stacktrace) {
+      _logError('Error when calling POST $url', e, stacktrace);
+      return Left('Error when calling POST $url: $e');
     }
   }
 

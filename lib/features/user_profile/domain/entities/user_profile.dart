@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:fempinya3_flutter_app/features/user_profile/user_profile.dart';
+import 'package:femcastells/features/user_profile/user_profile.dart';
 
 class UserProfileEntity extends Equatable {
   final int idCasteller;

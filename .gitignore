@@ -30,7 +30,6 @@ pubspec.lock
 
 # Dependency directories
 node_modules/
-lib/generated_plugin_registrant.dart
 
 # Logs & temporary files
 *.log

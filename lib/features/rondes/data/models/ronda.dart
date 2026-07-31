@@ -13,10 +13,10 @@ class RondaModel {
   // Factory constructor for JSON deserialization
   factory RondaModel.fromJson(Map<String, dynamic> data) {
     return RondaModel(
-      id: data['id'],
-      publicUrl: data['publicUrl'],
-      ronda: data['ronda'],
-      name: data['name'],
+      id: data['id'] as int?,
+      publicUrl: data['publicUrl'] as String?,
+      ronda: (data['rondaNumber'] ?? data['ronda']) as int?,
+      name: (data['ronda'] is String ? data['ronda'] : data['name']) as String?,
     );
   }
 

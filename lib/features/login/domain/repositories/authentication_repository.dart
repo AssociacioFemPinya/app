@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:dartz/dartz.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:fempinya3_flutter_app/features/login/login.dart';
+import 'package:femcastells/features/login/login.dart';
 
 enum AuthenticationStatus { unknown, authenticated, unauthenticated }
 

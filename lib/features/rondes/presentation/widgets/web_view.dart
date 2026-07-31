@@ -1,85 +1,52 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-
-// #docregion platform_imports
-// Import for Android features.
-import 'package:webview_flutter_android/webview_flutter_android.dart';
-// Import for iOS/macOS features.
-import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
-// #enddocregion platform_imports
+import 'iframe_view_stub.dart'
+    if (dart.library.js_interop) 'iframe_view_web.dart';
 
 class MyWebView extends StatefulWidget {
   final String url;
-
-  MyWebView({required this.url});
+  const MyWebView({required this.url, super.key});
 
   @override
-  _MyWebViewState createState() => _MyWebViewState();
+  State<MyWebView> createState() => _MyWebViewState();
 }
 
 class _MyWebViewState extends State<MyWebView> {
-  late WebViewController _controller;
+  WebViewController? _controller;
   bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
+    if (kIsWeb) return;
 
-    // late final PlatformWebViewControllerCreationParams params;
-    // if (WebViewPlatform.instance is WebKitWebViewPlatform) {
-    //   params = WebKitWebViewControllerCreationParams(
-    //     allowsInlineMediaPlayback: true,
-    //     mediaTypesRequiringUserAction: const <PlaybackMediaTypes>{},
-    //   );
-    // } else {
-    //   params = const PlatformWebViewControllerCreationParams();
-    // }
-
-    final WebViewController controller =
-        WebViewController.fromPlatformCreationParams(
-            const PlatformWebViewControllerCreationParams());
-
+    final controller = WebViewController.fromPlatformCreationParams(
+      const PlatformWebViewControllerCreationParams(),
+    );
     controller
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..setNavigationDelegate(
-        NavigationDelegate(
-          onProgress: (int progress) {
-            debugPrint("Loading: $progress%");
-          },
-          onPageStarted: (String url) {},
-          onPageFinished: (String url) {
-            setState(() {
-              _isLoading = false;
-            });
-          },
-          onWebResourceError: (WebResourceError error) {},
-          onNavigationRequest: (NavigationRequest request) {
-            return NavigationDecision.navigate;
-          },
-        ),
-      )
+      ..setNavigationDelegate(NavigationDelegate(
+        onPageFinished: (_) => setState(() => _isLoading = false),
+        onNavigationRequest: (_) => NavigationDecision.navigate,
+      ))
       ..loadRequest(Uri.parse(widget.url));
-
     _controller = controller;
   }
 
   @override
   Widget build(BuildContext context) {
+    if (kIsWeb) {
+      return buildIframeView(widget.url);
+    }
     return Stack(
       children: [
-        WebViewWidget(
-          controller: _controller,
-        ),
-        _isLoading
-            ? Container(
-                width: double.infinity,
-                height: double.infinity,
-                color: Colors.white.withOpacity(0.7),
-                child: Center(
-                  child: CircularProgressIndicator(),
-                ),
-              )
-            : Container(),
+        WebViewWidget(controller: _controller!),
+        if (_isLoading)
+          Container(
+            color: Colors.white.withValues(alpha: 0.7),
+            child: const Center(child: CircularProgressIndicator()),
+          ),
       ],
     );
   }

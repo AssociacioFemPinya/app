@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:fempinya3_flutter_app/features/notifications/domain/entities/notification.dart';
-import 'package:fempinya3_flutter_app/features/notifications/presentation/bloc/notifications_bloc.dart';
+import 'package:femcastells/l10n/app_localizations.dart';
+import 'package:femcastells/features/notifications/domain/entities/notification.dart';
+import 'package:femcastells/features/notifications/presentation/bloc/notifications_bloc.dart';
 
 class NotificationItem extends StatelessWidget {
   final NotificationEntity notification;

@@ -2,14 +2,14 @@ import 'dart:math';
 import 'package:dio/dio.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
-import 'package:fempinya3_flutter_app/features/events/data/mocks/events_service/get_event_handler.dart';
-import 'package:fempinya3_flutter_app/features/events/data/mocks/events_service/get_events_list_handler.dart';
-import 'package:fempinya3_flutter_app/features/events/data/mocks/events_service/post_event_handler.dart';
-import 'package:fempinya3_flutter_app/features/events/data/sources/events_api_endpoints.dart';
-import 'package:fempinya3_flutter_app/features/events/domain/entities/event.dart';
-import 'package:fempinya3_flutter_app/features/events/domain/entities/tag.dart';
-import 'package:fempinya3_flutter_app/features/events/domain/enums/events_status.dart';
-import 'package:fempinya3_flutter_app/features/events/domain/enums/events_type.dart';
+import 'package:femcastells/features/events/data/mocks/events_service/get_event_handler.dart';
+import 'package:femcastells/features/events/data/mocks/events_service/get_events_list_handler.dart';
+import 'package:femcastells/features/events/data/mocks/events_service/post_event_handler.dart';
+import 'package:femcastells/features/events/data/sources/events_api_endpoints.dart';
+import 'package:femcastells/features/events/domain/entities/event.dart';
+import 'package:femcastells/features/events/domain/entities/tag.dart';
+import 'package:femcastells/features/events/domain/enums/events_status.dart';
+import 'package:femcastells/features/events/domain/enums/events_type.dart';
 
 class EventsDioMockInterceptor extends Interceptor {
   late List<EventEntity> eventList;

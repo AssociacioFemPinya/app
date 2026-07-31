@@ -1,6 +1,6 @@
 import 'package:logger/logger.dart';
 import 'package:dio/dio.dart';
-import 'package:fempinya3_flutter_app/core/network/dio_factory.dart';
+import 'package:femcastells/core/network/dio_factory.dart';
 import 'package:get_it/get_it.dart';
 
 final sl = GetIt.instance;
