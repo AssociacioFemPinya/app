@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
 import 'package:femcastells/core/navigation/route_names.dart';
 import 'package:femcastells/features/login/login.dart' hide sl;
@@ -90,9 +91,14 @@ class _ArcMenuState extends State<ArcMenu> with SingleTickerProviderStateMixin {
             ListTile(
               leading: const Icon(Icons.logout, color: Colors.red),
               title: Text(t.menuLogout, style: const TextStyle(color: Colors.red)),
-              onTap: () {
-                Navigator.pop(context);
-                context.read<AuthenticationBloc>().add(AuthenticationLogoutPressed());
+              onTap: () async {
+                const storage = FlutterSecureStorage();
+                final bloc = context.read<AuthenticationBloc>();
+                await storage.deleteAll();
+                if (mounted) {
+                  Navigator.pop(context);
+                  bloc.add(AuthenticationLogoutPressed());
+                }
               },
             ),
           ],
