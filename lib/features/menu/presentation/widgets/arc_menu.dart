@@ -1,7 +1,9 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:femcastells/core/navigation/route_names.dart';
+import 'package:femcastells/features/login/login.dart' hide sl;
 import 'package:femcastells/l10n/app_localizations.dart';
 
 const Color _kGreen      = Color(0xFF1A5C38);
@@ -84,6 +86,15 @@ class _ArcMenuState extends State<ArcMenu> with SingleTickerProviderStateMixin {
               title: Text(t.menuHelp),
               onTap: () { Navigator.pop(context); context.pushNamed(helpRoute); },
             ),
+            const Divider(height: 1),
+            ListTile(
+              leading: const Icon(Icons.logout, color: Colors.red),
+              title: Text(t.menuLogout, style: const TextStyle(color: Colors.red)),
+              onTap: () {
+                Navigator.pop(context);
+                context.read<AuthenticationBloc>().add(AuthenticationLogoutPressed());
+              },
+            ),
           ],
         ),
       ),
@@ -94,7 +105,7 @@ class _ArcMenuState extends State<ArcMenu> with SingleTickerProviderStateMixin {
         _MenuItem(Icons.home_rounded, t.menuHome, homeRoute),
         _MenuItem(Icons.calendar_month, t.menuEvents, eventsRoute),
         _MenuItem(Icons.hub_outlined, t.menuPublicDisplayUrl, publicDisplayUrlRoute),
-        _MenuItem(Icons.loop, t.menuRondes, rondesRoute),
+        _MenuItem(Icons.layers_outlined, t.menuRondes, rondesRoute),
         _MenuItem(Icons.history, t.menuHistorial, historialRoute),
         _MenuItem(Icons.notifications_none, t.menuNotifications, notificationsRoute),
         _MenuItem(Icons.more_horiz, t.menuMore, _kMoreSheet),

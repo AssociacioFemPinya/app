@@ -5,6 +5,8 @@ import 'package:femcastells/features/home/data/home_service.dart';
 import 'package:femcastells/features/notifications/presentation/pages/noticia_detail_page.dart';
 import 'package:femcastells/features/login/login.dart' hide sl;
 import 'package:femcastells/l10n/app_localizations.dart';
+import 'package:femcastells/main_routes.dart' show routeObserver;
+import 'package:femcastells/services/firebase_notification_service.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -18,7 +20,7 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with RouteAware {
   final HomeService _service = HomeService();
   late Future<HomeData> _future;
 
@@ -26,7 +28,27 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _future = _service.fetchHome();
-    WidgetsBinding.instance.addPostFrameCallback((_) => _checkGdpr());
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkGdpr();
+      FirebaseNotificationService.instance.syncToken();
+    });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    routeObserver.subscribe(this, ModalRoute.of(context)!);
+  }
+
+  @override
+  void dispose() {
+    routeObserver.unsubscribe(this);
+    super.dispose();
+  }
+
+  @override
+  void didPopNext() {
+    setState(() => _future = _service.fetchHome());
   }
 
   Future<void> _checkGdpr() async {

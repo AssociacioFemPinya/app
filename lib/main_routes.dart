@@ -15,9 +15,12 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'dart:async';
 import 'package:go_router/go_router.dart';
 
+final RouteObserver<ModalRoute<void>> routeObserver = RouteObserver<ModalRoute<void>>();
+
 GoRouter appRouter(AuthenticationBloc authenticationBloc) {
   return GoRouter(
     initialLocation: splashRoute,
+    observers: [routeObserver],
     routes: [
       GoRoute(
         name: homeRoute,

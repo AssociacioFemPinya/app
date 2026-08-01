@@ -119,6 +119,11 @@ class FirebaseNotificationService {
     _messaging.onTokenRefresh.listen(_sendTokenToBackend);
   }
 
+  Future<void> syncToken() async {
+    final token = await _messaging.getToken();
+    if (token != null) await _sendTokenToBackend(token);
+  }
+
   Future<void> _sendTokenToBackend(String token) async {
     try {
       await sl<Dio>().post(

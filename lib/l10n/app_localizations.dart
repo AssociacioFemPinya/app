@@ -150,6 +150,12 @@ abstract class AppLocalizations {
   /// **'Més opcions'**
   String get menuMore;
 
+  /// No description provided for @menuLogout.
+  ///
+  /// In ca, this message translates to:
+  /// **'Tancar sessió'**
+  String get menuLogout;
+
   /// No description provided for @menuAbout.
   ///
   /// In ca, this message translates to:

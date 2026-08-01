@@ -35,6 +35,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get menuMore => 'Plus d\'options';
 
   @override
+  String get menuLogout => 'Se déconnecter';
+
+  @override
   String get menuAbout => 'À propos de FemCastells';
 
   @override
