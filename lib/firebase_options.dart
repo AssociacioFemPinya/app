@@ -50,19 +50,18 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCaMXNg_G799tA6g59e02CbW_aDHiI0ptw',
-    appId: '1:1001485411802:android:bf29c9ff1918b099180ce3',
-    messagingSenderId: '1001485411802',
-    projectId: 'fempinya3-73ef3',
-    storageBucket: 'fempinya3-73ef3.firebasestorage.app',
+    apiKey: 'AIzaSyAez0pz8GbbsrrsjwmZ3SG5PsaLMtkE_LE',
+    appId: '1:591009507218:android:5bf2432c80e6173cc9834b',
+    messagingSenderId: '591009507218',
+    projectId: 'fem-castells',
+    storageBucket: 'fem-castells.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBGiuHFcwsRB1H8s-QE7Og8I9Ib0rutVGc',
-    appId: '1:1001485411802:ios:a703488f3acb8fcc180ce3',
-    messagingSenderId: '1001485411802',
-    projectId: 'fempinya3-73ef3',
-    storageBucket: 'fempinya3-73ef3.firebasestorage.app',
-    iosBundleId: 'com.example.fempinya3FlutterApp',
+    apiKey: 'AIzaSyAez0pz8GbbsrrsjwmZ3SG5PsaLMtkE_LE',
+    appId: '1:591009507218:android:5bf2432c80e6173cc9834b',
+    messagingSenderId: '591009507218',
+    projectId: 'fem-castells',
+    storageBucket: 'fem-castells.firebasestorage.app',
   );
 }

@@ -37,7 +37,7 @@ GoRouter appRouter(AuthenticationBloc authenticationBloc) {
       GoRoute(
         name: gdprConsentRoute,
         path: gdprConsentRoute,
-        builder: (context, state) => const GdprConsentPage(),
+        builder: (context, state) => GdprConsentPage(fromMenu: state.extra == true),
       ),
       GoRoute(
         name: aboutRoute,

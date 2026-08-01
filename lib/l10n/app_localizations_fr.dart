@@ -32,6 +32,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get menuHistorial => 'Historique';
 
   @override
+  String get menuMore => 'Plus d\'options';
+
+  @override
   String get menuAbout => 'À propos de FemCastells';
 
   @override

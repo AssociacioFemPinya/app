@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "1001485411802",
-    "project_id": "fempinya3-73ef3",
-    "storage_bucket": "fempinya3-73ef3.firebasestorage.app"
+    "project_number": "591009507218",
+    "project_id": "fem-castells",
+    "storage_bucket": "fem-castells.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1001485411802:android:bf29c9ff1918b099180ce3",
+        "mobilesdk_app_id": "1:591009507218:android:5bf2432c80e6173cc9834b",
         "android_client_info": {
           "package_name": "com.artacho.femcastells"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCaMXNg_G799tA6g59e02CbW_aDHiI0ptw"
+          "current_key": "AIzaSyAez0pz8GbbsrrsjwmZ3SG5PsaLMtkE_LE"
         }
       ],
       "services": {

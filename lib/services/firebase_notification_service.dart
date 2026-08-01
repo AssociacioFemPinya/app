@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:femcastells/core/navigation/route_names.dart';
 import 'package:femcastells/core/service_locator.dart';
 import 'package:femcastells/firebase_options.dart';
@@ -110,7 +111,24 @@ class FirebaseNotificationService {
     // Get FCM token for device registration
     final token = await _messaging.getToken();
     debugPrint('FCM Token: $token');
-    // TODO: Push this token to your API for server-side notifications
+    if (token != null) {
+      await _sendTokenToBackend(token);
+    }
+
+    // Refresh token when it changes
+    _messaging.onTokenRefresh.listen(_sendTokenToBackend);
+  }
+
+  Future<void> _sendTokenToBackend(String token) async {
+    try {
+      await sl<Dio>().post(
+        '/api-fempinya/device-token',
+        data: {'token': token},
+      );
+      debugPrint('FCM token sent to backend');
+    } catch (e) {
+      debugPrint('WARNING: Could not send FCM token to backend: $e');
+    }
   }
 
   /// Request notification permissions from the user
@@ -308,7 +326,10 @@ class FirebaseNotificationService {
           debugPrint('Navigating to event: $resourceId');
           router.pushNamed(eventRoute, pathParameters: {'eventID': resourceId});
           break;
-        // TODO: Add case for 'message'
+        case 'noticia':
+          debugPrint('Navigating to notifications (notícia received)');
+          router.pushNamed(notificationsRoute);
+          break;
         default:
           debugPrint('WARNING: Unknown route: $pathName');
           break;

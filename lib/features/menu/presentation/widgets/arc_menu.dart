@@ -6,6 +6,7 @@ import 'package:femcastells/l10n/app_localizations.dart';
 
 const Color _kGreen      = Color(0xFF1A5C38);
 const Color _kGreenLight = Color(0xFF2D7A50);
+const String _kMoreSheet = '__more__';
 
 class ArcMenu extends StatefulWidget {
   final Widget child;
@@ -51,18 +52,52 @@ class _ArcMenuState extends State<ArcMenu> with SingleTickerProviderStateMixin {
     _ctrl.reverse().then((_) {
       if (mounted) {
         setState(() => _open = false);
-        context.pushNamed(route);
+        if (route == _kMoreSheet) {
+          _showMoreSheet();
+        } else {
+          context.pushNamed(route);
+        }
       }
     });
   }
 
+  void _showMoreSheet() {
+    final t = AppLocalizations.of(context)!;
+    showModalBottomSheet(
+      context: context,
+      builder: (_) => SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              leading: const Icon(Icons.info_outline),
+              title: Text(t.menuAbout),
+              onTap: () { Navigator.pop(context); context.pushNamed(aboutRoute); },
+            ),
+            ListTile(
+              leading: const Icon(Icons.privacy_tip_outlined),
+              title: Text(t.menuPrivacy),
+              onTap: () { Navigator.pop(context); context.push(gdprConsentRoute, extra: true); },
+            ),
+            ListTile(
+              leading: const Icon(Icons.help_outline),
+              title: Text(t.menuHelp),
+              onTap: () { Navigator.pop(context); context.pushNamed(helpRoute); },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   List<_MenuItem> _buildItems(AppLocalizations t) => [
         _MenuItem(Icons.home_rounded, t.menuHome, homeRoute),
-        _MenuItem(Icons.calendar_today, t.menuEvents, eventsRoute),
+        _MenuItem(Icons.calendar_month, t.menuEvents, eventsRoute),
         _MenuItem(Icons.hub_outlined, t.menuPublicDisplayUrl, publicDisplayUrlRoute),
         _MenuItem(Icons.loop, t.menuRondes, rondesRoute),
         _MenuItem(Icons.history, t.menuHistorial, historialRoute),
         _MenuItem(Icons.notifications_none, t.menuNotifications, notificationsRoute),
+        _MenuItem(Icons.more_horiz, t.menuMore, _kMoreSheet),
       ];
 
   @override
@@ -89,9 +124,10 @@ class _ArcMenuState extends State<ArcMenu> with SingleTickerProviderStateMixin {
             animation: _anim,
             builder: (ctx, _) {
               final size = MediaQuery.of(ctx).size;
-              const R = 320.0;
-              const startDeg = 155.0;
-              const endDeg = 100.0;
+              const rx = 360.0;
+              const ry = 280.0;
+              const startDeg = 162.0;
+              const endDeg = 96.0;
               final step = (startDeg - endDeg) / (items.length - 1);
 
               return Stack(
@@ -108,8 +144,8 @@ class _ArcMenuState extends State<ArcMenu> with SingleTickerProviderStateMixin {
                   ...List.generate(items.length, (i) {
                     final deg = startDeg - i * step;
                     final rad = deg * pi / 180;
-                    final bx = size.width + R * cos(rad) - 32;
-                    final by = size.height - R * sin(rad) - 32 - bottomPad;
+                    final bx = size.width + rx * cos(rad) - 32;
+                    final by = size.height - ry * sin(rad) - 32 - bottomPad;
 
                     final itemAnim = CurvedAnimation(
                       parent: _ctrl,

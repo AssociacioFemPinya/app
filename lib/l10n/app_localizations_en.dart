@@ -32,6 +32,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get menuHistorial => 'History';
 
   @override
+  String get menuMore => 'More options';
+
+  @override
   String get menuAbout => 'About FemCastells';
 
   @override
