@@ -31,8 +31,19 @@ class EventsListWidget extends StatelessWidget {
     return BlocBuilder<EventsListBloc, EventsListState>(
       builder: (context, state) {
         final sortedDates = state.events.keys.toList()..sort();
-        if (sortedDates.isEmpty) {
+        if (state.isLoading) {
           return const Center(child: CircularProgressIndicator());
+        }
+        if (state.errorMessage != null) {
+          return Center(child: Text(state.errorMessage!));
+        }
+        if (sortedDates.isEmpty) {
+          return Center(
+            child: Text(
+              AppLocalizations.of(context)!.eventsPageEventsEmpty,
+              textAlign: TextAlign.center,
+            ),
+          );
         }
         return ListView.separated(
           padding: const EdgeInsets.only(bottom: 24),

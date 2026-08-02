@@ -42,6 +42,7 @@
     "eventsPageFilterTypeTitle": "Type d'activité",
     "eventsPageFilterClear": "Effacer",
     "eventsPageCalendarEmpty": "Il n'y a pas d'activités ce jour-là.",
+    "eventsPageEventsEmpty": "Aucun événement ne correspond à ce filtre.",
     "eventsPageCalendarToday": "Aujourd’hui",
     "eventsPageStatusFilterPending": "En attente",
     "eventsPageStatusFilterAnswered": "Répondu",

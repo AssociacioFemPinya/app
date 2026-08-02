@@ -41,6 +41,7 @@
     "eventsPageFilterTypeTitle": "Tipus d'activitat",
     "eventsPageFilterClear": "Netejar",
     "eventsPageCalendarEmpty": "No hi ha activitats aquest dia.",
+    "eventsPageEventsEmpty": "No hi ha esdeveniments per a aquest filtre.",
     "eventsPageCalendarToday": "Avui",
     "eventsPageStatusFilterPending": "Pendent",
     "eventsPageStatusFilterAnswered": "Respost",

@@ -21,10 +21,15 @@ class EventsListBloc extends Bloc<EventsListEvent, EventsListState> {
         dateEvents[eventDay]!.add(event);
       }
 
-      emit(state.copyWith(events: dateEvents));
+      emit(state.copyWith(
+        events: dateEvents,
+        isLoading: false,
+        errorMessage: null,
+      ));
     });
 
     on<LoadEventsList>((eventsFiltersState, emit) async {
+      emit(state.copyWith(isLoading: true, errorMessage: null));
       GetEventsListParams getEventsListParams = GetEventsListParams(
           showAnswered: eventsFiltersState.value.showAnswered,
           showUndefined: eventsFiltersState.value.showUndefined,
@@ -43,7 +48,10 @@ class EventsListBloc extends Bloc<EventsListEvent, EventsListState> {
     });
 
     on<EventsListLoadFailure>((errorMessage, emit) {
-      // TODO
+      emit(state.copyWith(
+        isLoading: false,
+        errorMessage: errorMessage.value,
+      ));
     });
   }
 }

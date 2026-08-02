@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../../../menu/presentation/widgets/menu_widget.dart';
 import '../bloc/notifications_list/notifications_bloc.dart';
 import '../widgets/notification_item.dart';
 
@@ -11,7 +12,7 @@ class NotificationsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final translate = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
-    
+
     return BlocProvider(
       create: (context) => NotificationsBloc()..add(LoadNotifications()),
       child: Scaffold(
@@ -20,6 +21,7 @@ class NotificationsPage extends StatelessWidget {
           title: Text(translate.notificationsTitle),
           backgroundColor: theme.colorScheme.surface,
         ),
+        drawer: const MenuWidget(),
         body: BlocBuilder<NotificationsBloc, NotificationsState>(
           builder: (context, state) {
             if (state is NotificationsError) {

@@ -79,9 +79,9 @@ class UserProfileModel {
   factory UserProfileModel.fromJson(Map<String, dynamic> data) {
     return UserProfileModel(
       idCasteller: data['id_casteller'],
-      idCastellerExternal: data['id_casteller_external'],
+      idCastellerExternal: data['id_casteller_external'] ?? 0,
       collaId: data['colla_id'],
-      numSoci: data['num_soci'],
+      numSoci: data['num_soci'] ?? '',
       nationality: data['nationality'],
       nationalIdNumber: data['national_id_number'],
       nationalIdType: data['national_id_type'],
@@ -94,7 +94,7 @@ class UserProfileModel {
       birthdate: data['birthdate'],
       subscriptionDate: data['subscription_date'],
       email: data['email'],
-      email2: data['email2'],
+      email2: data['email2'] ?? '',
       phone: data['phone'],
       mobilePhone: data['mobile_phone'],
       emergencyPhone: data['emergency_phone'],
@@ -111,7 +111,7 @@ class UserProfileModel {
       shoulderHeight: data['shoulder_height'],
       status: data['status'],
       language: data['language'],
-      interactionType: data['interaction_type'],
+      interactionType: data['interaction_type'] ?? 0,
       createdAt: data['created_at'],
       updatedAt: data['updated_at'],
     );

@@ -42,6 +42,7 @@
     "eventsPageFilterTypeTitle": "Tipo de actividad",
     "eventsPageFilterClear": "Limpiar",
     "eventsPageCalendarEmpty": "No hay actividades este día.",
+    "eventsPageEventsEmpty": "No hay eventos para este filtro.",
     "eventsPageCalendarToday": "Hoy",
     "eventsPageStatusFilterPending": "Pendiente",
     "eventsPageStatusFilterAnswered": "Respondido",
